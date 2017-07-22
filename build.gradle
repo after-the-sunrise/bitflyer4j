@@ -1,0 +1,55 @@
+apply plugin: 'java-library'
+
+group = 'com.after_sunrise.cryptocurrency'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation 'org.slf4j:slf4j-api:1.7.25'
+    implementation 'com.google.inject:guice:4.1.0'
+    implementation 'com.google.code.gson:gson:2.8.1'
+    implementation 'commons-configuration:commons-configuration:1.10'
+
+    testImplementation 'org.testng:testng:6.10'
+    testImplementation 'org.mockito:mockito-all:1.10.19'
+
+    testRuntimeOnly 'ch.qos.logback:logback-classic:1.2.3'
+
+}
+
+test {
+    useTestNG()
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+jar.doFirst {
+
+    project.ext {
+        vval = project.name + '.version=' + project.version
+        vout = 'build/resources/main/' + project.name + '-version.properties'
+    }
+
+    ant.echo message: project.ext.vval, file: project.ext.vout
+
+}
+
