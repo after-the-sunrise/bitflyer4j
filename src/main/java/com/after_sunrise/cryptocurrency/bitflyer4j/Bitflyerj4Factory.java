@@ -1,8 +1,16 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j;
 
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.Bitflyer4jImpl;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.ConfigurationType;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.impl.Bitflyer4jImpl;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.impl.JdkHttpClient;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.impl.ThreadFactoryImpl;
+import com.after_sunrise.cryptocurrency.bitflyer4j.service.MarketService;
+import com.after_sunrise.cryptocurrency.bitflyer4j.service.OrderService;
+import com.after_sunrise.cryptocurrency.bitflyer4j.service.impl.MarketServiceImpl;
+import com.after_sunrise.cryptocurrency.bitflyer4j.service.impl.OrderServiceImpl;
 import com.google.common.annotations.VisibleForTesting;
+import com.google.gson.Gson;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Module;
@@ -10,6 +18,7 @@ import org.apache.commons.configuration.CompositeConfiguration;
 import org.apache.commons.configuration.Configuration;
 
 import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
 
 /**
  * Factory for creating a new {@link Bitflyer4j} instance.
@@ -35,7 +44,17 @@ public class Bitflyerj4Factory {
 
                 bind(Configuration.class).toInstance(conf);
 
-                bind(Bitflyer4j.class).to(Bitflyer4jImpl.class);
+                bind(Gson.class).toInstance(new Gson());
+
+                bind(ExecutorService.class).toProvider(ThreadFactoryImpl.class).asEagerSingleton();
+
+                bind(HttpClient.class).to(JdkHttpClient.class).asEagerSingleton();
+
+                bind(Bitflyer4j.class).to(Bitflyer4jImpl.class).asEagerSingleton();
+
+                bind(MarketService.class).to(MarketServiceImpl.class).asEagerSingleton();
+
+                bind(OrderService.class).to(OrderServiceImpl.class).asEagerSingleton();
 
             }
         };

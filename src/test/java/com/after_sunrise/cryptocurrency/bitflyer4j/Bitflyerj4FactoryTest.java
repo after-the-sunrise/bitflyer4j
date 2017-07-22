@@ -31,6 +31,8 @@ public class Bitflyerj4FactoryTest {
 
         assertNotNull(api);
 
+        api.close();
+
     }
 
     @Test
@@ -64,7 +66,7 @@ public class Bitflyerj4FactoryTest {
         assertEquals(s.getString(AUTH_KEY.get()), "test");
 
         // Last should be default.
-        assertEquals(HTTP_URL.apply(conf), HTTP_URL.getDefault());
+        assertEquals(HTTP_URL_BASE.apply(conf), HTTP_URL_BASE.getDefault());
 
     }
 

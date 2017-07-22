@@ -11,7 +11,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
  * Enumeration of property keys.
  *
  * @author takanori.takase
- * @version 0.0.0
+ * @version 0.0.1
  */
 public enum KeyType implements Supplier<String>, Function<Configuration, String> {
 
@@ -37,9 +37,14 @@ public enum KeyType implements Supplier<String>, Function<Configuration, String>
     AUTH_SECRET("N/A"),
 
     /**
-     * Endpoint URL of the HTTP API.
+     * Endpoint URL base of the HTTP API.
      */
-    HTTP_URL("https://api.bitflyer.jp"),
+    HTTP_URL_BASE("https://api.bitflyer.jp"),
+
+    /**
+     * Endpoint URL suffix for market request.
+     */
+    HTTP_URL_MARKET("/v1/markets"),
 
     /**
      * HTTP API access limit's interval.

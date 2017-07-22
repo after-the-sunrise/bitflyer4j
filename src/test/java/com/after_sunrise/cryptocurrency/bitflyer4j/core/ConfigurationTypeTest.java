@@ -42,7 +42,6 @@ public class ConfigurationTypeTest {
                     break;
                 case HOME:
                     // Do nothing. (Dependent on the test machine.)
-                    System.out.println(map);
                     break;
                 case SITE:
                     assertEquals(VERSION.apply(conf), "test");
