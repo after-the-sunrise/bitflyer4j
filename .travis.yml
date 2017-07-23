@@ -8,6 +8,7 @@ notifications:
         - scm@after-sunrise.com
 
 before_script:
-    - java -version
-    - javac -version
-    - gradle -version
+    - wget https://services.gradle.org/distributions/gradle-4.0.1-bin.zip
+    - unzip gradle-4.0.1-bin.zip
+    - export GRADLE_HOME=$PWD/gradle-4.0.1
+    - export PATH=$GRADLE_HOME/bin:$PATH
