@@ -1,4 +1,6 @@
-apply plugin: 'java-library'
+apply plugin: 'java'
+apply plugin: 'jacoco'
+apply plugin: 'findbugs'
 
 group = 'com.after_sunrise.cryptocurrency'
 version = '0.0.1-SNAPSHOT'
@@ -11,13 +13,13 @@ repositories {
 
 dependencies {
 
-    implementation 'org.slf4j:slf4j-api:1.7.25'
-    implementation 'com.google.inject:guice:4.1.0'
-    implementation 'com.google.code.gson:gson:2.8.1'
-    implementation 'commons-configuration:commons-configuration:1.10'
+    compile 'org.slf4j:slf4j-api:1.7.25'
+    compile 'com.google.inject:guice:4.1.0'
+    compile 'com.google.code.gson:gson:2.8.1'
+    compile 'commons-configuration:commons-configuration:1.10'
 
-    testImplementation 'org.testng:testng:6.10'
-    testImplementation 'org.mockito:mockito-all:1.10.19'
+    testCompile 'org.testng:testng:6.10'
+    testCompile 'org.mockito:mockito-all:1.10.19'
 
     testRuntimeOnly 'ch.qos.logback:logback-classic:1.2.3'
 
@@ -53,3 +55,6 @@ jar.doFirst {
 
 }
 
+findbugs {
+    ignoreFailures = true
+}
