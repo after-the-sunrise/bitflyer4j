@@ -21,7 +21,7 @@ dependencies {
     testCompile 'org.testng:testng:6.10'
     testCompile 'org.mockito:mockito-all:1.10.19'
 
-    testRuntimeOnly 'ch.qos.logback:logback-classic:1.2.3'
+    testRuntime 'ch.qos.logback:logback-classic:1.2.3'
 
 }
 
