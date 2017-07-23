@@ -3,8 +3,6 @@ package com.after_sunrise.cryptocurrency.bitflyer4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.CompletableFuture;
-
 /**
  * @author takanori.takase
  * @version 0.0.1
@@ -19,9 +17,11 @@ public class Bitflyer4jTest {
 
         try (Bitflyer4j api = factory.createInstance()) {
 
-            CompletableFuture<?> markets = api.getMarketService().getMarkets();
+            LOG.info("Markets : {}", api.getMarketService().getProducts().get());
 
-            LOG.info("Markets : {}", markets.get());
+            LOG.info("Board : {}", api.getMarketService().getBoard(null).get());
+
+            LOG.info("Ticker : {}", api.getMarketService().getTick("ETH_BTC").get());
 
         } catch (Exception e) {
 

@@ -1,6 +1,6 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl;
 
-import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Market;
+import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Product;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.annotations.SerializedName;
 
@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  * @author takanori.takase
  * @version 0.0.1
  */
-public class MarketImpl extends AbstractEntity implements Market {
+public class ProductImpl extends AbstractEntity implements Product {
 
     @SerializedName("product_code")
     @VisibleForTesting
