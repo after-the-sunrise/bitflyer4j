@@ -6,3 +6,8 @@ jdk:
 notifications:
     email:
         - scm@after-sunrise.com
+
+before_script:
+    - java -version
+    - javac -version
+    - gradle -version
