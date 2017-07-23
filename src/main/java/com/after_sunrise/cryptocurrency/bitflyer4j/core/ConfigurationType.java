@@ -6,15 +6,14 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.configuration.SystemConfiguration;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.function.Supplier;
-
-import static org.apache.commons.lang.builder.ToStringBuilder.reflectionToString;
-import static org.apache.commons.lang.builder.ToStringStyle.SHORT_PREFIX_STYLE;
 
 /**
  * Enumeration of properties files to load.
@@ -32,12 +31,7 @@ public enum ConfigurationType implements Supplier<Optional<Configuration>> {
     /**
      * System variables.
      */
-    SYSTEM {
-        @Override
-        public Optional<Configuration> get() {
-            return Optional.of(new SystemConfiguration());
-        }
-    },
+    SYSTEM,
 
     /**
      * User properties.
@@ -66,18 +60,31 @@ public enum ConfigurationType implements Supplier<Optional<Configuration>> {
         this.parentPath = parentPath;
     }
 
-    @Override
-    public String toString() {
-        return reflectionToString(this, SHORT_PREFIX_STYLE);
+    public String getPath() {
+        return path;
+    }
+
+    public String getParentPath() {
+        return parentPath;
     }
 
     @Override
     public Optional<Configuration> get() {
-        return get(path, parentPath);
+        return get(getPath(), getParentPath());
     }
 
     @VisibleForTesting
     static Optional<Configuration> get(String location, String parentPath) {
+
+        Logger log = LoggerFactory.getLogger(ConfigurationType.class);
+
+        if (StringUtils.isBlank(location)) {
+
+            log.debug("Loading system.");
+
+            return Optional.of(new SystemConfiguration());
+
+        }
 
         try {
 
@@ -87,17 +94,23 @@ public enum ConfigurationType implements Supplier<Optional<Configuration>> {
 
                 url = Resources.getResource(location);
 
+                log.debug("Loading classpath : {}", url);
+
             } else {
 
                 Path parent = Paths.get(parentPath);
 
                 url = parent.resolve(location).toUri().toURL();
 
+                log.debug("Loading filepath : {}", url);
+
             }
 
             return Optional.of(new PropertiesConfiguration(url));
 
         } catch (Exception e) {
+
+            log.debug("Loading skipped : location=[{}], parenPath=[{}]", location, parentPath);
 
             return Optional.empty();
 

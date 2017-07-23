@@ -2,6 +2,7 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.core;
 
 import org.apache.commons.configuration.Configuration;
 
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -26,7 +27,7 @@ public enum KeyType implements Supplier<String>, Function<Configuration, String>
      * @see <a href="https://lightning.bitflyer.jp/docs?lang=en#authentication">API Documentation</a>
      * @see #AUTH_SECRET
      */
-    AUTH_KEY("N/A"),
+    AUTH_KEY(null),
 
     /**
      * Authentication secret.
@@ -34,17 +35,27 @@ public enum KeyType implements Supplier<String>, Function<Configuration, String>
      * @see <a href="https://lightning.bitflyer.jp/docs?lang=en#authentication">API Documentation</a>
      * @see #AUTH_KEY
      */
-    AUTH_SECRET("N/A"),
+    AUTH_SECRET(null),
 
     /**
      * Endpoint URL base of the HTTP API.
      */
-    HTTP_URL_BASE("https://api.bitflyer.jp"),
+    HTTP_URL("https://api.bitflyer.jp"),
 
     /**
-     * Endpoint URL suffix for market request.
+     * HTTP proxy host.
      */
-    HTTP_URL_MARKET("/v1/markets"),
+    HTTP_PROXY_HOST(null),
+
+    /**
+     * HTTP proxy port.
+     */
+    HTTP_PROXY_PORT(null),
+
+    /**
+     * HTTP socket/read timeout in millis.
+     */
+    HTTP_TIMEOUT(null),
 
     /**
      * HTTP API access limit's interval.
@@ -91,7 +102,7 @@ public enum KeyType implements Supplier<String>, Function<Configuration, String>
      *
      * @see <a href="https://lightning.bitflyer.jp/docs?lang=en#realtime-api">API Documentation</a>
      */
-    @SuppressWarnings("SpellCheckingInspection") PUBNUB_KEY("sub-c-52a9ab50-291b-11e5-baaa-0619f8945a4f");
+    PUBNUB_KEY("sub-c-52a9ab50-291b-11e5-baaa-0619f8945a4f");
 
     private static final String PREFIX = "bitflyer4j.";
 
@@ -103,7 +114,7 @@ public enum KeyType implements Supplier<String>, Function<Configuration, String>
 
         this.key = PREFIX + name().toLowerCase();
 
-        this.defaultValue = defaultValue.toString();
+        this.defaultValue = Objects.toString(defaultValue, null);
 
     }
 

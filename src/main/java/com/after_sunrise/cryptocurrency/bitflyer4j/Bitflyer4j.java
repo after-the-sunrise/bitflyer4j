@@ -11,6 +11,8 @@ import com.after_sunrise.cryptocurrency.bitflyer4j.service.OrderService;
  */
 public interface Bitflyer4j extends AutoCloseable {
 
+    String getVersion();
+
     MarketService getMarketService();
 
     OrderService getOrderService();

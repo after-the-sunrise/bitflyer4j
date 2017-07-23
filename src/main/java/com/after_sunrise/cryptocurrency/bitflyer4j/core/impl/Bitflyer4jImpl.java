@@ -1,12 +1,17 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.core.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.Bitflyer4j;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.ExecutorFactory;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.MarketService;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.OrderService;
 import com.google.inject.Injector;
+import org.apache.commons.configuration.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import java.util.concurrent.ExecutorService;
+
+import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.VERSION;
 
 /**
  * Implementation using dependency injection.
@@ -16,7 +21,11 @@ import java.util.concurrent.ExecutorService;
  */
 public class Bitflyer4jImpl implements Bitflyer4j {
 
-    private final ExecutorService executorService;
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
+    private final String version;
+
+    private final ExecutorFactory executorFactory;
 
     private final MarketService marketService;
 
@@ -25,17 +34,30 @@ public class Bitflyer4jImpl implements Bitflyer4j {
     @Inject
     public Bitflyer4jImpl(Injector injector) {
 
-        executorService = injector.getInstance(ExecutorService.class);
+        executorFactory = injector.getInstance(ExecutorFactory.class);
 
         marketService = injector.getInstance(MarketService.class);
 
         orderService = injector.getInstance(OrderService.class);
 
+        version = VERSION.apply(injector.getInstance(Configuration.class));
+
+        log.info("Initialized : {}", version);
+
     }
 
     @Override
     public void close() throws Exception {
-        executorService.shutdown();
+
+        executorFactory.shutdown();
+
+        log.info("Terminated.");
+
+    }
+
+    @Override
+    public String getVersion() {
+        return version;
     }
 
     @Override
