@@ -58,22 +58,14 @@ public enum KeyType implements Supplier<String>, Function<Configuration, String>
     HTTP_TIMEOUT(null),
 
     /**
-     * HTTP API access limit's interval.
+     * HTTP API access limit's interval in milliseconds.
      *
      * @see <a href="https://lightning.bitflyer.jp/docs?lang=en#api-limits">API Documentation</a>
-     * @see #HTTP_LIMIT_TIMEUNIT
      * @see #HTTP_LIMIT_CRITERIA_ADDRESS
      * @see #HTTP_LIMIT_CRITERIA_PRIVATE
      * @see #HTTP_LIMIT_CRITERIA_DORMANT
      */
-    HTTP_LIMIT_INTERVAL(60),
-
-    /**
-     * HTTP API access limit interval's time unit.
-     *
-     * @see #HTTP_LIMIT_INTERVAL
-     */
-    HTTP_LIMIT_TIMEUNIT(SECONDS.name()),
+    HTTP_LIMIT_INTERVAL(SECONDS.toMillis(60)),
 
     /**
      * HTTP API access limit per IP address.
