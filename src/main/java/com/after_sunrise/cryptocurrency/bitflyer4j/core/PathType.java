@@ -15,7 +15,7 @@ public enum PathType {
 
     TICKER("/v1/ticker"),
 
-    EXECUTION("/v1/execution"),
+    EXECUTION("/v1/executions"),
 
     HEALTH("/v1/gethealth"),
 

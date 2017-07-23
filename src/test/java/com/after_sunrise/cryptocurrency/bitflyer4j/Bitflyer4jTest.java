@@ -11,17 +11,37 @@ public class Bitflyer4jTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(Bitflyer4jTest.class);
 
+    private static final boolean DEBUG = Boolean.valueOf(System.getProperty("bitflyer4j.debug"));
+
     public static void main(String[] args) {
 
         Bitflyerj4Factory factory = new Bitflyerj4Factory();
 
         try (Bitflyer4j api = factory.createInstance()) {
 
-            LOG.info("Markets : {}", api.getMarketService().getProducts().get());
+            LOG.info("Status : {}", api.getMarketService().getStatus().get());
 
-            LOG.info("Board : {}", api.getMarketService().getBoard(null).get());
+            LOG.info("Perms : {}", api.getMarketService().getPermissions().get());
 
-            LOG.info("Ticker : {}", api.getMarketService().getTick("ETH_BTC").get());
+            if (DEBUG) {
+                LOG.info("Markets : {}", api.getMarketService().getProducts().get());
+            }
+
+            if (DEBUG) {
+                LOG.info("Board : {}", api.getMarketService().getBoard(null).get());
+            }
+
+            if (DEBUG) {
+                LOG.info("Tick : {}", api.getMarketService().getTick("ETH_BTC").get());
+            }
+
+            if (DEBUG) {
+                LOG.info("Execs : {}", api.getMarketService().getExecutions(null, null).get());
+            }
+
+            if (DEBUG) {
+                LOG.info("Chats : {}", api.getMarketService().getChats(null).get());
+            }
 
         } catch (Exception e) {
 
