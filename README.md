@@ -7,11 +7,40 @@
 
 ## Feature Set
 
+The library is aimed to cover the major feature-set documented in the official documentation. 
+The currently implemented features are as follows:  
+
+- HTTP Public API
+  - Market List
+  - Order Book
+  - Ticker
+  - Execution History
+  - Exchange Status
+  - Chat
+- HTTP Private API
+  - Permissions
+  - ...
+
 
 ## Getting Started
 
+### Sample Code
 
-### Authentication
+Copy and paste the following code snippet in the ``main`` method, and run. 
+It will print the list of available products in the System console.
+
+```java
+    // Create an API instance.
+    Bitflyer4j api = new Bitflyer4jFactory().createInstance();
+    
+    // Query and print the results.
+    System.out.println(api.getMarketService().getProducts().get());
+```
+
+For the full list of supported features, please refer to the interfaces, such as ``MarketService`` and/or ``OrderService``.
+
+
+### Private API Authentication
 
 In order to use the [Private API](https://lightning.bitflyer.jp/docs?lang=en#http-private-api), 
 specify the authentication credentials as follows in the environment system variables:
