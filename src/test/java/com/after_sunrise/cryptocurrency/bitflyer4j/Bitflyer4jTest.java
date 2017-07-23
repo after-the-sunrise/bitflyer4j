@@ -15,7 +15,7 @@ public class Bitflyer4jTest {
 
     public static void main(String[] args) {
 
-        Bitflyerj4Factory factory = new Bitflyerj4Factory();
+        Bitflyer4jFactory factory = new Bitflyer4jFactory();
 
         try (Bitflyer4j api = factory.createInstance()) {
 

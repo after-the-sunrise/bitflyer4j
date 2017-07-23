@@ -26,7 +26,7 @@ import java.util.Arrays;
  * @author takanori.takase
  * @version 0.0.1
  */
-public class Bitflyerj4Factory {
+public class Bitflyer4jFactory {
 
     /**
      * Create a new instance of the {@link Bitflyer4j}.

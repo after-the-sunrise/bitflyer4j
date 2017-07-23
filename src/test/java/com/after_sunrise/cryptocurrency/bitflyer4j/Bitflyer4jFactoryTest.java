@@ -15,13 +15,13 @@ import static org.testng.Assert.*;
  * @author takanori.takase
  * @version 0.0.1
  */
-public class Bitflyerj4FactoryTest {
+public class Bitflyer4jFactoryTest {
 
-    private Bitflyerj4Factory target;
+    private Bitflyer4jFactory target;
 
     @BeforeMethod
     public void setUp() throws Exception {
-        target = new Bitflyerj4Factory();
+        target = new Bitflyer4jFactory();
     }
 
     @Test
