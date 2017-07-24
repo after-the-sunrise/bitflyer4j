@@ -33,6 +33,8 @@ import static org.apache.commons.lang.builder.ToStringStyle.SHORT_PREFIX_STYLE;
  */
 public class HttpClientImpl implements HttpClient {
 
+    private static final long TIME_PRECISION = 1000L;
+
     private static final String ALGORITHM = "HmacSHA256";
 
     private static final String ACCESS_KEY = "ACCESS-KEY";
@@ -192,9 +194,9 @@ public class HttpClientImpl implements HttpClient {
 
         if (request.getType().isSign()) {
 
-            // TODO : Test & Refactor
+            // TODO Refactor for unit testing
 
-            String ts = String.valueOf(System.currentTimeMillis() / 1000L);
+            String ts = String.valueOf(System.currentTimeMillis() / TIME_PRECISION);
 
             String base = ts + request.getType().getMethod().get() + request.getType().getPath();
 
@@ -206,7 +208,7 @@ public class HttpClientImpl implements HttpClient {
 
             connection.addRequestProperty(ACCESS_SIGN, sign);
 
-            log.trace("Configured signature : base=[{}], sign=[{}]", base, sign);
+            log.trace("Configured signature : key=[{}], base=[{}], sign=[{}]", authKey, base, sign);
 
         }
 
@@ -254,7 +256,7 @@ public class HttpClientImpl implements HttpClient {
         StringBuilder sb = new StringBuilder();
 
         for (byte b : hash) {
-            sb.append(Integer.toHexString(b));
+            sb.append(String.format("%02x", b & 0xff));
         }
 
         return sb.toString();
