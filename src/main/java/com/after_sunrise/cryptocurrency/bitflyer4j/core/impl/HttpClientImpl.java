@@ -11,11 +11,12 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -32,9 +33,13 @@ import static org.apache.commons.lang.builder.ToStringStyle.SHORT_PREFIX_STYLE;
  */
 public class HttpClientImpl implements HttpClient {
 
-    private static final String METHOD_GET = "GET";
+    private static final String ALGORITHM = "HmacSHA256";
 
-    private static final String METHOD_POST = "POST";
+    private static final String ACCESS_KEY = "ACCESS-KEY";
+
+    private static final String ACCESS_TIME = "ACCESS-TIMESTAMP";
+
+    private static final String ACCESS_SIGN = "ACCESS-SIGN";
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -45,6 +50,10 @@ public class HttpClientImpl implements HttpClient {
     private final String proxyPort;
 
     private final String timeout;
+
+    private final String authKey;
+
+    private final String authSecret;
 
     private final ExecutorService executor;
 
@@ -61,6 +70,10 @@ public class HttpClientImpl implements HttpClient {
 
         timeout = HTTP_TIMEOUT.apply(conf);
 
+        authKey = AUTH_KEY.apply(conf);
+
+        authSecret = AUTH_SECRET.apply(conf);
+
         executor = injector.getInstance(ExecutorFactory.class).get(getClass());
 
     }
@@ -76,11 +89,13 @@ public class HttpClientImpl implements HttpClient {
 
                 log.debug("SEND : {}", req);
 
-                HttpURLConnection connection = create(req);
+                HttpURLConnection connection = createConnection(req);
 
                 try {
 
-                    HttpResponse response = parse(connection);
+                    connection = configure(connection, req);
+
+                    HttpResponse response = receive(connection);
 
                     log.debug("RECV : {}", response);
 
@@ -105,58 +120,31 @@ public class HttpClientImpl implements HttpClient {
     }
 
     @VisibleForTesting
-    HttpURLConnection create(HttpRequest request) throws IOException {
+    HttpURLConnection createConnection(HttpRequest request) throws IOException {
 
         URL url = createUrl(request.getType().getPath(), request.getParameters());
 
-        Proxy proxy = createProxy();
-
         HttpURLConnection conn;
 
-        if (proxy == null) {
-            conn = (HttpURLConnection) url.openConnection();
+        if (proxyHost != null && proxyPort != null) {
+
+            SocketAddress sa = new InetSocketAddress(proxyHost, parseInt(proxyPort));
+
+            conn = (HttpURLConnection) url.openConnection(new Proxy(HTTP, sa));
+
+            log.trace("Created connection : URL=[{}], Proxy=[{}]", url, sa);
+
         } else {
-            conn = (HttpURLConnection) url.openConnection(proxy);
-        }
 
-        try {
+            conn = (HttpURLConnection) url.openConnection();
 
-            if (timeout != null) {
-
-                conn.setConnectTimeout(parseInt(timeout));
-
-                conn.setReadTimeout(parseInt(timeout));
-
-            }
-
-            if (request.getType().isSign()) {
-                // TODO : Sign credentials
-            }
-
-            conn.setRequestMethod(request.getType().getMethod().get());
-
-            conn.connect();
-
-            if (request.getBody() != null) {
-
-                InputStream in = new ByteArrayInputStream(request.getBody().getBytes());
-
-                ByteStreams.copy(in, conn.getOutputStream());
-
-            }
-
-        } catch (IOException e) {
-
-            conn.disconnect();
-
-            throw e;
+            log.trace("Created connection : URL=[{}]", url);
 
         }
 
         return conn;
 
     }
-
 
     @VisibleForTesting
     URL createUrl(String path, Map<String, String> parameters) throws MalformedURLException {
@@ -186,15 +174,90 @@ public class HttpClientImpl implements HttpClient {
     }
 
     @VisibleForTesting
-    Proxy createProxy() {
+    HttpURLConnection configure(HttpURLConnection connection, HttpRequest request) throws IOException {
 
-        if (proxyHost == null || proxyPort == null) {
-            return null;
+        connection.setRequestMethod(request.getType().getMethod().get());
+
+        if (timeout != null) {
+
+            int millis = Integer.parseInt(timeout);
+
+            connection.setConnectTimeout(millis);
+
+            connection.setReadTimeout(millis);
+
+            log.trace("Configured timeout : {}", millis);
+
         }
 
-        SocketAddress sa = new InetSocketAddress(proxyHost, parseInt(proxyPort));
+        if (request.getType().isSign()) {
 
-        return new Proxy(HTTP, sa);
+            // TODO : Test & Refactor
+
+            String ts = String.valueOf(System.currentTimeMillis() / 1000L);
+
+            String base = ts + request.getType().getMethod().get() + request.getType().getPath();
+
+            String sign = computeHash(base);
+
+            connection.addRequestProperty(ACCESS_KEY, authKey);
+
+            connection.addRequestProperty(ACCESS_TIME, ts);
+
+            connection.addRequestProperty(ACCESS_SIGN, sign);
+
+            log.trace("Configured signature : base=[{}], sign=[{}]", base, sign);
+
+        }
+
+        if (request.getBody() != null) {
+
+            InputStream in = new ByteArrayInputStream(request.getBody().getBytes());
+
+            OutputStream out = new BufferedOutputStream(connection.getOutputStream());
+
+            ByteStreams.copy(in, out);
+
+            out.flush();
+
+            log.trace("Configured body : {}", request.getBody());
+
+        } else {
+
+            connection.connect();
+
+        }
+
+        return connection;
+
+    }
+
+    @VisibleForTesting
+    String computeHash(String base) throws IOException {
+
+        byte[] hash;
+
+        try {
+
+            Mac mac = Mac.getInstance(ALGORITHM);
+
+            mac.init(new SecretKeySpec(authSecret.getBytes(), ALGORITHM));
+
+            hash = mac.doFinal(base.getBytes());
+
+        } catch (GeneralSecurityException e) {
+
+            throw new IOException(e);
+
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        for (byte b : hash) {
+            sb.append(Integer.toHexString(b));
+        }
+
+        return sb.toString();
 
     }
 
@@ -235,7 +298,7 @@ public class HttpClientImpl implements HttpClient {
     }
 
     @VisibleForTesting
-    HttpResponse parse(HttpURLConnection connection) throws IOException {
+    HttpResponse receive(HttpURLConnection connection) throws IOException {
 
         try (InputStream in = connection.getInputStream()) {
 
