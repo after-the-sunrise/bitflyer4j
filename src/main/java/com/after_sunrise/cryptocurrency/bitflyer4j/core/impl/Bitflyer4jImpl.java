@@ -2,6 +2,7 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.core.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.Bitflyer4j;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.ExecutorFactory;
+import com.after_sunrise.cryptocurrency.bitflyer4j.service.AccountService;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.MarketService;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.OrderService;
 import com.google.inject.Injector;
@@ -29,6 +30,8 @@ public class Bitflyer4jImpl implements Bitflyer4j {
 
     private final MarketService marketService;
 
+    private final AccountService accountService;
+
     private final OrderService orderService;
 
     @Inject
@@ -37,6 +40,8 @@ public class Bitflyer4jImpl implements Bitflyer4j {
         executorFactory = injector.getInstance(ExecutorFactory.class);
 
         marketService = injector.getInstance(MarketService.class);
+
+        accountService = injector.getInstance(AccountService.class);
 
         orderService = injector.getInstance(OrderService.class);
 
@@ -63,6 +68,11 @@ public class Bitflyer4jImpl implements Bitflyer4j {
     @Override
     public MarketService getMarketService() {
         return marketService;
+    }
+
+    @Override
+    public AccountService getAccountService() {
+        return accountService;
     }
 
     @Override

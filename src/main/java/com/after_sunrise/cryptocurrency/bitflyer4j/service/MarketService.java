@@ -25,6 +25,4 @@ public interface MarketService {
 
     CompletableFuture<List<Chat>> getChats(LocalDate date);
 
-    CompletableFuture<List<String>> getPermissions();
-
 }

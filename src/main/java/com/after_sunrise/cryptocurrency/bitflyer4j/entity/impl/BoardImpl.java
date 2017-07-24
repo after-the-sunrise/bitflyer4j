@@ -5,6 +5,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
@@ -14,7 +15,7 @@ import static java.util.Collections.unmodifiableList;
  * @author takanori.takase
  * @version 0.0.1
  */
-public class BoardImpl implements Board {
+public class BoardImpl extends AbstractEntity<ZonedDateTime, Board> implements Board {
 
     static class QuoteImpl implements Quote {
 
@@ -36,6 +37,9 @@ public class BoardImpl implements Board {
 
     }
 
+    @VisibleForTesting
+    ZonedDateTime key = ZonedDateTime.now();
+
     @SerializedName("mid_price")
     @VisibleForTesting
     BigDecimal mid;
@@ -47,6 +51,11 @@ public class BoardImpl implements Board {
     @SerializedName("bids")
     @VisibleForTesting
     List<QuoteImpl> bid;
+
+    @Override
+    public ZonedDateTime getKey() {
+        return key;
+    }
 
     @Override
     public BigDecimal getMid() {

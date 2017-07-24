@@ -5,9 +5,12 @@ import com.after_sunrise.cryptocurrency.bitflyer4j.core.ExecutorFactory;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.impl.Bitflyer4jImpl;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.impl.ExecutorFactoryImpl;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.impl.GsonProvider;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.impl.HttpClientImpl;
+import com.after_sunrise.cryptocurrency.bitflyer4j.service.AccountService;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.MarketService;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.OrderService;
+import com.after_sunrise.cryptocurrency.bitflyer4j.service.impl.AccountServiceImpl;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.impl.MarketServiceImpl;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.impl.OrderServiceImpl;
 import com.google.common.annotations.VisibleForTesting;
@@ -44,7 +47,7 @@ public class Bitflyer4jFactory {
 
                 bind(Configuration.class).toInstance(conf);
 
-                bind(Gson.class).toInstance(new Gson());
+                bind(Gson.class).toProvider(GsonProvider.class).asEagerSingleton();
 
                 bind(ExecutorFactory.class).to(ExecutorFactoryImpl.class).asEagerSingleton();
 
@@ -53,6 +56,8 @@ public class Bitflyer4jFactory {
                 bind(Bitflyer4j.class).to(Bitflyer4jImpl.class).asEagerSingleton();
 
                 bind(MarketService.class).to(MarketServiceImpl.class).asEagerSingleton();
+
+                bind(AccountService.class).to(AccountServiceImpl.class).asEagerSingleton();
 
                 bind(OrderService.class).to(OrderServiceImpl.class).asEagerSingleton();
 

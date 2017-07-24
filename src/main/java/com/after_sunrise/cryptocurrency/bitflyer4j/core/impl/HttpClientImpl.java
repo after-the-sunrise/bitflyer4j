@@ -7,6 +7,7 @@ import com.google.common.io.ByteStreams;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -164,16 +165,19 @@ public class HttpClientImpl implements HttpClient {
 
         sb.append(path);
 
-        if (parameters != null) {
+        if (parameters != null && parameters.isEmpty()) {
 
             int length = sb.length();
 
-            parameters.entrySet().forEach(entry -> {
-                sb.append(sb.length() == length ? '?' : '&');
-                sb.append(entry.getKey());
-                sb.append('=');
-                sb.append(entry.getValue());
-            });
+            parameters.entrySet().stream() //
+                    .filter(entry -> StringUtils.isNotEmpty(entry.getKey())) //
+                    .filter(entry -> StringUtils.isNotEmpty(entry.getValue())) //
+                    .forEach(entry -> {
+                        sb.append(sb.length() == length ? '?' : '&');
+                        sb.append(entry.getKey());
+                        sb.append('=');
+                        sb.append(entry.getValue());
+                    });
 
         }
 

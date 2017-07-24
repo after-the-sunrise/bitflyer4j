@@ -1,27 +1,25 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl;
 
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.impl.TimestampJsonAdapter;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Execution;
 import com.google.common.annotations.VisibleForTesting;
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 
 /**
  * @author takanori.takase
  * @version 0.0.1
  */
-public class ExecutionImpl extends AbstractEntity implements Execution {
+public class ExecutionImpl extends AbstractEntity<Long, Execution> implements Execution {
 
     @SerializedName("id")
     @VisibleForTesting
-    String key;
+    Long key;
 
-    @JsonAdapter(TimestampJsonAdapter.class)
     @SerializedName("exec_date")
     @VisibleForTesting
-    Long timestamp;
+    ZonedDateTime timestamp;
 
     @SerializedName("price")
     @VisibleForTesting
@@ -44,12 +42,12 @@ public class ExecutionImpl extends AbstractEntity implements Execution {
     String sellOrderId;
 
     @Override
-    public String getKey() {
+    public Long getKey() {
         return key;
     }
 
     @Override
-    public Long getTimestamp() {
+    public ZonedDateTime getTimestamp() {
         return timestamp;
     }
 

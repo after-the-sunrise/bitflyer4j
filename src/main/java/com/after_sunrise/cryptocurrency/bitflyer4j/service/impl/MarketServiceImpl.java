@@ -1,6 +1,5 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.service.impl;
 
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient.HttpRequest;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient.HttpResponse;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.Pagination;
@@ -8,26 +7,23 @@ import com.after_sunrise.cryptocurrency.bitflyer4j.core.PathType;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.*;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl.*;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.MarketService;
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.apache.commons.configuration.Configuration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-import static java.util.Collections.singletonMap;
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 
 /**
  * @author takanori.takase
  * @version 0.0.1
  */
-public class MarketServiceImpl implements MarketService {
+public class MarketServiceImpl extends BaseService implements MarketService {
 
     private static final Type TYPE_PRODUCTS = new TypeToken<List<ProductImpl>>() {
     }.getType();
@@ -38,26 +34,9 @@ public class MarketServiceImpl implements MarketService {
     private static final Type TYPE_CHATS = new TypeToken<List<ChatImpl>>() {
     }.getType();
 
-    private static final Type TYPE_STRINGS = new TypeToken<List<String>>() {
-    }.getType();
-
-    private final Logger log = LoggerFactory.getLogger(getClass());
-
-    private final HttpClient client;
-
-    private final Gson gson;
-
     @Inject
     public MarketServiceImpl(Injector injector) {
-
-        Configuration c = injector.getInstance(Configuration.class);
-
-        client = injector.getInstance(HttpClient.class);
-
-        gson = injector.getInstance(Gson.class);
-
-        log.debug("Initialized.");
-
+        super(injector);
     }
 
     @Override
@@ -74,13 +53,7 @@ public class MarketServiceImpl implements MarketService {
     @Override
     public CompletableFuture<Board> getBoard(String product) {
 
-        HttpRequest req;
-
-        if (product != null) {
-            req = new HttpRequest(PathType.BOARD, singletonMap("product_code", product));
-        } else {
-            req = new HttpRequest(PathType.BOARD);
-        }
+        HttpRequest req = new HttpRequest(PathType.BOARD, prepareParameter(PRODUCT_CODE, product));
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
@@ -91,13 +64,7 @@ public class MarketServiceImpl implements MarketService {
     @Override
     public CompletableFuture<Tick> getTick(String product) {
 
-        HttpRequest req;
-
-        if (product != null) {
-            req = new HttpRequest(PathType.TICKER, singletonMap("product_code", product));
-        } else {
-            req = new HttpRequest(PathType.TICKER);
-        }
+        HttpRequest req = new HttpRequest(PathType.TICKER, prepareParameter(PRODUCT_CODE, product));
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
@@ -108,15 +75,9 @@ public class MarketServiceImpl implements MarketService {
     @Override
     public CompletableFuture<List<Execution>> getExecutions(String product, Pagination pagination) {
 
-        // TODO : Handle Pagination
+        Map<String, String> params = prepareParameter(pagination);
 
-        HttpRequest req;
-
-        if (product != null) {
-            req = new HttpRequest(PathType.EXECUTION, singletonMap("product_code", product));
-        } else {
-            req = new HttpRequest(PathType.EXECUTION);
-        }
+        HttpRequest req = new HttpRequest(PathType.EXECUTION, prepareParameter(params, PRODUCT_CODE, product));
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
@@ -138,24 +99,13 @@ public class MarketServiceImpl implements MarketService {
     @Override
     public CompletableFuture<List<Chat>> getChats(LocalDate date) {
 
-        // TODO : Handle Date
+        String d = date == null ? null : date.format(ISO_LOCAL_DATE);
 
-        HttpRequest req = new HttpRequest(PathType.CHAT);
+        HttpRequest req = new HttpRequest(PathType.CHAT, prepareParameter(FROM_DATE, d));
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
         return future.thenApply(s -> gson.fromJson(s.getBody(), TYPE_CHATS));
-
-    }
-
-    @Override
-    public CompletableFuture<List<String>> getPermissions() {
-
-        HttpRequest req = new HttpRequest(PathType.PERMISSION);
-
-        CompletableFuture<HttpResponse> future = client.request(req);
-
-        return future.thenApply(s -> gson.fromJson(s.getBody(), TYPE_STRINGS));
 
     }
 

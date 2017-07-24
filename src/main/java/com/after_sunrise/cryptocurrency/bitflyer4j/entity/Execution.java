@@ -1,14 +1,15 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.entity;
 
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 
 /**
  * @author takanori.takase
  * @version 0.0.1
  */
-public interface Execution extends Entity {
+public interface Execution extends Entity<Long, Execution> {
 
-    Long getTimestamp();
+    ZonedDateTime getTimestamp();
 
     BigDecimal getPrice();
 

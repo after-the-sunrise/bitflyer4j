@@ -1,21 +1,20 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl;
 
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.impl.TimestampJsonAdapter;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Chat;
 import com.google.common.annotations.VisibleForTesting;
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
+
+import java.time.ZonedDateTime;
 
 /**
  * @author takanori.takase
  * @version 0.0.1
  */
-public class ChatImpl implements Chat {
+public class ChatImpl extends AbstractEntity<String, Chat> implements Chat {
 
-    @JsonAdapter(TimestampJsonAdapter.class)
     @SerializedName("date")
     @VisibleForTesting
-    Long timestamp;
+    ZonedDateTime timestamp;
 
     @SerializedName("nickname")
     @VisibleForTesting
@@ -26,7 +25,12 @@ public class ChatImpl implements Chat {
     String message;
 
     @Override
-    public Long getTimestamp() {
+    public String getKey() {
+        return toString();
+    }
+
+    @Override
+    public ZonedDateTime getTimestamp() {
         return timestamp;
     }
 

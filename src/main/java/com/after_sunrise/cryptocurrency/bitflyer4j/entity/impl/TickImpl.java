@@ -1,27 +1,25 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl;
 
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.impl.TimestampJsonAdapter;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Tick;
 import com.google.common.annotations.VisibleForTesting;
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 
 /**
  * @author takanori.takase
  * @version 0.0.1
  */
-public class TickImpl extends AbstractEntity implements Tick {
+public class TickImpl extends AbstractEntity<Long, Tick> implements Tick {
 
     @SerializedName("tick_id")
     @VisibleForTesting
-    String key;
+    Long key;
 
-    @JsonAdapter(TimestampJsonAdapter.class)
     @SerializedName("timestamp")
     @VisibleForTesting
-    Long timestamp;
+    ZonedDateTime timestamp;
 
     @SerializedName("product_code")
     @VisibleForTesting
@@ -64,12 +62,12 @@ public class TickImpl extends AbstractEntity implements Tick {
     BigDecimal productVolume;
 
     @Override
-    public String getKey() {
+    public Long getKey() {
         return key;
     }
 
     @Override
-    public Long getTimestamp() {
+    public ZonedDateTime getTimestamp() {
         return timestamp;
     }
 

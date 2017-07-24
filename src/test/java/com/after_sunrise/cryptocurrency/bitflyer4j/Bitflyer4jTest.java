@@ -21,7 +21,7 @@ public class Bitflyer4jTest {
 
             LOG.info("Status : {}", api.getMarketService().getStatus().get());
 
-            LOG.info("Perms : {}", api.getMarketService().getPermissions().get());
+            LOG.info("Perms : {}", api.getAccountService().getPermissions().get());
 
             if (DEBUG) {
                 LOG.info("Markets : {}", api.getMarketService().getProducts().get());
