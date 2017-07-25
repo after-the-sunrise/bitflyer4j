@@ -6,3 +6,6 @@ jdk:
 notifications:
     email:
         - scm@after-sunrise.com
+
+install:
+  - ./gradlew assemble -x signArchives
