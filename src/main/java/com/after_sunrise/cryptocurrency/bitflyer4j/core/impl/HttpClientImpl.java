@@ -6,8 +6,9 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.io.ByteStreams;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,8 +25,8 @@ import java.util.concurrent.ExecutorService;
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.*;
 import static java.lang.Integer.parseInt;
 import static java.net.Proxy.Type.HTTP;
-import static org.apache.commons.lang.builder.ToStringBuilder.reflectionToString;
-import static org.apache.commons.lang.builder.ToStringStyle.SHORT_PREFIX_STYLE;
+import static org.apache.commons.lang3.builder.ToStringBuilder.reflectionToString;
+import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
 
 /**
  * @author takanori.takase
@@ -128,7 +129,7 @@ public class HttpClientImpl implements HttpClient {
 
         HttpURLConnection conn;
 
-        if (proxyHost != null && proxyPort != null) {
+        if (StringUtils.isNotEmpty(proxyHost) && StringUtils.isNotEmpty(proxyPort)) {
 
             SocketAddress sa = new InetSocketAddress(proxyHost, parseInt(proxyPort));
 
@@ -155,7 +156,7 @@ public class HttpClientImpl implements HttpClient {
 
         sb.append(path);
 
-        if (parameters != null && parameters.isEmpty()) {
+        if (MapUtils.isNotEmpty(parameters)) {
 
             int length = sb.length();
 
@@ -194,25 +195,28 @@ public class HttpClientImpl implements HttpClient {
 
         if (request.getType().isSign()) {
 
-            // TODO Refactor for unit testing
+            String ts = computeTimestamp();
 
-            String ts = String.valueOf(System.currentTimeMillis() / TIME_PRECISION);
-
-            String base = ts + request.getType().getMethod().get() + request.getType().getPath();
+            StringBuilder sb = new StringBuilder();
+            sb.append(ts);
+            sb.append(request.getType().getMethod().get());
+            sb.append(request.getType().getPath());
+            sb.append(StringUtils.trimToEmpty(request.getBody()));
+            String base = sb.toString();
 
             String sign = computeHash(base);
 
             connection.addRequestProperty(ACCESS_KEY, authKey);
-
             connection.addRequestProperty(ACCESS_TIME, ts);
-
             connection.addRequestProperty(ACCESS_SIGN, sign);
 
             log.trace("Configured signature : key=[{}], base=[{}], sign=[{}]", authKey, base, sign);
 
         }
 
-        if (request.getBody() != null) {
+        if (StringUtils.isNotEmpty(request.getBody())) {
+
+            connection.setDoOutput(true);
 
             InputStream in = new ByteArrayInputStream(request.getBody().getBytes());
 
@@ -232,6 +236,11 @@ public class HttpClientImpl implements HttpClient {
 
         return connection;
 
+    }
+
+    @VisibleForTesting
+    String computeTimestamp() {
+        return String.valueOf(System.currentTimeMillis() / TIME_PRECISION);
     }
 
     @VisibleForTesting

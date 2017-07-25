@@ -15,7 +15,7 @@
         <file>logs/bitflyer4j-api.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>logs/bitflyer4j-api_%d{yyyy-MM-dd}.tar.gz</fileNamePattern>
-            <maxHistory>10</maxHistory>
+            <maxHistory>7</maxHistory>
         </rollingPolicy>
     </appender>
 
@@ -26,7 +26,7 @@
         <file>logs/bitflyer4j-http.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>logs/bitflyer4j-http_%d{yyyy-MM-dd}.tar.gz</fileNamePattern>
-            <maxHistory>10</maxHistory>
+            <maxHistory>7</maxHistory>
         </rollingPolicy>
     </appender>
 

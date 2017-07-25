@@ -18,8 +18,8 @@ import com.google.gson.Gson;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Module;
-import org.apache.commons.configuration.CompositeConfiguration;
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.CompositeConfiguration;
+import org.apache.commons.configuration2.Configuration;
 
 import java.util.Arrays;
 

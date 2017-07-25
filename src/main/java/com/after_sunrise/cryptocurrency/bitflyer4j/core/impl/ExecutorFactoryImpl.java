@@ -22,6 +22,8 @@ public class ExecutorFactoryImpl implements ExecutorFactory, UncaughtExceptionHa
 
     private static class ThreadFactoryImpl implements ThreadFactory {
 
+        private static final String NAME_SUFFIX = "_%03d";
+
         private final AtomicLong count = new AtomicLong();
 
         private final String name;
@@ -31,7 +33,7 @@ public class ExecutorFactoryImpl implements ExecutorFactory, UncaughtExceptionHa
         private final UncaughtExceptionHandler handler;
 
         private ThreadFactoryImpl(Class<?> cls, ThreadFactory delegate, UncaughtExceptionHandler handler) {
-            this.name = cls.getSimpleName() + "_%03d";
+            this.name = cls.getSimpleName() + NAME_SUFFIX;
             this.delegate = delegate;
             this.handler = handler;
         }

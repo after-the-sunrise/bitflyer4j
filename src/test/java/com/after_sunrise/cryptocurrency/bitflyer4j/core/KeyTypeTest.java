@@ -1,9 +1,9 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.core;
 
 import com.google.common.io.Resources;
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.builder.fluent.Configurations;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.testng.annotations.Test;
 
 import java.net.URL;
@@ -23,7 +23,7 @@ public class KeyTypeTest {
 
         URL url = Resources.getResource("bitflyer4j-site.properties");
 
-        Configuration conf = new PropertiesConfiguration(url);
+        Configuration conf = new Configurations().properties(url);
 
         // Null input.  (= Default value.)
         assertEquals(VERSION.apply(null), VERSION.getDefault());

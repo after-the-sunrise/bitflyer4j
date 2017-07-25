@@ -1,7 +1,7 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j;
 
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -47,8 +47,8 @@ public class Bitflyer4jFactoryTest {
 
         }
 
-        Configuration v = new PropertiesConfiguration(getResource("bitflyer4j-version.properties"));
-        Configuration s = new PropertiesConfiguration(getResource("bitflyer4j-site.properties"));
+        Configuration v = new Configurations().properties(getResource("bitflyer4j-version.properties"));
+        Configuration s = new Configurations().properties(getResource("bitflyer4j-site.properties"));
 
         // 1st should be version.
         assertEquals(VERSION.apply(conf), v.getString(VERSION.get()));
@@ -62,8 +62,8 @@ public class Bitflyer4jFactoryTest {
         assertEquals(s.getString(system), "test");
 
         // 3rd should be site.
-        assertEquals(AUTH_KEY.apply(conf), s.getString(AUTH_KEY.get()));
-        assertEquals(s.getString(AUTH_KEY.get()), "test");
+        assertEquals(SITE.apply(conf), s.getString(SITE.get()));
+        assertEquals(s.getString(SITE.get()), "test");
 
         // Last should be default.
         assertEquals(HTTP_URL.apply(conf), HTTP_URL.getDefault());

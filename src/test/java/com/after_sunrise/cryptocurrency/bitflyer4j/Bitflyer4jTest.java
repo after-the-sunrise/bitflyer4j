@@ -1,7 +1,13 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j;
 
+import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Withdraw;
+import com.after_sunrise.cryptocurrency.bitflyer4j.service.AccountService;
+import com.after_sunrise.cryptocurrency.bitflyer4j.service.MarketService;
+import com.after_sunrise.cryptocurrency.bitflyer4j.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static java.math.BigDecimal.ONE;
 
 /**
  * @author takanori.takase
@@ -11,7 +17,9 @@ public class Bitflyer4jTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(Bitflyer4jTest.class);
 
-    private static final boolean DEBUG = Boolean.valueOf(System.getProperty("bitflyer4j.debug"));
+    private static final boolean GET = Boolean.valueOf(System.getProperty("bitflyer4j.test_get"));
+
+    private static final boolean POST = Boolean.valueOf(System.getProperty("bitflyer4j.test_post"));
 
     public static void main(String[] args) {
 
@@ -19,29 +27,60 @@ public class Bitflyer4jTest {
 
         try (Bitflyer4j api = factory.createInstance()) {
 
-            LOG.info("Status : {}", api.getMarketService().getStatus().get());
+            MarketService marketService = api.getMarketService();
 
-            LOG.info("Perms : {}", api.getAccountService().getPermissions().get());
+            LOG.info("Status : {}", marketService.getStatus().get());
 
-            if (DEBUG) {
-                LOG.info("Markets : {}", api.getMarketService().getProducts().get());
+            if (GET) {
+
+                LOG.info("Markets : {}", marketService.getProducts().get());
+
+                LOG.info("Board : {}", marketService.getBoard(null).get());
+
+                LOG.info("Tick : {}", marketService.getTick(null).get());
+
+                LOG.info("Execs : {}", marketService.getExecutions(null, null).get());
+
+                LOG.info("Chats : {}", marketService.getChats(null).get());
+
             }
 
-            if (DEBUG) {
-                LOG.info("Board : {}", api.getMarketService().getBoard(null).get());
+            AccountService accountService = api.getAccountService();
+
+            LOG.info("Perms : {}", accountService.getPermissions().get());
+
+            if (GET) {
+
+                LOG.info("Balances : {}", accountService.getBalances().get());
+
+                LOG.info("Collateral : {}", accountService.getCollateral().get());
+
+                LOG.info("Margins : {}", accountService.getMargins().get());
+
+                LOG.info("Addresses : {}", accountService.getAddresses().get());
+
+                LOG.info("CoinIns : {}", accountService.getCoinIns(null).get());
+
+                LOG.info("CoinOuts : {}", accountService.getCoinOuts(null).get());
+
+                LOG.info("Banks : {}", accountService.getBanks().get());
+
+                LOG.info("Deposits : {}", accountService.getDeposits(null).get());
+
+                LOG.info("Withdrawals : {}", accountService.getWithdrawals(null).get());
+
             }
 
-            if (DEBUG) {
-                LOG.info("Tick : {}", api.getMarketService().getTick("ETH_BTC").get());
+            if (POST) {
+
+                Withdraw.Request request = new Withdraw.Request("JPY", 0L, ONE, "000000");
+
+                LOG.info(" : {}", accountService.withdraw(request).get());
+
             }
 
-            if (DEBUG) {
-                LOG.info("Execs : {}", api.getMarketService().getExecutions(null, null).get());
-            }
+            OrderService orderService = api.getOrderService();
 
-            if (DEBUG) {
-                LOG.info("Chats : {}", api.getMarketService().getChats(null).get());
-            }
 
         } catch (Exception e) {
 

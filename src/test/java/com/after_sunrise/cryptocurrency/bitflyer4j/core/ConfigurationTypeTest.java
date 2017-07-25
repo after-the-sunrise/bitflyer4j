@@ -1,11 +1,12 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.core;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 import org.testng.annotations.Test;
 
 import java.util.*;
 
-import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.*;
+import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.SITE;
+import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.VERSION;
 import static org.testng.Assert.*;
 
 /**
@@ -45,8 +46,7 @@ public class ConfigurationTypeTest {
                     break;
                 case SITE:
                     assertEquals(VERSION.apply(conf), "test");
-                    assertEquals(AUTH_KEY.apply(conf), "test");
-                    assertEquals(AUTH_SECRET.apply(conf), "test");
+                    assertEquals(SITE.apply(conf), "test");
                     break;
                 default:
                     fail("Unknown type : " + type);

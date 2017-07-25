@@ -25,6 +25,9 @@ import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
  */
 public class MarketServiceImpl extends BaseService implements MarketService {
 
+    private static final Type TYPE_STRINGS = new TypeToken<List<String>>() {
+    }.getType();
+
     private static final Type TYPE_PRODUCTS = new TypeToken<List<ProductImpl>>() {
     }.getType();
 

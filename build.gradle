@@ -1,9 +1,13 @@
 apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'findbugs'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
 group = 'com.after_sunrise.cryptocurrency'
+archivesBaseName = 'bitflyer4j'
 version = '0.0.1-SNAPSHOT'
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -12,21 +16,16 @@ repositories {
 }
 
 dependencies {
-
     compile 'org.slf4j:slf4j-api:1.7.25'
     compile 'com.google.inject:guice:4.1.0'
     compile 'com.google.code.gson:gson:2.8.1'
-    compile 'commons-configuration:commons-configuration:1.10'
-
+    compile 'org.apache.commons:commons-configuration2:2.1.1'
+    compile 'org.apache.commons:commons-collections4:4.1'
+    compile 'org.apache.commons:commons-lang3:3.6'
+    runtime 'commons-beanutils:commons-beanutils:1.9.3'
     testCompile 'org.testng:testng:6.10'
     testCompile 'org.mockito:mockito-all:1.10.19'
-
     testRuntime 'ch.qos.logback:logback-classic:1.2.3'
-
-}
-
-test {
-    useTestNG()
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
@@ -45,14 +44,62 @@ artifacts {
 }
 
 jar.doFirst {
-
     project.ext {
-        vval = project.name + '.version=' + project.version
-        vout = 'build/resources/main/' + project.name + '-version.properties'
+        vval = archivesBaseName + '.version=' + project.version
+        vout = 'build/resources/main/' + archivesBaseName + '-version.properties'
     }
-
     ant.echo message: project.ext.vval, file: project.ext.vout
+}
 
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+    project.ext {
+        url = 'https://github.com/after-the-sunrise/bitflyer4j'
+        scm = 'scm:git:https://github.com/after-the-sunrise/bitflyer4j.git'
+    }
+    repositories {
+        mavenDeployer {
+            beforeDeployment {
+                MavenDeployment deployment -> signing.signPom(deployment)
+            }
+            repository(url: 'file:/tmp/maven-release') {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+            snapshotRepository(url: 'file:/tmp/maven-snapshot') {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+            pom.project {
+                packaging 'jar'
+                name archivesBaseName
+                description "Java wrapper library for the bitFlyer Lightning API."
+                url project.ext.url
+                licenses {
+                    license {
+                        name 'GNU Affero General Public License'
+                        url 'https://www.gnu.org/licenses/agpl.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        name 'Takanori Takase'
+                        email 'scm@after-sunrise.com'
+                    }
+                }
+                scm {
+                    connection project.ext.scm
+                    developerConnection project.ext.scm
+                    url project.ext.url
+                }
+            }
+        }
+    }
+}
+
+test {
+    useTestNG()
 }
 
 findbugs {

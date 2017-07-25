@@ -3,8 +3,8 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.core;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-import static org.apache.commons.lang.builder.ToStringBuilder.reflectionToString;
-import static org.apache.commons.lang.builder.ToStringStyle.SHORT_PREFIX_STYLE;
+import static org.apache.commons.lang3.builder.ToStringBuilder.reflectionToString;
+import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
 
 /**
  * @author takanori.takase

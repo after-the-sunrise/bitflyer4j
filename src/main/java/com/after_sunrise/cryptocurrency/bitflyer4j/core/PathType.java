@@ -25,9 +25,23 @@ public enum PathType {
 
     BALANCE("/v1/me/getbalance", true),
 
-    MARGIN_STATUS("/v1/me/getcollateral", true),
+    COLLATERAL("/v1/me/getcollateral", true),
 
-    MARGIN_POSITION("/v1/me/getcollateralaccounts", true),
+    MARGIN("/v1/me/getcollateralaccounts", true),
+
+    ADDRESS("/v1/me/getaddresses", true),
+
+    COIN_IN("/v1/me/getcoinins", true),
+
+    COIN_OUT("/v1/me/getcoinouts", true),
+
+    BANK("/v1/me/getbankaccounts", true),
+
+    DEPOSIT("/v1/me/getdeposits", true),
+
+    WITHDRAW("/v1/me/withdraw", true, POST),
+
+    WITHDRAWAL("/v1/me/getwithdrawals", true),
 
     ORDER_SEND("/v1/me/sendchildorder", true, POST),
 

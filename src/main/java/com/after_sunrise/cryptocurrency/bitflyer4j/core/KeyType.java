@@ -1,6 +1,6 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.core;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 
 import java.util.Objects;
 import java.util.function.Function;
@@ -20,6 +20,11 @@ public enum KeyType implements Supplier<String>, Function<Configuration, String>
      * Build version.
      */
     VERSION("0.0.0"),
+
+    /**
+     * Site ID.
+     */
+    SITE(null),
 
     /**
      * Authentication key.
@@ -138,7 +143,13 @@ public enum KeyType implements Supplier<String>, Function<Configuration, String>
      */
     @Override
     public String apply(Configuration configuration) {
-        return configuration == null ? getDefault() : configuration.getString(get(), getDefault());
+
+        if (configuration == null) {
+            return getDefault();
+        }
+
+        return configuration.getString(get(), getDefault());
+
     }
 
 }

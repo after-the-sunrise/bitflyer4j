@@ -3,15 +3,12 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.service.impl;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.Pagination;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.google.inject.Injector;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static java.util.Collections.singletonMap;
@@ -31,9 +28,6 @@ public class BaseService {
     static final String PRODUCT_CODE = "product_code";
 
     static final String FROM_DATE = "from_date";
-
-    static final Type TYPE_STRINGS = new TypeToken<List<String>>() {
-    }.getType();
 
     final Logger log = LoggerFactory.getLogger(getClass());
 

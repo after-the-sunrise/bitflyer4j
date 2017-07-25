@@ -6,7 +6,7 @@ import com.after_sunrise.cryptocurrency.bitflyer4j.service.AccountService;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.MarketService;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.OrderService;
 import com.google.inject.Injector;
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
