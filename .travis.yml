@@ -8,4 +8,4 @@ notifications:
         - scm@after-sunrise.com
 
 install:
-  - ./gradlew assemble -x signArchives
+  - gradle assemble -x signArchives
