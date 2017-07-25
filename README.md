@@ -5,40 +5,6 @@
 [bitflyer4j](https://github.com/after-the-sunrise/bitflyer4j) is a Java wrapper library for the [bitFlyer Lightning](https://lightning.bitflyer.jp/docs?lang=en) API.
 
 
-## Feature Set
-
-The library is aimed to cover the major feature-set documented in the official documentation. 
-The currently implemented features are as follows:  
-
-- HTTP Public API
-  - Market List : ``/v1/markets``
-  - Order Book : ``/v1/board``
-  - Ticker : ``/v1/ticker``
-  - Execution History : ``/v1/executions``
-  - Exchange Status : ``/v1/gethealth``
-  - Chat : ``/v1/getchats``
-- HTTP Private API
-  - Account Detail : ``GET``
-    - Permissions : ``/v1/me/getpermissions``
-    - Balance : ``/v1/me/getbalance``
-    - Collateral : ``/v1/me/getcollateral``
-    - Margin : ``/v1/me/getcollateralaccounts``
-    - Address : ``/v1/me/getaddresses``
-    - Coin In : ``/v1/me/getcoinins``
-    - Coin Out : ``/v1/me/getcoinouts``
-    - Bank : ``/v1/me/getbankaccounts``
-    - Deposit : ``/v1/me/getdeposits``
-    - Withdrawal : ``/v1/me/getwithdrawals``
-  - Account Action
-    - Withdraw : ``/v1/me/withdraw``
-  - Order Detail : ``GET``
-    - (TODO)
-  - Order Action : ``POST``
-    - (TODO)
-- Realtime API
-  - (TODO)
-
-
 ## Getting Started
 
 ### Repository
@@ -73,13 +39,13 @@ For the full list of supported features, please refer to the interface definitio
 
 In order to use the [Private API](https://lightning.bitflyer.jp/docs?lang=en#http-private-api), 
 specify the authentication credentials as follows in the environment system variables:
-  * bitflyer4j.auth_key
-  * bitflyer4j.auth_secret
+  * ``bitflyer4j.auth_key``
+  * ``bitflyer4j.auth_secret``
 
 By default, the library will try to retrieve the variables in the following priority:
-  1. System properties.
-  2. "~/.bitflyer4j" properties file.
-  3. "bitflyer4j-site.properties" file in the classpath.
+  1. System properties. (``-Dbitflyer4j.auth_key=...`` )
+  2. ``~/.bitflyer4j`` properties file.
+  3. ``bitflyer4j-site.properties`` file in the classpath.
 
 The library will scan from the top of the list, skipping the files which are not available/accessible, 
 and will use the first one found per entry.
@@ -92,3 +58,37 @@ file.  *DO NOT COMMIT/PUSH, PRINT/LOG, NOR EXPOSE THE CREDENTIALS.*
 bitflyer4j.auth_key=MY_KEY_HERE
 bitflyer4j.auth_secret=MY_SECRET_HERE
 ```
+
+
+## Feature Set
+
+The library is aimed to cover the major feature-set documented in the official documentation. 
+The currently implemented features are as follows:  
+
+- HTTP Public API
+  - Market List : ``/v1/markets``
+  - Order Book : ``/v1/board``
+  - Ticker : ``/v1/ticker``
+  - Execution History : ``/v1/executions``
+  - Exchange Status : ``/v1/gethealth``
+  - Chat : ``/v1/getchats``
+- HTTP Private API
+  - Account Detail : ``GET``
+    - Permissions : ``/v1/me/getpermissions``
+    - Balance : ``/v1/me/getbalance``
+    - Collateral : ``/v1/me/getcollateral``
+    - Margin : ``/v1/me/getcollateralaccounts``
+    - Address : ``/v1/me/getaddresses``
+    - Coin In : ``/v1/me/getcoinins``
+    - Coin Out : ``/v1/me/getcoinouts``
+    - Bank : ``/v1/me/getbankaccounts``
+    - Deposit : ``/v1/me/getdeposits``
+    - Withdrawal : ``/v1/me/getwithdrawals``
+  - Account Action
+    - Withdraw : ``/v1/me/withdraw``
+  - Order Detail : ``GET``
+    - (TODO)
+  - Order Action : ``POST``
+    - (TODO)
+- Realtime API
+  - (TODO)
