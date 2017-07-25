@@ -8,4 +8,4 @@ notifications:
         - scm@after-sunrise.com
 
 install:
-  - gradle assemble -x signArchives
+  - gradle assemble -x signArchives -PossrhUsername="${ossrhUsername}" -PossrhPassword="${ossrhPassword}"
