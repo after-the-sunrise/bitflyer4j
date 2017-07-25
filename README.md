@@ -44,13 +44,13 @@ specify the authentication credentials as follows in the environment system vari
 
 By default, the library will try to retrieve the variables in the following priority:
   1. System properties. (``-Dbitflyer4j.auth_key=...`` )
-  2. ``~/.bitflyer4j`` properties file.
+  2. ``$HOME/.bitflyer4j`` properties file.
   3. ``bitflyer4j-site.properties`` file in the classpath.
 
 The library will scan from the top of the list, skipping the files which are not available/accessible, 
 and will use the first one found per entry.
 
-Confidential parameters shall only be stored privately by using the local "~/.bitflyer4j" properties 
+Confidential parameters shall only be stored privately by using the local ``$HOME/.bitflyer4j`` properties 
 file.  *DO NOT COMMIT/PUSH, PRINT/LOG, NOR EXPOSE THE CREDENTIALS.* 
  
 ```properties
