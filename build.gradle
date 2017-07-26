@@ -59,6 +59,8 @@ uploadArchives {
     project.ext {
         url = 'https://github.com/after-the-sunrise/bitflyer4j'
         scm = 'scm:git:https://github.com/after-the-sunrise/bitflyer4j.git'
+        user = project.hasProperty('ossrhUsername') ? ossrhUsername : System.getenv("ossrhUsername")
+        pass = project.hasProperty('ossrhPassword') ? ossrhPassword : System.getenv("ossrhPassword")
     }
     repositories {
         mavenDeployer {
@@ -66,10 +68,10 @@ uploadArchives {
                 MavenDeployment deployment -> signing.signPom(deployment)
             }
             repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2') {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
+                authentication(userName: project.ext.user, password: project.ext.pass)
             }
             snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots') {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
+                authentication(userName: project.ext.user, password: project.ext.pass)
             }
             pom.project {
                 packaging 'jar'
