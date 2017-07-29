@@ -73,7 +73,7 @@ public class Bitflyer4jTest {
 
             if (POST) {
 
-                Withdraw request = new Withdraw("JPY", 0L, ONE, "000000");
+                Withdraw request = Withdraw.builder().currency("JPY").bank(0L).amount(ONE).pin("000000").build();
 
                 LOG.info("Withdraw : {}", accountService.withdraw(request).get());
 
