@@ -7,15 +7,17 @@ import java.time.ZonedDateTime;
  * @author takanori.takase
  * @version 0.0.1
  */
-public interface Execution extends Entity<Long, Execution> {
+public interface Execution {
 
-    ZonedDateTime getTimestamp();
+    Long getId();
+
+    String getSide();
 
     BigDecimal getPrice();
 
     BigDecimal getSize();
 
-    String getSide();
+    ZonedDateTime getTimestamp();
 
     String getBuyOrderId();
 

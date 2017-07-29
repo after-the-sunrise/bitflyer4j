@@ -11,11 +11,11 @@ import java.time.ZonedDateTime;
  * @author takanori.takase
  * @version 0.0.1
  */
-public class DepositImpl extends AbstractEntity<Long, Deposit> implements Deposit {
+public class DepositImpl extends Entity implements Deposit {
 
     @SerializedName("id")
     @VisibleForTesting
-    Long key;
+    Long id;
 
     @SerializedName("order_id")
     @VisibleForTesting
@@ -38,8 +38,8 @@ public class DepositImpl extends AbstractEntity<Long, Deposit> implements Deposi
     ZonedDateTime eventDate;
 
     @Override
-    public Long getKey() {
-        return key;
+    public Long getId() {
+        return id;
     }
 
     @Override

@@ -11,19 +11,19 @@ import java.time.ZonedDateTime;
  * @author takanori.takase
  * @version 0.0.1
  */
-public class TickImpl extends AbstractEntity<Long, Tick> implements Tick {
+public class TickImpl extends Entity implements Tick {
 
-    @SerializedName("tick_id")
+    @SerializedName("product_code")
     @VisibleForTesting
-    Long key;
+    String product;
 
     @SerializedName("timestamp")
     @VisibleForTesting
     ZonedDateTime timestamp;
 
-    @SerializedName("product_code")
+    @SerializedName("tick_id")
     @VisibleForTesting
-    String product;
+    Long id;
 
     @SerializedName("best_ask")
     @VisibleForTesting
@@ -62,8 +62,8 @@ public class TickImpl extends AbstractEntity<Long, Tick> implements Tick {
     BigDecimal productVolume;
 
     @Override
-    public Long getKey() {
-        return key;
+    public String getProduct() {
+        return product;
     }
 
     @Override
@@ -72,8 +72,8 @@ public class TickImpl extends AbstractEntity<Long, Tick> implements Tick {
     }
 
     @Override
-    public String getProduct() {
-        return product;
+    public Long getId() {
+        return id;
     }
 
     @Override

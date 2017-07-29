@@ -7,7 +7,9 @@ import java.time.ZonedDateTime;
  * @author takanori.takase
  * @version 0.0.1
  */
-public interface Deposit extends Entity<Long, Deposit> {
+public interface Deposit {
+
+    Long getId();
 
     String getOrderId();
 

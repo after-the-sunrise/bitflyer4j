@@ -8,19 +8,19 @@ import com.google.gson.annotations.SerializedName;
  * @author takanori.takase
  * @version 0.0.1
  */
-public class ProductImpl extends AbstractEntity<String, Product> implements Product {
+public class ProductImpl extends Entity implements Product {
 
     @SerializedName("product_code")
     @VisibleForTesting
-    String key;
+    String product;
 
     @SerializedName("alias")
     @VisibleForTesting
     String alias;
 
     @Override
-    public String getKey() {
-        return key;
+    public String getProduct() {
+        return product;
     }
 
     @Override

@@ -7,11 +7,13 @@ import java.time.ZonedDateTime;
  * @author takanori.takase
  * @version 0.0.1
  */
-public interface Tick extends Entity<Long, Tick> {
+public interface Tick {
 
     String getProduct();
 
     ZonedDateTime getTimestamp();
+
+    Long getId();
 
     BigDecimal getBestAskPrice();
 

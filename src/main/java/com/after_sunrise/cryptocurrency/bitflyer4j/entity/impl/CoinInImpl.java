@@ -11,11 +11,11 @@ import java.time.ZonedDateTime;
  * @author takanori.takase
  * @version 0.0.1
  */
-public class CoinInImpl extends AbstractEntity<Long, CoinIn> implements CoinIn {
+public class CoinInImpl extends Entity implements CoinIn {
 
     @SerializedName("id")
     @VisibleForTesting
-    Long key;
+    Long id;
 
     @SerializedName("order_id")
     @VisibleForTesting
@@ -37,7 +37,6 @@ public class CoinInImpl extends AbstractEntity<Long, CoinIn> implements CoinIn {
     @VisibleForTesting
     String hash;
 
-
     @SerializedName("status")
     @VisibleForTesting
     String status;
@@ -47,8 +46,8 @@ public class CoinInImpl extends AbstractEntity<Long, CoinIn> implements CoinIn {
     ZonedDateTime eventDate;
 
     @Override
-    public Long getKey() {
-        return key;
+    public Long getId() {
+        return id;
     }
 
     @Override

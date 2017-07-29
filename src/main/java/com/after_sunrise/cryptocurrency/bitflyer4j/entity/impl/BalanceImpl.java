@@ -10,11 +10,11 @@ import java.math.BigDecimal;
  * @author takanori.takase
  * @version 0.0.1
  */
-public class BalanceImpl extends AbstractEntity<String, Balance> implements Balance {
+public class BalanceImpl extends Entity implements Balance {
 
     @SerializedName("currency_code")
     @VisibleForTesting
-    String key;
+    String currency;
 
     @SerializedName("amount")
     @VisibleForTesting
@@ -25,8 +25,8 @@ public class BalanceImpl extends AbstractEntity<String, Balance> implements Bala
     BigDecimal available;
 
     @Override
-    public String getKey() {
-        return key;
+    public String getCurrency() {
+        return currency;
     }
 
     @Override

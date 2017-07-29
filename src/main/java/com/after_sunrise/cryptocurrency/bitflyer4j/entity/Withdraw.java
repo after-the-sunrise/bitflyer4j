@@ -11,7 +11,7 @@ import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
  * @author takanori.takase
  * @version 0.0.1
  */
-public interface Withdraw extends Entity<String, Withdraw> {
+public interface Withdraw {
 
     class Request {
 
@@ -57,6 +57,7 @@ public interface Withdraw extends Entity<String, Withdraw> {
 
     }
 
+    String getId();
 
     String getStatus();
 

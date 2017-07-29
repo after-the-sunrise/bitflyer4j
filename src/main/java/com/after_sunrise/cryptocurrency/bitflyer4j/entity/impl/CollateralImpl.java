@@ -5,16 +5,12 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
 
 /**
  * @author takanori.takase
  * @version 0.0.1
  */
-public class CollateralImpl extends AbstractEntity<ZonedDateTime, Collateral> implements Collateral {
-
-    @VisibleForTesting
-    ZonedDateTime key = ZonedDateTime.now();
+public class CollateralImpl extends Entity implements Collateral {
 
     @SerializedName("collateral")
     @VisibleForTesting
@@ -31,11 +27,6 @@ public class CollateralImpl extends AbstractEntity<ZonedDateTime, Collateral> im
     @SerializedName("keep_rate")
     @VisibleForTesting
     BigDecimal keepRate;
-
-    @Override
-    public ZonedDateTime getKey() {
-        return key;
-    }
 
     @Override
     public BigDecimal getCollateral() {

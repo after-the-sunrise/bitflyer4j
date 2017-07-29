@@ -7,7 +7,9 @@ import java.time.ZonedDateTime;
  * @author takanori.takase
  * @version 0.0.1
  */
-public interface Withdrawal extends Entity<Long, Withdrawal> {
+public interface Withdrawal {
+
+    Long getId();
 
     String getOrderId();
 

@@ -11,15 +11,15 @@ import java.time.ZonedDateTime;
  * @author takanori.takase
  * @version 0.0.1
  */
-public class ExecutionImpl extends AbstractEntity<Long, Execution> implements Execution {
+public class ExecutionImpl extends Entity implements Execution {
 
     @SerializedName("id")
     @VisibleForTesting
-    Long key;
+    Long id;
 
-    @SerializedName("exec_date")
+    @SerializedName("side")
     @VisibleForTesting
-    ZonedDateTime timestamp;
+    String side;
 
     @SerializedName("price")
     @VisibleForTesting
@@ -29,9 +29,9 @@ public class ExecutionImpl extends AbstractEntity<Long, Execution> implements Ex
     @VisibleForTesting
     BigDecimal size;
 
-    @SerializedName("side")
+    @SerializedName("exec_date")
     @VisibleForTesting
-    String side;
+    ZonedDateTime timestamp;
 
     @SerializedName("buy_child_order_acceptance_id")
     @VisibleForTesting
@@ -42,13 +42,13 @@ public class ExecutionImpl extends AbstractEntity<Long, Execution> implements Ex
     String sellOrderId;
 
     @Override
-    public Long getKey() {
-        return key;
+    public Long getId() {
+        return id;
     }
 
     @Override
-    public ZonedDateTime getTimestamp() {
-        return timestamp;
+    public String getSide() {
+        return side;
     }
 
     @Override
@@ -62,8 +62,8 @@ public class ExecutionImpl extends AbstractEntity<Long, Execution> implements Ex
     }
 
     @Override
-    public String getSide() {
-        return side;
+    public ZonedDateTime getTimestamp() {
+        return timestamp;
     }
 
     @Override

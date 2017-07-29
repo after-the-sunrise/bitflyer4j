@@ -8,23 +8,23 @@ import com.google.gson.annotations.SerializedName;
  * @author takanori.takase
  * @version 0.0.1
  */
-public class AddressImpl extends AbstractEntity<String, Address> implements Address {
-
-    @SerializedName("address")
-    @VisibleForTesting
-    String key;
-
-    @SerializedName("currency_code")
-    @VisibleForTesting
-    String currency;
+public class AddressImpl extends Entity implements Address {
 
     @SerializedName("type")
     @VisibleForTesting
     String type;
 
+    @SerializedName("currency_code")
+    @VisibleForTesting
+    String currency;
+
+    @SerializedName("address")
+    @VisibleForTesting
+    String address;
+
     @Override
-    public String getKey() {
-        return key;
+    public String getType() {
+        return type;
     }
 
     @Override
@@ -33,8 +33,8 @@ public class AddressImpl extends AbstractEntity<String, Address> implements Addr
     }
 
     @Override
-    public String getType() {
-        return type;
+    public String getAddress() {
+        return address;
     }
 
 }

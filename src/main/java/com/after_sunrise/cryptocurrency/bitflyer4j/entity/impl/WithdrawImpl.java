@@ -8,11 +8,11 @@ import com.google.gson.annotations.SerializedName;
  * @author takanori.takase
  * @version 0.0.1
  */
-public class WithdrawImpl extends AbstractEntity<String, Withdraw> implements Withdraw {
+public class WithdrawImpl extends Entity implements Withdraw {
 
     @SerializedName("message_id")
     @VisibleForTesting
-    String key;
+    String id;
 
     @SerializedName("status")
     @VisibleForTesting
@@ -27,8 +27,8 @@ public class WithdrawImpl extends AbstractEntity<String, Withdraw> implements Wi
     String data;
 
     @Override
-    public String getKey() {
-        return key;
+    public String getId() {
+        return id;
     }
 
     @Override

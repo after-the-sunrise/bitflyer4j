@@ -10,19 +10,19 @@ import java.math.BigDecimal;
  * @author takanori.takase
  * @version 0.0.1
  */
-public class MarginImpl extends AbstractEntity<String, Margin> implements Margin {
+public class MarginImpl extends Entity implements Margin {
 
     @SerializedName("currency_code")
     @VisibleForTesting
-    String key;
+    String currency;
 
     @SerializedName("status")
     @VisibleForTesting
     BigDecimal amount;
 
     @Override
-    public String getKey() {
-        return key;
+    public String getCurrency() {
+        return currency;
     }
 
     @Override

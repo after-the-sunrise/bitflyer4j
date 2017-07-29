@@ -8,11 +8,11 @@ import com.google.gson.annotations.SerializedName;
  * @author takanori.takase
  * @version 0.0.1
  */
-public class BankImpl extends AbstractEntity<Long, Bank> implements Bank {
+public class BankImpl extends Entity implements Bank {
 
     @SerializedName("id")
     @VisibleForTesting
-    Long key;
+    Long id;
 
     @SerializedName("is_verified")
     @VisibleForTesting
@@ -39,8 +39,8 @@ public class BankImpl extends AbstractEntity<Long, Bank> implements Bank {
     String account;
 
     @Override
-    public Long getKey() {
-        return key;
+    public Long getId() {
+        return id;
     }
 
     @Override

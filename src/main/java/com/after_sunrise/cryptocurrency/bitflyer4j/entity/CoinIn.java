@@ -7,7 +7,9 @@ import java.time.ZonedDateTime;
  * @author takanori.takase
  * @version 0.0.1
  */
-public interface CoinIn extends Entity<Long, CoinIn> {
+public interface CoinIn {
+
+    Long getId();
 
     String getOrderId();
 

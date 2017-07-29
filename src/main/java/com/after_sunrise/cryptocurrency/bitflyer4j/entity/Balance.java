@@ -6,7 +6,9 @@ import java.math.BigDecimal;
  * @author takanori.takase
  * @version 0.0.1
  */
-public interface Balance extends Entity<String, Balance> {
+public interface Balance {
+
+    String getCurrency();
 
     BigDecimal getAmount();
 

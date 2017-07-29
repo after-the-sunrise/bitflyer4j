@@ -11,11 +11,11 @@ import java.time.ZonedDateTime;
  * @author takanori.takase
  * @version 0.0.1
  */
-public class WithdrawalImpl extends AbstractEntity<Long, Withdrawal> implements Withdrawal {
+public class WithdrawalImpl extends Entity implements Withdrawal {
 
     @SerializedName("id")
     @VisibleForTesting
-    Long key;
+    Long id;
 
     @SerializedName("order_id")
     @VisibleForTesting
@@ -38,8 +38,8 @@ public class WithdrawalImpl extends AbstractEntity<Long, Withdrawal> implements 
     ZonedDateTime eventDate;
 
     @Override
-    public Long getKey() {
-        return key;
+    public Long getId() {
+        return id;
     }
 
     @Override

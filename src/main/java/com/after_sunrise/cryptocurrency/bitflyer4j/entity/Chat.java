@@ -6,12 +6,12 @@ import java.time.ZonedDateTime;
  * @author takanori.takase
  * @version 0.0.1
  */
-public interface Chat extends Entity<String, Chat> {
-
-    ZonedDateTime getTimestamp();
+public interface Chat {
 
     String getName();
 
     String getMessage();
+
+    ZonedDateTime getTimestamp();
 
 }

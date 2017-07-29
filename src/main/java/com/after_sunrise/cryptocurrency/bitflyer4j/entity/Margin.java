@@ -6,7 +6,9 @@ import java.math.BigDecimal;
  * @author takanori.takase
  * @version 0.0.1
  */
-public interface Margin extends Entity<String, Margin> {
+public interface Margin {
+
+    String getCurrency();
 
     BigDecimal getAmount();
 

@@ -10,11 +10,7 @@ import java.time.ZonedDateTime;
  * @author takanori.takase
  * @version 0.0.1
  */
-public class ChatImpl extends AbstractEntity<String, Chat> implements Chat {
-
-    @SerializedName("date")
-    @VisibleForTesting
-    ZonedDateTime timestamp;
+public class ChatImpl extends Entity implements Chat {
 
     @SerializedName("nickname")
     @VisibleForTesting
@@ -24,15 +20,9 @@ public class ChatImpl extends AbstractEntity<String, Chat> implements Chat {
     @VisibleForTesting
     String message;
 
-    @Override
-    public String getKey() {
-        return toString();
-    }
-
-    @Override
-    public ZonedDateTime getTimestamp() {
-        return timestamp;
-    }
+    @SerializedName("date")
+    @VisibleForTesting
+    ZonedDateTime timestamp;
 
     @Override
     public String getName() {
@@ -42,6 +32,11 @@ public class ChatImpl extends AbstractEntity<String, Chat> implements Chat {
     @Override
     public String getMessage() {
         return message;
+    }
+
+    @Override
+    public ZonedDateTime getTimestamp() {
+        return timestamp;
     }
 
 }
