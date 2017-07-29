@@ -197,12 +197,10 @@ public class HttpClientImpl implements HttpClient {
 
             String ts = computeTimestamp();
 
-            StringBuilder sb = new StringBuilder();
-            sb.append(ts);
-            sb.append(request.getType().getMethod().get());
-            sb.append(request.getType().getPath());
-            sb.append(StringUtils.trimToEmpty(request.getBody()));
-            String base = sb.toString();
+            String base = ts //
+                    + request.getType().getMethod().get() //
+                    + request.getType().getPath() //
+                    + StringUtils.trimToEmpty(request.getBody());
 
             String sign = computeHash(base);
 

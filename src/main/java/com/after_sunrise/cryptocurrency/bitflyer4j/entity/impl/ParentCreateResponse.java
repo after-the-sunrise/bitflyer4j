@@ -1,8 +1,7 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl;
 
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.StatusType;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Entity;
-import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Status;
+import com.after_sunrise.cryptocurrency.bitflyer4j.entity.ParentCreate;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.annotations.SerializedName;
 
@@ -10,15 +9,15 @@ import com.google.gson.annotations.SerializedName;
  * @author takanori.takase
  * @version 0.0.1
  */
-public class StatusImpl extends Entity implements Status {
+public class ParentCreateResponse extends Entity implements ParentCreate.Response {
 
-    @SerializedName("status")
+    @SerializedName("parent_order_acceptance_id")
     @VisibleForTesting
-    StatusType status;
+    String acceptanceId;
 
     @Override
-    public StatusType getStatus() {
-        return status;
+    public String getAcceptanceId() {
+        return acceptanceId;
     }
 
 }

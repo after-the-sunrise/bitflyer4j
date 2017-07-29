@@ -1,5 +1,6 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl;
 
+import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Entity;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Withdraw;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.annotations.SerializedName;
@@ -8,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
  * @author takanori.takase
  * @version 0.0.1
  */
-public class WithdrawImpl extends Entity implements Withdraw {
+public class WithdrawResponse extends Entity implements Withdraw.Response {
 
     @SerializedName("message_id")
     @VisibleForTesting
@@ -16,7 +17,7 @@ public class WithdrawImpl extends Entity implements Withdraw {
 
     @SerializedName("status")
     @VisibleForTesting
-    String status;
+    Integer status;
 
     @SerializedName("error_message")
     @VisibleForTesting
@@ -32,7 +33,7 @@ public class WithdrawImpl extends Entity implements Withdraw {
     }
 
     @Override
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 

@@ -9,56 +9,78 @@ import static com.after_sunrise.cryptocurrency.bitflyer4j.core.MethodType.POST;
  */
 public enum PathType {
 
-    MARKET("/v1/markets"),
+    MARKET("/v1/markets", false),
 
-    BOARD("/v1/board"),
+    BOARD("/v1/board", false),
 
-    TICKER("/v1/ticker"),
+    TICKER("/v1/ticker", false),
 
-    EXECUTION("/v1/executions"),
+    EXECUTION("/v1/executions", false),
 
-    HEALTH("/v1/gethealth"),
+    HEALTH("/v1/gethealth", false),
 
-    CHAT("/v1/getchats"),
+    CHAT("/v1/getchats", false),
 
-    PERMISSION("/v1/me/getpermissions", true),
+    PERMISSION("/v1/me/getpermissions"),
 
-    BALANCE("/v1/me/getbalance", true),
+    BALANCE("/v1/me/getbalance"),
 
-    COLLATERAL("/v1/me/getcollateral", true),
+    COLLATERAL("/v1/me/getcollateral"),
 
-    MARGIN("/v1/me/getcollateralaccounts", true),
+    MARGIN("/v1/me/getcollateralaccounts"),
 
-    ADDRESS("/v1/me/getaddresses", true),
+    ADDRESS("/v1/me/getaddresses"),
 
-    COIN_IN("/v1/me/getcoinins", true),
+    COIN_IN("/v1/me/getcoinins"),
 
-    COIN_OUT("/v1/me/getcoinouts", true),
+    COIN_OUT("/v1/me/getcoinouts"),
 
-    BANK("/v1/me/getbankaccounts", true),
+    BANK("/v1/me/getbankaccounts"),
 
-    DEPOSIT("/v1/me/getdeposits", true),
+    DEPOSIT("/v1/me/getdeposits"),
 
-    WITHDRAW("/v1/me/withdraw", true, POST),
+    WITHDRAW("/v1/me/withdraw", POST),
 
-    WITHDRAWAL("/v1/me/getwithdrawals", true),
+    WITHDRAWAL("/v1/me/getwithdrawals"),
 
-    ORDER_SEND("/v1/me/sendchildorder", true, POST),
+    ORDER_SEND("/v1/me/sendchildorder", POST),
 
-    ORDER_CANCEL("/v1/me/cancelchildorder", true, POST);
+    ORDER_CANCEL("/v1/me/cancelchildorder", POST),
 
-    private String path;
+    PARENT_SEND("/v1/me/sendparentorder", POST),
 
-    private boolean sign;
+    PARENT_CANCEL("/v1/me/cancelparentorder", POST),
 
-    private MethodType method;
+    PRODUCT_CANCEL("/v1/me/cancelallchildorders", POST),
+
+    ORDER_LIST("/v1/me/getchildorders"),
+
+    PARENT_LIST("/v1/me/getparentorders"),
+
+    PARENT_DETAIL("/v1/me/getparentorder"),
+
+    TRADE_EXECUTION("/v1/me/getexecutions"),
+
+    TRADE_COLLATERAL("/v1/me/getmycollateralhistory"),
+
+    TRADE_COMMISSION("/v1/me/getexecutions");
+
+    private final String path;
+
+    private final boolean sign;
+
+    private final MethodType method;
 
     PathType(String path) {
-        this(path, false);
+        this(path, true);
     }
 
     PathType(String path, boolean sign) {
         this(path, sign, GET);
+    }
+
+    PathType(String path, MethodType method) {
+        this(path, true, method);
     }
 
     PathType(String path, boolean sign, MethodType method) {

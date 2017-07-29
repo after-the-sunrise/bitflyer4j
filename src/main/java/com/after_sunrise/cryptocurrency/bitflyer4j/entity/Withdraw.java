@@ -4,65 +4,105 @@ import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
 
-import static org.apache.commons.lang3.builder.ToStringBuilder.reflectionToString;
-import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
-
 /**
  * @author takanori.takase
  * @version 0.0.1
  */
-public interface Withdraw {
+public class Withdraw extends Entity {
 
-    class Request {
+    @SerializedName("currency_code")
+    private final String currency;
 
-        @SerializedName("currency_code")
-        private final String currency;
+    @SerializedName("bank_account_id")
+    private final Long bank;
 
-        @SerializedName("bank_account_id")
-        private final Long bank;
+    @SerializedName("amount")
+    private final BigDecimal amount;
 
-        @SerializedName("amount")
-        private final BigDecimal amount;
+    @SerializedName("code")
+    private final String pin;
 
-        @SerializedName("code")
-        private final String pin;
+    public Withdraw(String currency, Long bank, BigDecimal amount, String pin) {
+        this.currency = currency;
+        this.bank = bank;
+        this.amount = amount;
+        this.pin = pin;
+    }
 
-        public Request(String currency, Long bank, BigDecimal amount, String pin) {
-            this.currency = currency;
-            this.bank = bank;
-            this.amount = amount;
-            this.pin = pin;
-        }
+    public String getCurrency() {
+        return currency;
+    }
 
-        @Override
-        public String toString() {
-            return reflectionToString(this, SHORT_PREFIX_STYLE);
-        }
+    public Long getBank() {
+        return bank;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public String getPin() {
+        return pin;
+    }
+
+    public static class Builder {
+
+        private String currency;
+
+        private Long bank;
+
+        private BigDecimal amount;
+
+        private String pin;
 
         public String getCurrency() {
             return currency;
+        }
+
+        public void setCurrency(String currency) {
+            this.currency = currency;
         }
 
         public Long getBank() {
             return bank;
         }
 
+        public void setBank(Long bank) {
+            this.bank = bank;
+        }
+
         public BigDecimal getAmount() {
             return amount;
+        }
+
+        public void setAmount(BigDecimal amount) {
+            this.amount = amount;
         }
 
         public String getPin() {
             return pin;
         }
 
+        public void setPin(String pin) {
+            this.pin = pin;
+        }
+
+        public Withdraw build() {
+            return new Withdraw(currency, bank, amount, pin);
+        }
+
     }
 
-    String getId();
+    public interface Response {
 
-    String getStatus();
+        String getId();
 
-    String getMessage();
+        Integer getStatus();
 
-    String getData();
+        String getMessage();
+
+        String getData();
+
+    }
 
 }

@@ -11,9 +11,9 @@ public interface Board {
 
     BigDecimal getMid();
 
-    List<? extends Quote> getAsk();
+    List<Quote> getAsk();
 
-    List<? extends Quote> getBid();
+    List<Quote> getBid();
 
     interface Quote {
 

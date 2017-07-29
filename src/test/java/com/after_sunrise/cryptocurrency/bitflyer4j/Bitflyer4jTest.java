@@ -73,14 +73,15 @@ public class Bitflyer4jTest {
 
             if (POST) {
 
-                Withdraw.Request request = new Withdraw.Request("JPY", 0L, ONE, "000000");
+                Withdraw request = new Withdraw("JPY", 0L, ONE, "000000");
 
-                LOG.info(" : {}", accountService.withdraw(request).get());
+                LOG.info("Withdraw : {}", accountService.withdraw(request).get());
 
             }
 
             OrderService orderService = api.getOrderService();
 
+            LOG.info("Orders : {}", orderService.listOrders(null, null).get());
 
         } catch (Exception e) {
 

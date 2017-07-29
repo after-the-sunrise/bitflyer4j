@@ -1,4 +1,4 @@
-package com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl;
+package com.after_sunrise.cryptocurrency.bitflyer4j.entity;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
 
@@ -14,13 +14,13 @@ import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
  * @author takanori.takase
  * @version 0.0.1
  */
-class Entity implements Comparable<Entity> {
+public class Entity<T> implements Comparable<Entity> {
 
     private static final AtomicLong COUNT = new AtomicLong();
 
-    private final long systemTime = System.currentTimeMillis();
+    private final long _t = System.currentTimeMillis();
 
-    private final long systemCount = COUNT.incrementAndGet();
+    private final long _c = COUNT.incrementAndGet();
 
     @Override
     public String toString() {
@@ -29,7 +29,7 @@ class Entity implements Comparable<Entity> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(systemTime, systemCount);
+        return Objects.hash(_t, _c);
     }
 
     @Override
@@ -42,9 +42,9 @@ class Entity implements Comparable<Entity> {
 
         CompareToBuilder b = new CompareToBuilder();
 
-        b.append(systemTime, o.systemTime);
+        b.append(_t, o._t);
 
-        b.append(systemCount, o.systemCount);
+        b.append(_c, o._c);
 
         return b.toComparison();
 

@@ -30,7 +30,7 @@ public interface AccountService {
 
     CompletableFuture<List<Deposit>> getDeposits(Pagination pagination);
 
-    CompletableFuture<Withdraw> withdraw(Withdraw.Request request);
+    CompletableFuture<Withdraw.Response> withdraw(Withdraw request);
 
     CompletableFuture<List<Withdrawal>> getWithdrawals(Pagination pagination);
 

@@ -1,6 +1,8 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl;
 
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.DepositStatusType;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Deposit;
+import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Entity;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.annotations.SerializedName;
 
@@ -31,7 +33,7 @@ public class DepositImpl extends Entity implements Deposit {
 
     @SerializedName("status")
     @VisibleForTesting
-    String status;
+    DepositStatusType status;
 
     @SerializedName("event_date")
     @VisibleForTesting
@@ -58,7 +60,7 @@ public class DepositImpl extends Entity implements Deposit {
     }
 
     @Override
-    public String getStatus() {
+    public DepositStatusType getStatus() {
         return status;
     }
 

@@ -1,5 +1,7 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.entity;
 
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.WithdrawalStatusType;
+
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
@@ -17,7 +19,7 @@ public interface Withdrawal {
 
     BigDecimal getAmount();
 
-    String getStatus();
+    WithdrawalStatusType getStatus();
 
     ZonedDateTime getEventDate();
 

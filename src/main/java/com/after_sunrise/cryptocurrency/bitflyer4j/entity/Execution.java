@@ -1,5 +1,7 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.entity;
 
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.SideType;
+
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
@@ -11,7 +13,7 @@ public interface Execution {
 
     Long getId();
 
-    String getSide();
+    SideType getSide();
 
     BigDecimal getPrice();
 

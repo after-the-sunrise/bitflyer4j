@@ -78,9 +78,11 @@ public class MarketServiceImpl extends BaseService implements MarketService {
     @Override
     public CompletableFuture<List<Execution>> getExecutions(String product, Pagination pagination) {
 
-        Map<String, String> params = prepareParameter(pagination);
+        Map<String, String> params = prepareParameter(PRODUCT_CODE, product);
 
-        HttpRequest req = new HttpRequest(PathType.EXECUTION, prepareParameter(params, PRODUCT_CODE, product));
+        params = prepareParameter(params, pagination);
+
+        HttpRequest req = new HttpRequest(PathType.EXECUTION, params);
 
         CompletableFuture<HttpResponse> future = client.request(req);
 

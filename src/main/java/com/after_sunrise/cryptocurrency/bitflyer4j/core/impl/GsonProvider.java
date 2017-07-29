@@ -5,11 +5,18 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonParseException;
 import com.google.inject.Provider;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Type;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
@@ -20,6 +27,10 @@ import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 public class GsonProvider implements Provider<Gson> {
 
     private static final DateTimeFormatter DTF = ISO_LOCAL_DATE_TIME.withZone(ZoneId.of("GMT"));
+
+    private final Map<Type, Map<String, Enum<?>>> enums = new ConcurrentHashMap<>();
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Override
     public Gson get() {
@@ -45,6 +56,50 @@ public class GsonProvider implements Provider<Gson> {
                 throw new JsonParseException(msg, e);
 
             }
+
+        });
+
+        builder.registerTypeHierarchyAdapter(Enum.class, (JsonDeserializer<Enum<?>>) (j, t, c) -> {
+
+            if (j.isJsonNull()) {
+                return null;
+            }
+
+            String value = j.getAsString();
+
+            value = StringUtils.replaceChars(value, ' ', '_');
+
+            value = value.toUpperCase();
+
+            Map<String, Enum<?>> cache = enums.computeIfAbsent(t, type -> {
+
+                Map<String, Enum<?>> map = new LinkedHashMap<>();
+
+                for (Object o : ((Class<?>) t).getEnumConstants()) {
+
+                    Enum<?> element = (Enum<?>) o;
+
+                    map.put(element.name(), element);
+
+                }
+
+                return map;
+
+            });
+
+            Enum<?> element = cache.get(value);
+
+            if (element == null) {
+
+                String name = ((Class<?>) t).getSimpleName();
+
+                String raw = j.getAsString();
+
+                log.warn("Skipping deserialization for enum {} : {}", name, raw);
+
+            }
+
+            return (Enum<?>) element;
 
         });
 

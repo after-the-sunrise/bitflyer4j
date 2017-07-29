@@ -160,13 +160,13 @@ public class AccountServiceImpl extends BaseService implements AccountService {
     }
 
     @Override
-    public CompletableFuture<Withdraw> withdraw(Withdraw.Request request) {
+    public CompletableFuture<Withdraw.Response> withdraw(Withdraw request) {
 
         HttpClient.HttpRequest req = new HttpClient.HttpRequest(PathType.WITHDRAW, gson.toJson(request));
 
         CompletableFuture<HttpClient.HttpResponse> future = client.request(req);
 
-        return future.thenApply(s -> gson.fromJson(s.getBody(), WithdrawImpl.class));
+        return future.thenApply(s -> gson.fromJson(s.getBody(), Withdraw.Response.class));
 
     }
 

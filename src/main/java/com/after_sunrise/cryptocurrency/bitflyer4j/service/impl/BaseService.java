@@ -1,15 +1,18 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.service.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient;
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.Pagination;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.inject.Injector;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static java.util.Collections.singletonMap;
 
@@ -19,11 +22,8 @@ import static java.util.Collections.singletonMap;
  */
 public class BaseService {
 
-    private static final String PAGE_COUNT = "count";
-
-    private static final String PAGE_BEFORE = "before";
-
-    private static final String PAGE_AFTER = "after";
+    static final Type TYPE_MAP = new TypeToken<Map<String, String>>() {
+    }.getType();
 
     static final String PRODUCT_CODE = "product_code";
 
@@ -45,51 +45,51 @@ public class BaseService {
 
     }
 
-    private String str(Object o) {
-        return o == null ? null : o.toString();
-    }
+    Map<String, String> prepareParameter(String key, Object value) {
 
-    Map<String, String> prepareParameter(Pagination pagination) {
-
-        if (pagination == null) {
+        if (StringUtils.isEmpty(key)) {
             return null;
         }
 
-        Map<String, String> map = prepareParameter(PAGE_COUNT, str(pagination.getCount()));
-
-        map = prepareParameter(map, PAGE_BEFORE, str(pagination.getBefore()));
-
-        map = prepareParameter(map, PAGE_AFTER, str(pagination.getAfter()));
-
-        return map;
-
-    }
-
-    Map<String, String> prepareParameter(String key, Object value) {
-        return prepareParameter(null, key, value);
-    }
-
-    Map<String, String> prepareParameter(Map<String, String> base, String key, Object value) {
-
-        if (StringUtils.isEmpty(key)) {
-            return base;
-        }
-
-        String v = str(value);
+        String v = Objects.toString(value, null);
 
         if (StringUtils.isEmpty(v)) {
+            return null;
+        }
+
+        return singletonMap(key, v);
+
+    }
+
+    Map<String, String> prepareParameter(Object o) {
+        return prepareParameter((Map<String, String>) null, o);
+    }
+
+    Map<String, String> prepareParameter(Map<String, String> base, Object o) {
+
+        if (o == null) {
             return base;
         }
 
-        if (base == null) {
-            return singletonMap(key, v);
+        String json = gson.toJson(o);
+
+        Map<String, String> map = gson.fromJson(json, TYPE_MAP);
+
+        if (MapUtils.isEmpty(map)) {
+            return base;
         }
 
-        Map<String, String> result = new HashMap<>(base);
+        if (MapUtils.isEmpty(base)) {
+            return map;
+        }
 
-        result.put(key, v);
+        Map<String, String> merged = new HashMap<>();
 
-        return result;
+        merged.putAll(base);
+
+        merged.putAll(map);
+
+        return merged;
 
     }
 

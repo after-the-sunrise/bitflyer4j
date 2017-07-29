@@ -1,6 +1,7 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Board;
+import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Entity;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.annotations.SerializedName;
 
@@ -56,12 +57,12 @@ public class BoardImpl extends Entity implements Board {
     }
 
     @Override
-    public List<? extends Quote> getAsk() {
+    public List<Quote> getAsk() {
         return ask == null ? emptyList() : unmodifiableList(ask);
     }
 
     @Override
-    public List<? extends Quote> getBid() {
+    public List<Quote> getBid() {
         return bid == null ? emptyList() : unmodifiableList(bid);
     }
 

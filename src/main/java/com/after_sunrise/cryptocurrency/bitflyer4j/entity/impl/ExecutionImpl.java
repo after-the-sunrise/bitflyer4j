@@ -1,5 +1,7 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl;
 
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.SideType;
+import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Entity;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Execution;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.annotations.SerializedName;
@@ -19,7 +21,7 @@ public class ExecutionImpl extends Entity implements Execution {
 
     @SerializedName("side")
     @VisibleForTesting
-    String side;
+    SideType side;
 
     @SerializedName("price")
     @VisibleForTesting
@@ -47,7 +49,7 @@ public class ExecutionImpl extends Entity implements Execution {
     }
 
     @Override
-    public String getSide() {
+    public SideType getSide() {
         return side;
     }
 

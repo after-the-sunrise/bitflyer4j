@@ -1,6 +1,7 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Balance;
+import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Entity;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.annotations.SerializedName;
 
