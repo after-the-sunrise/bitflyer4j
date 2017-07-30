@@ -73,18 +73,19 @@ Currently implemented paths are as follows:
   - Account Action
     - [x] Withdraw : `/v1/me/withdraw`
   - Order Action
-    - [ ] New Child Order `/v1/me/sendchildorder`
-    - [ ] Cancel Child Order `/v1/me/cancelchildorder`
-    - [ ] New Parent Order `/v1/me/sendparentorder`
-    - [ ] Cancel Parent Order `/v1/me/cancelparentorder`
-    - [ ] Cancel All Orders `/v1/me/cancelallchildorders`
+    - [x] New Child Order `/v1/me/sendchildorder`
+    - [x] Cancel Child Order `/v1/me/cancelchildorder`
+    - [x] New Parent Order `/v1/me/sendparentorder`
+    - [x] Cancel Parent Order `/v1/me/cancelparentorder`
+    - [x] Cancel All Orders `/v1/me/cancelallchildorders`
   - Order Detail
-    - [ ] Child Order List `/v1/me/getchildorders`
-    - [ ] Parent Order List `/v1/me/getparentorders`
-    - [ ] Parent Order Detail `/v1/me/getparentorder`
-    - [ ] Executions `/v1/me/getexecutions`
-    - [ ] Open Interest Summary `/v1/me/getpositions`
-    - [ ] Trading Commission `/v1/me/gettradingcommission`
+    - [x] Child Order List `/v1/me/getchildorders`
+    - [x] Parent Order List `/v1/me/getparentorders`
+    - [x] Parent Order Detail `/v1/me/getparentorder`
+    - [x] Executions `/v1/me/getexecutions`
+    - [x] Open Interest Summary `/v1/me/getpositions`
+    - [x] Margin Change History `/v1/me/getmycollateralhistory`
+    - [x] Trading Commission `/v1/me/gettradingcommission`
 - Realtime API
   - [ ] Order Book Snapshot `lightning_board_snapshot_*`
   - [ ] Order Book Update `lightning_board_*`

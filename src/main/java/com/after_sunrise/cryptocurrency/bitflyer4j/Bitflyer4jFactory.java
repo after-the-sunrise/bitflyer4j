@@ -3,10 +3,8 @@ package com.after_sunrise.cryptocurrency.bitflyer4j;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.ConfigurationType;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.ExecutorFactory;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient;
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.impl.Bitflyer4jImpl;
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.impl.ExecutorFactoryImpl;
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.impl.GsonProvider;
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.impl.HttpClientImpl;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.PubNubFactory;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.impl.*;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.AccountService;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.MarketService;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.OrderService;
@@ -52,6 +50,8 @@ public class Bitflyer4jFactory {
                 bind(ExecutorFactory.class).to(ExecutorFactoryImpl.class).asEagerSingleton();
 
                 bind(HttpClient.class).to(HttpClientImpl.class).asEagerSingleton();
+
+                bind(PubNubFactory.class).to(PubNubFactoryImpl.class).asEagerSingleton();
 
                 bind(Bitflyer4j.class).to(Bitflyer4jImpl.class).asEagerSingleton();
 
