@@ -1,8 +1,7 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.core.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.ExecutorFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.IdentityHashMap;
@@ -18,6 +17,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author takanori.takase
  * @version 0.0.1
  **/
+@Slf4j
 public class ExecutorFactoryImpl implements ExecutorFactory, UncaughtExceptionHandler {
 
     private static class ThreadFactoryImpl implements ThreadFactory {
@@ -54,8 +54,6 @@ public class ExecutorFactoryImpl implements ExecutorFactory, UncaughtExceptionHa
         }
 
     }
-
-    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final ThreadFactory delegate = Executors.defaultThreadFactory();
 

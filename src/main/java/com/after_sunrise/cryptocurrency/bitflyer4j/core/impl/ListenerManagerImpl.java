@@ -1,8 +1,7 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.core.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.ListenerManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -13,9 +12,8 @@ import java.util.function.Consumer;
  * @author takanori.takase
  * @version 0.0.1
  **/
+@Slf4j
 public class ListenerManagerImpl<L> implements ListenerManager<L> {
-
-    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final Set<L> listeners = new ConcurrentSkipListSet<>();
 

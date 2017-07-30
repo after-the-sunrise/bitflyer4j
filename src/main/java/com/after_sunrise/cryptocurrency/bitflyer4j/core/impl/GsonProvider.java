@@ -5,9 +5,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonParseException;
 import com.google.inject.Provider;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Type;
 import java.time.ZoneId;
@@ -24,13 +23,12 @@ import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
  * @author takanori.takase
  * @version 0.0.1
  **/
+@Slf4j
 public class GsonProvider implements Provider<Gson> {
 
     private static final DateTimeFormatter DTF = ISO_LOCAL_DATE_TIME.withZone(ZoneId.of("GMT"));
 
     private final Map<Type, Map<String, Enum<?>>> enums = new ConcurrentHashMap<>();
-
-    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Override
     public Gson get() {

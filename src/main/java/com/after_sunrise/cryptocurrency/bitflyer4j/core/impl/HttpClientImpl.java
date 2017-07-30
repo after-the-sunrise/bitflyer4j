@@ -7,11 +7,10 @@ import com.google.common.io.ByteStreams;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import lombok.Value;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -31,6 +30,7 @@ import static java.net.Proxy.Type.HTTP;
  * @author takanori.takase
  * @version 0.0.1
  */
+@Slf4j
 public class HttpClientImpl implements HttpClient {
 
     private static final long TIME_PRECISION = 1000L;
@@ -42,8 +42,6 @@ public class HttpClientImpl implements HttpClient {
     private static final String ACCESS_TIME = "ACCESS-TIMESTAMP";
 
     private static final String ACCESS_SIGN = "ACCESS-SIGN";
-
-    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final Configuration conf;
 
