@@ -26,6 +26,8 @@ public interface OrderService {
 
     CompletableFuture<ParentDetail.Response> getParent(ParentDetail request);
 
+    CompletableFuture<ProductCancel.Response> cancelProduct(ProductCancel request);
+
     CompletableFuture<List<TradeExecution.Response>> listExecutions(TradeExecution request, Pagination pagination);
 
     CompletableFuture<List<TradePosition.Response>> listPositions(TradePosition request, Pagination pagination);

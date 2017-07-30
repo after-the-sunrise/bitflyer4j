@@ -138,6 +138,19 @@ public class OrderServiceImpl extends BaseService implements OrderService {
     }
 
     @Override
+    public CompletableFuture<ProductCancel.Response> cancelProduct(ProductCancel request) {
+
+        String body = gson.toJson(request);
+
+        HttpRequest req = HttpRequest.builder().type(PathType.PRODUCT_CANCEL).body(body).build();
+
+        CompletableFuture<HttpResponse> future = client.request(req);
+
+        return future.thenApply(s -> gson.fromJson(s.getBody(), ProductCancel.Response.class));
+
+    }
+
+    @Override
     public CompletableFuture<List<TradeExecution.Response>> listExecutions(TradeExecution request, Pagination pagination) {
 
         Map<String, String> params = prepareParameter(pagination);
