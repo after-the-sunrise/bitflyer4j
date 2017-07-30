@@ -4,6 +4,10 @@ import com.after_sunrise.cryptocurrency.bitflyer4j.core.ConditionType;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.SideType;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.StateType;
 import com.google.gson.annotations.SerializedName;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -12,6 +16,9 @@ import java.time.ZonedDateTime;
  * @author takanori.takase
  * @version 0.0.1
  */
+@Getter
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class OrderList extends Entity {
 
     @SerializedName("product_code")
@@ -28,91 +35,6 @@ public class OrderList extends Entity {
 
     @SerializedName("parent_order_id")
     private final String parentId;
-
-    private OrderList(String product, StateType state, String orderId, String acceptanceId, String parentId) {
-        this.product = product;
-        this.state = state;
-        this.orderId = orderId;
-        this.acceptanceId = acceptanceId;
-        this.parentId = parentId;
-    }
-
-    public String getProduct() {
-        return product;
-    }
-
-    public StateType getState() {
-        return state;
-    }
-
-    public String getOrderId() {
-        return orderId;
-    }
-
-    public String getAcceptanceId() {
-        return acceptanceId;
-    }
-
-    public String getParentId() {
-        return parentId;
-    }
-
-    public static class Bulider {
-
-        private String product;
-
-        private StateType state;
-
-        private String orderId;
-
-        private String acceptanceId;
-
-        private String parentId;
-
-        public OrderList build() {
-            return new OrderList(product, state, orderId, acceptanceId, parentId);
-        }
-
-        public String getProduct() {
-            return product;
-        }
-
-        public void setProduct(String product) {
-            this.product = product;
-        }
-
-        public StateType getState() {
-            return state;
-        }
-
-        public void setState(StateType state) {
-            this.state = state;
-        }
-
-        public String getOrderId() {
-            return orderId;
-        }
-
-        public void setOrderId(String orderId) {
-            this.orderId = orderId;
-        }
-
-        public String getAcceptanceId() {
-            return acceptanceId;
-        }
-
-        public void setAcceptanceId(String acceptanceId) {
-            this.acceptanceId = acceptanceId;
-        }
-
-        public String getParentId() {
-            return parentId;
-        }
-
-        public void setParentId(String parentId) {
-            this.parentId = parentId;
-        }
-    }
 
     public interface Response {
 

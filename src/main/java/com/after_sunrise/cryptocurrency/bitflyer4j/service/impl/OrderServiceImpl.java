@@ -1,6 +1,7 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.service.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient.HttpRequest;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.Pagination;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.PathType;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.OrderList;
@@ -36,7 +37,7 @@ public class OrderServiceImpl extends BaseService implements OrderService {
 
         params = prepareParameter(params, request);
 
-        HttpClient.HttpRequest req = new HttpClient.HttpRequest(PathType.ORDER_LIST, params);
+        HttpRequest req = HttpRequest.builder().type(PathType.ORDER_LIST).parameters(params).build();
 
         CompletableFuture<HttpClient.HttpResponse> future = client.request(req);
 

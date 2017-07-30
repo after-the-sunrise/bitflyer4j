@@ -2,8 +2,9 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Collateral;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Entity;
-import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 
@@ -11,42 +12,20 @@ import java.math.BigDecimal;
  * @author takanori.takase
  * @version 0.0.1
  */
+@Getter
+@AllArgsConstructor
 public class CollateralImpl extends Entity implements Collateral {
 
     @SerializedName("collateral")
-    @VisibleForTesting
-    BigDecimal collateral;
+    private final BigDecimal collateral;
 
     @SerializedName("open_position_pnl")
-    @VisibleForTesting
-    BigDecimal openPositionPl;
+    private final BigDecimal openPositionPl;
 
     @SerializedName("require_collateral")
-    @VisibleForTesting
-    BigDecimal requiredCollateral;
+    private final BigDecimal requiredCollateral;
 
     @SerializedName("keep_rate")
-    @VisibleForTesting
-    BigDecimal keepRate;
-
-    @Override
-    public BigDecimal getCollateral() {
-        return collateral;
-    }
-
-    @Override
-    public BigDecimal getOpenPositionPl() {
-        return openPositionPl;
-    }
-
-    @Override
-    public BigDecimal getRequiredCollateral() {
-        return requiredCollateral;
-    }
-
-    @Override
-    public BigDecimal getKeepRate() {
-        return keepRate;
-    }
+    private final BigDecimal keepRate;
 
 }

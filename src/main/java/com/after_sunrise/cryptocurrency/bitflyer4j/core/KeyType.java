@@ -1,10 +1,10 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.core;
 
+import lombok.Getter;
 import org.apache.commons.configuration2.Configuration;
 
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -14,7 +14,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
  * @author takanori.takase
  * @version 0.0.1
  */
-public enum KeyType implements Supplier<String>, Function<Configuration, String> {
+public enum KeyType implements Function<Configuration, String> {
 
     /**
      * Build version.
@@ -103,8 +103,10 @@ public enum KeyType implements Supplier<String>, Function<Configuration, String>
 
     private static final String PREFIX = "bitflyer4j.";
 
+    @Getter
     private final String key;
 
+    @Getter
     private final String defaultValue;
 
     KeyType(Object defaultValue) {
@@ -116,39 +118,20 @@ public enum KeyType implements Supplier<String>, Function<Configuration, String>
     }
 
     /**
-     * Key of the property.
-     *
-     * @return Properties key.
-     */
-    @Override
-    public String get() {
-        return key;
-    }
-
-    /**
-     * Default value, in case the key is not found.
-     *
-     * @return Default value.
-     */
-    public String getDefault() {
-        return defaultValue;
-    }
-
-    /**
      * Retrieve a properties value from the given {@link Configuration} instance.
      *
      * @param configuration Configuration to retrieve the value from.
-     * @return Property value. Value from {@link #getDefault()} is returned,
+     * @return Property value. A defaut value is returned,
      * if the key is not found, or if the given instance is {@code null}.
      */
     @Override
     public String apply(Configuration configuration) {
 
         if (configuration == null) {
-            return getDefault();
+            return getDefaultValue();
         }
 
-        return configuration.getString(get(), getDefault());
+        return configuration.getString(getKey(), getDefaultValue());
 
     }
 

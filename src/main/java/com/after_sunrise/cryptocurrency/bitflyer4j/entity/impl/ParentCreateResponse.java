@@ -2,22 +2,19 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Entity;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.ParentCreate;
-import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
  * @author takanori.takase
  * @version 0.0.1
  */
+@Getter
+@AllArgsConstructor
 public class ParentCreateResponse extends Entity implements ParentCreate.Response {
 
     @SerializedName("parent_order_acceptance_id")
-    @VisibleForTesting
-    String acceptanceId;
-
-    @Override
-    public String getAcceptanceId() {
-        return acceptanceId;
-    }
+    private final String acceptanceId;
 
 }

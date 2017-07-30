@@ -2,8 +2,9 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Board;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Entity;
-import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -15,46 +16,30 @@ import static java.util.Collections.unmodifiableList;
  * @author takanori.takase
  * @version 0.0.1
  */
+@Getter
+@AllArgsConstructor
 public class BoardImpl extends Entity implements Board {
 
+    @Getter
+    @AllArgsConstructor
     static class QuoteImpl extends Entity implements Quote {
 
         @SerializedName("price")
-        @VisibleForTesting
-        BigDecimal price;
+        private final BigDecimal price;
 
         @SerializedName("size")
-        @VisibleForTesting
-        BigDecimal size;
-
-        @Override
-        public BigDecimal getPrice() {
-            return price;
-        }
-
-        @Override
-        public BigDecimal getSize() {
-            return size;
-        }
+        private final BigDecimal size;
 
     }
 
     @SerializedName("mid_price")
-    @VisibleForTesting
-    BigDecimal mid;
+    private final BigDecimal mid;
 
     @SerializedName("asks")
-    @VisibleForTesting
-    List<QuoteImpl> ask;
+    private final List<QuoteImpl> ask;
 
     @SerializedName("bids")
-    @VisibleForTesting
-    List<QuoteImpl> bid;
-
-    @Override
-    public BigDecimal getMid() {
-        return mid;
-    }
+    private final List<QuoteImpl> bid;
 
     @Override
     public List<Quote> getAsk() {

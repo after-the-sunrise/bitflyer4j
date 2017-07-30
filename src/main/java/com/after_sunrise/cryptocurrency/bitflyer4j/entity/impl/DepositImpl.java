@@ -3,8 +3,9 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.DepositStatusType;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Deposit;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Entity;
-import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -13,60 +14,27 @@ import java.time.ZonedDateTime;
  * @author takanori.takase
  * @version 0.0.1
  */
+@Getter
+@AllArgsConstructor
 public class DepositImpl extends Entity implements Deposit {
 
     @SerializedName("id")
-    @VisibleForTesting
-    Long id;
+    private final Long id;
 
     @SerializedName("order_id")
-    @VisibleForTesting
-    String orderId;
+    private final String orderId;
 
     @SerializedName("currency_code")
-    @VisibleForTesting
-    String currency;
+    private final String currency;
 
     @SerializedName("amount")
-    @VisibleForTesting
-    BigDecimal amount;
+    private final BigDecimal amount;
 
     @SerializedName("status")
-    @VisibleForTesting
-    DepositStatusType status;
+    private final DepositStatusType status;
 
     @SerializedName("event_date")
-    @VisibleForTesting
-    ZonedDateTime eventDate;
+    private final ZonedDateTime eventDate;
 
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public String getOrderId() {
-        return orderId;
-    }
-
-    @Override
-    public String getCurrency() {
-        return currency;
-    }
-
-    @Override
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    @Override
-    public DepositStatusType getStatus() {
-        return status;
-    }
-
-    @Override
-    public ZonedDateTime getEventDate() {
-        return eventDate;
-    }
 
 }

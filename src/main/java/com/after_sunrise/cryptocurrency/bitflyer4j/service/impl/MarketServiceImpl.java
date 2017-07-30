@@ -45,7 +45,7 @@ public class MarketServiceImpl extends BaseService implements MarketService {
     @Override
     public CompletableFuture<List<Product>> getProducts() {
 
-        HttpRequest req = new HttpRequest(PathType.MARKET);
+        HttpRequest req = HttpRequest.builder().type(PathType.MARKET).build();
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
@@ -56,7 +56,9 @@ public class MarketServiceImpl extends BaseService implements MarketService {
     @Override
     public CompletableFuture<Board> getBoard(String product) {
 
-        HttpRequest req = new HttpRequest(PathType.BOARD, prepareParameter(PRODUCT_CODE, product));
+        Map<String, String> parameters = prepareParameter(PRODUCT_CODE, product);
+
+        HttpRequest req = HttpRequest.builder().type(PathType.BOARD).parameters(parameters).build();
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
@@ -67,7 +69,9 @@ public class MarketServiceImpl extends BaseService implements MarketService {
     @Override
     public CompletableFuture<Tick> getTick(String product) {
 
-        HttpRequest req = new HttpRequest(PathType.TICKER, prepareParameter(PRODUCT_CODE, product));
+        Map<String, String> parameters = prepareParameter(PRODUCT_CODE, product);
+
+        HttpRequest req = HttpRequest.builder().type(PathType.TICKER).parameters(parameters).build();
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
@@ -82,7 +86,7 @@ public class MarketServiceImpl extends BaseService implements MarketService {
 
         params = prepareParameter(params, pagination);
 
-        HttpRequest req = new HttpRequest(PathType.EXECUTION, params);
+        HttpRequest req = HttpRequest.builder().type(PathType.EXECUTION).parameters(params).build();
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
@@ -93,7 +97,7 @@ public class MarketServiceImpl extends BaseService implements MarketService {
     @Override
     public CompletableFuture<Status> getStatus() {
 
-        HttpRequest req = new HttpRequest(PathType.HEALTH);
+        HttpRequest req = HttpRequest.builder().type(PathType.HEALTH).build();
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
@@ -106,7 +110,9 @@ public class MarketServiceImpl extends BaseService implements MarketService {
 
         String d = date == null ? null : date.format(ISO_LOCAL_DATE);
 
-        HttpRequest req = new HttpRequest(PathType.CHAT, prepareParameter(FROM_DATE, d));
+        Map<String, String> params = prepareParameter(FROM_DATE, d);
+
+        HttpRequest req = HttpRequest.builder().type(PathType.CHAT).parameters(params).build();
 
         CompletableFuture<HttpResponse> future = client.request(req);
 

@@ -3,8 +3,9 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.SideType;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Entity;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Execution;
-import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -13,69 +14,29 @@ import java.time.ZonedDateTime;
  * @author takanori.takase
  * @version 0.0.1
  */
+@Getter
+@AllArgsConstructor
 public class ExecutionImpl extends Entity implements Execution {
 
     @SerializedName("id")
-    @VisibleForTesting
-    Long id;
+    private final Long id;
 
     @SerializedName("side")
-    @VisibleForTesting
-    SideType side;
+    private final SideType side;
 
     @SerializedName("price")
-    @VisibleForTesting
-    BigDecimal price;
+    private final BigDecimal price;
 
     @SerializedName("size")
-    @VisibleForTesting
-    BigDecimal size;
+    private final BigDecimal size;
 
     @SerializedName("exec_date")
-    @VisibleForTesting
-    ZonedDateTime timestamp;
+    private final ZonedDateTime timestamp;
 
     @SerializedName("buy_child_order_acceptance_id")
-    @VisibleForTesting
-    String buyOrderId;
+    private final String buyOrderId;
 
     @SerializedName("sell_child_order_acceptance_id")
-    @VisibleForTesting
-    String sellOrderId;
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public SideType getSide() {
-        return side;
-    }
-
-    @Override
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    @Override
-    public BigDecimal getSize() {
-        return size;
-    }
-
-    @Override
-    public ZonedDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    @Override
-    public String getBuyOrderId() {
-        return buyOrderId;
-    }
-
-    @Override
-    public String getSellOrderId() {
-        return sellOrderId;
-    }
+    private final String sellOrderId;
 
 }

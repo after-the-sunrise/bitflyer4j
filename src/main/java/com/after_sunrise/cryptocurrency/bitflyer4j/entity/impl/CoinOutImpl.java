@@ -2,8 +2,9 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.CoinOut;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Entity;
-import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -12,96 +13,38 @@ import java.time.ZonedDateTime;
  * @author takanori.takase
  * @version 0.0.1
  */
+@Getter
+@AllArgsConstructor
 public class CoinOutImpl extends Entity implements CoinOut {
 
     @SerializedName("id")
-    @VisibleForTesting
-    Long id;
+    private final Long id;
 
     @SerializedName("order_id")
-    @VisibleForTesting
-    String orderId;
+    private final String orderId;
 
     @SerializedName("currency_code")
-    @VisibleForTesting
-    String currency;
+    private final String currency;
 
     @SerializedName("amount")
-    @VisibleForTesting
-    BigDecimal amount;
+    private final BigDecimal amount;
 
     @SerializedName("address")
-    @VisibleForTesting
-    String address;
+    private final String address;
 
     @SerializedName("tx_hash")
-    @VisibleForTesting
-    String hash;
+    private final String hash;
 
     @SerializedName("fee")
-    @VisibleForTesting
-    BigDecimal fee;
+    private final BigDecimal fee;
 
     @SerializedName("additional_fee")
-    @VisibleForTesting
-    BigDecimal additionalFee;
+    private final BigDecimal additionalFee;
 
     @SerializedName("status")
-    @VisibleForTesting
-    String status;
+    private final String status;
 
     @SerializedName("event_date")
-    @VisibleForTesting
-    ZonedDateTime eventDate;
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public String getOrderId() {
-        return orderId;
-    }
-
-    @Override
-    public String getCurrency() {
-        return currency;
-    }
-
-    @Override
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    @Override
-    public String getAddress() {
-        return address;
-    }
-
-    @Override
-    public String getHash() {
-        return hash;
-    }
-
-    @Override
-    public BigDecimal getFee() {
-        return fee;
-    }
-
-    @Override
-    public BigDecimal getAdditionalFee() {
-        return additionalFee;
-    }
-
-    @Override
-    public String getStatus() {
-        return status;
-    }
-
-    @Override
-    public ZonedDateTime getEventDate() {
-        return eventDate;
-    }
+    private final ZonedDateTime eventDate;
 
 }

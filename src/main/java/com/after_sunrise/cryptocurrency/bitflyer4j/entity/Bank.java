@@ -8,7 +8,7 @@ public interface Bank {
 
     Long getId();
 
-    Boolean isVerified();
+    Boolean getVerified();
 
     String getName();
 

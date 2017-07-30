@@ -51,9 +51,9 @@ public class Bitflyer4jFactoryTest {
         Configuration s = new Configurations().properties(getResource("bitflyer4j-site.properties"));
 
         // 1st should be version.
-        assertEquals(VERSION.apply(conf), v.getString(VERSION.get()));
-        assertNotEquals(VERSION.apply(conf), s.getString(VERSION.get()));
-        assertEquals(s.getString(VERSION.get()), "test");
+        assertEquals(VERSION.apply(conf), v.getString(VERSION.getKey()));
+        assertNotEquals(VERSION.apply(conf), s.getString(VERSION.getKey()));
+        assertEquals(s.getString(VERSION.getKey()), "test");
 
         // 2nd should be system. (Should not be overridden.)
         String system = "java.version";
@@ -62,11 +62,11 @@ public class Bitflyer4jFactoryTest {
         assertEquals(s.getString(system), "test");
 
         // 3rd should be site.
-        assertEquals(SITE.apply(conf), s.getString(SITE.get()));
-        assertEquals(s.getString(SITE.get()), "test");
+        assertEquals(SITE.apply(conf), s.getString(SITE.getKey()));
+        assertEquals(s.getString(SITE.getKey()), "test");
 
         // Last should be default.
-        assertEquals(HTTP_URL.apply(conf), HTTP_URL.getDefault());
+        assertEquals(HTTP_URL.apply(conf), HTTP_URL.getDefaultValue());
 
     }
 

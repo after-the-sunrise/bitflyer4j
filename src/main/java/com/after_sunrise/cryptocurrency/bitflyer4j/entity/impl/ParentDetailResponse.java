@@ -5,8 +5,9 @@ import com.after_sunrise.cryptocurrency.bitflyer4j.core.ParentType;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.SideType;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Entity;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.ParentDetail;
-import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,114 +19,51 @@ import static java.util.Collections.unmodifiableList;
  * @author takanori.takase
  * @version 0.0.1
  */
+@Getter
+@AllArgsConstructor
 public class ParentDetailResponse extends Entity implements ParentDetail.Response {
 
+    @Getter
+    @AllArgsConstructor
     static class ParentDetailParameter extends Entity implements ParentDetail.Response.Parameter {
 
         @SerializedName("product_code")
-        @VisibleForTesting
-        String product;
+        private final String product;
 
         @SerializedName("condition_type")
-        @VisibleForTesting
-        ConditionType condition;
+        private final ConditionType condition;
 
         @SerializedName("side")
-        @VisibleForTesting
-        SideType side;
+        private final SideType side;
 
         @SerializedName("price")
-        @VisibleForTesting
-        BigDecimal price;
+        private final BigDecimal price;
 
         @SerializedName("size")
-        @VisibleForTesting
-        BigDecimal size;
+        private final BigDecimal size;
 
         @SerializedName("trigger_price")
-        @VisibleForTesting
-        BigDecimal triggerPrice;
+        private final BigDecimal triggerPrice;
 
         @SerializedName("offset")
-        @VisibleForTesting
-        BigDecimal offset;
-
-        @Override
-        public String getProduct() {
-            return product;
-        }
-
-        @Override
-        public ConditionType getCondition() {
-            return condition;
-        }
-
-        @Override
-        public SideType getSide() {
-            return side;
-        }
-
-        @Override
-        public BigDecimal getPrice() {
-            return price;
-        }
-
-        @Override
-        public BigDecimal getSize() {
-            return size;
-        }
-
-        @Override
-        public BigDecimal getTriggerPrice() {
-            return triggerPrice;
-        }
-
-        @Override
-        public BigDecimal getOffset() {
-            return offset;
-        }
+        private final BigDecimal offset;
 
     }
 
     @SerializedName("id")
-    @VisibleForTesting
-    Long id;
+    private final Long id;
 
     @SerializedName("parent_order_id")
-    @VisibleForTesting
-    String parentId;
+    private final String parentId;
 
     @SerializedName("order_method")
-    @VisibleForTesting
-    ParentType type;
+    private final ParentType type;
 
     @SerializedName("minute_to_expire")
-    @VisibleForTesting
-    Integer expiry;
+    private final Integer expiry;
 
     @SerializedName("parameters")
-    @VisibleForTesting
-    List<ParentDetailParameter> parameters;
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public String getParentId() {
-        return parentId;
-    }
-
-    @Override
-    public ParentType getType() {
-        return type;
-    }
-
-    @Override
-    public Integer getExpiry() {
-        return expiry;
-    }
+    private final List<ParentDetailParameter> parameters;
 
     @Override
     public List<ParentDetail.Response.Parameter> getParameters() {

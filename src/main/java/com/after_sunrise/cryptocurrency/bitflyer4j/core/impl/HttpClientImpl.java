@@ -6,6 +6,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.io.ByteStreams;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import lombok.Value;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.StringUtils;
@@ -25,8 +26,6 @@ import java.util.concurrent.ExecutorService;
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.*;
 import static java.lang.Integer.parseInt;
 import static java.net.Proxy.Type.HTTP;
-import static org.apache.commons.lang3.builder.ToStringBuilder.reflectionToString;
-import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
 
 /**
  * @author takanori.takase
@@ -46,36 +45,14 @@ public class HttpClientImpl implements HttpClient {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final String endpoint;
-
-    private final String proxyHost;
-
-    private final String proxyPort;
-
-    private final String timeout;
-
-    private final String authKey;
-
-    private final String authSecret;
+    private final Configuration conf;
 
     private final ExecutorService executor;
 
     @Inject
     public HttpClientImpl(Injector injector) {
 
-        Configuration conf = injector.getInstance(Configuration.class);
-
-        endpoint = HTTP_URL.apply(conf);
-
-        proxyHost = HTTP_PROXY_HOST.apply(conf);
-
-        proxyPort = HTTP_PROXY_PORT.apply(conf);
-
-        timeout = HTTP_TIMEOUT.apply(conf);
-
-        authKey = AUTH_KEY.apply(conf);
-
-        authSecret = AUTH_SECRET.apply(conf);
+        conf = injector.getInstance(Configuration.class);
 
         executor = injector.getInstance(ExecutorFactory.class).get(getClass());
 
@@ -127,6 +104,10 @@ public class HttpClientImpl implements HttpClient {
 
         URL url = createUrl(request.getType().getPath(), request.getParameters());
 
+        String proxyHost = HTTP_PROXY_HOST.apply(conf);
+
+        String proxyPort = HTTP_PROXY_PORT.apply(conf);
+
         HttpURLConnection conn;
 
         if (StringUtils.isNotEmpty(proxyHost) && StringUtils.isNotEmpty(proxyPort)) {
@@ -151,6 +132,8 @@ public class HttpClientImpl implements HttpClient {
 
     @VisibleForTesting
     URL createUrl(String path, Map<String, String> parameters) throws MalformedURLException {
+
+        String endpoint = HTTP_URL.apply(conf);
 
         StringBuilder sb = new StringBuilder(endpoint);
 
@@ -181,6 +164,8 @@ public class HttpClientImpl implements HttpClient {
 
         connection.setRequestMethod(request.getType().getMethod().get());
 
+        String timeout = HTTP_TIMEOUT.apply(conf);
+
         if (timeout != null) {
 
             int millis = Integer.parseInt(timeout);
@@ -203,6 +188,8 @@ public class HttpClientImpl implements HttpClient {
                     + StringUtils.trimToEmpty(request.getBody());
 
             String sign = computeHash(base);
+
+            String authKey = AUTH_KEY.apply(conf);
 
             connection.addRequestProperty(ACCESS_KEY, authKey);
             connection.addRequestProperty(ACCESS_TIME, ts);
@@ -250,6 +237,8 @@ public class HttpClientImpl implements HttpClient {
 
             Mac mac = Mac.getInstance(ALGORITHM);
 
+            String authSecret = AUTH_SECRET.apply(conf);
+
             mac.init(new SecretKeySpec(authSecret.getBytes(), ALGORITHM));
 
             hash = mac.doFinal(base.getBytes());
@@ -270,6 +259,7 @@ public class HttpClientImpl implements HttpClient {
 
     }
 
+    @Value
     private static class HttpResponseImpl implements HttpResponse {
 
         private final int code;
@@ -277,32 +267,6 @@ public class HttpClientImpl implements HttpClient {
         private final String message;
 
         private final String body;
-
-        private HttpResponseImpl(int code, String message, String body) {
-            this.code = code;
-            this.message = message;
-            this.body = body;
-        }
-
-        @Override
-        public String toString() {
-            return reflectionToString(this, SHORT_PREFIX_STYLE);
-        }
-
-        @Override
-        public int getCode() {
-            return code;
-        }
-
-        @Override
-        public String getMessage() {
-            return message;
-        }
-
-        @Override
-        public String getBody() {
-            return body;
-        }
 
     }
 

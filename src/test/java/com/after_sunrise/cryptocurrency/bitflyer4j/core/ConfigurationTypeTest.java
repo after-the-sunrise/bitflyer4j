@@ -64,14 +64,14 @@ public class ConfigurationTypeTest {
 
         // Classpath exists
         Configuration conf = ConfigurationType.get(site, null).get();
-        assertEquals(conf.getString(VERSION.get()), "test");
+        assertEquals(conf.getString(VERSION.getKey()), "test");
 
         // Classpath does not exist. (And should not load from file path.)
         assertFalse(ConfigurationType.get("build.gradle", null).isPresent());
 
         // File exists.
         conf = ConfigurationType.get(site, "src/test/resources").get();
-        assertEquals(conf.getString(VERSION.get()), "test");
+        assertEquals(conf.getString(VERSION.getKey()), "test");
 
         // File does not exist. (And should not load from classpath.)
         assertFalse(ConfigurationType.get(site, "build").isPresent());

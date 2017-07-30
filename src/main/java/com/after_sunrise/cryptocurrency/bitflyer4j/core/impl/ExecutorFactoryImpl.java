@@ -62,40 +62,48 @@ public class ExecutorFactoryImpl implements ExecutorFactory, UncaughtExceptionHa
     private final Map<Class<?>, ExecutorService> services = new IdentityHashMap<>();
 
     @Override
-    public synchronized void shutdown() {
+    public void shutdown() {
 
-        Iterator<Entry<Class<?>, ExecutorService>> itr = services.entrySet().iterator();
+        synchronized (services) {
 
-        while (itr.hasNext()) {
+            Iterator<Entry<Class<?>, ExecutorService>> itr = services.entrySet().iterator();
 
-            Entry<Class<?>, ExecutorService> entry = itr.next();
+            while (itr.hasNext()) {
 
-            log.debug("Terminating executor : {}", entry.getKey());
+                Entry<Class<?>, ExecutorService> entry = itr.next();
 
-            entry.getValue().shutdown();
+                log.debug("Terminating executor : {}", entry.getKey());
 
-            itr.remove();
+                entry.getValue().shutdown();
+
+                itr.remove();
+
+            }
+
+            log.debug("Terminated executors.");
 
         }
-
-        log.debug("Terminated executors.");
 
     }
 
     @Override
-    public synchronized ExecutorService get(Class<?> clazz) {
+    public ExecutorService get(Class<?> clazz) {
 
         Class<?> cls = clazz == null ? getClass() : clazz;
 
-        return services.computeIfAbsent(cls, c -> {
+        synchronized (services) {
 
-            log.debug("Creating executor : {}", c);
+            return services.computeIfAbsent(cls, c -> {
 
-            ThreadFactory factory = new ThreadFactoryImpl(c, delegate, this);
+                log.debug("Creating executor : {}", c);
 
-            return Executors.newSingleThreadExecutor(factory);
+                ThreadFactory factory = new ThreadFactoryImpl(c, delegate, this);
 
-        });
+                return Executors.newSingleThreadExecutor(factory);
+
+            });
+
+        }
 
     }
 
@@ -103,6 +111,5 @@ public class ExecutorFactoryImpl implements ExecutorFactory, UncaughtExceptionHa
     public void uncaughtException(Thread t, Throwable e) {
         log.warn("Uncaught exception : " + t.getName(), e);
     }
-
 
 }

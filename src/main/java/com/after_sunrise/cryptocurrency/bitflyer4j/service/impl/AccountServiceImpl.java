@@ -1,6 +1,7 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.service.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient.HttpRequest;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.Pagination;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.PathType;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.*;
@@ -14,6 +15,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+
 
 /**
  * @author takanori.takase
@@ -56,7 +58,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
     @Override
     public CompletableFuture<List<String>> getPermissions() {
 
-        HttpClient.HttpRequest req = new HttpClient.HttpRequest(PathType.PERMISSION);
+        HttpRequest req = HttpRequest.builder().type(PathType.PERMISSION).build();
 
         CompletableFuture<HttpClient.HttpResponse> future = client.request(req);
 
@@ -68,7 +70,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
     @Override
     public CompletableFuture<List<Balance>> getBalances() {
 
-        HttpClient.HttpRequest req = new HttpClient.HttpRequest(PathType.BALANCE);
+        HttpRequest req = HttpRequest.builder().type(PathType.BALANCE).build();
 
         CompletableFuture<HttpClient.HttpResponse> future = client.request(req);
 
@@ -79,7 +81,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
     @Override
     public CompletableFuture<Collateral> getCollateral() {
 
-        HttpClient.HttpRequest req = new HttpClient.HttpRequest(PathType.COLLATERAL);
+        HttpRequest req = HttpRequest.builder().type(PathType.COLLATERAL).build();
 
         CompletableFuture<HttpClient.HttpResponse> future = client.request(req);
 
@@ -90,7 +92,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
     @Override
     public CompletableFuture<List<Margin>> getMargins() {
 
-        HttpClient.HttpRequest req = new HttpClient.HttpRequest(PathType.MARGIN);
+        HttpRequest req = HttpRequest.builder().type(PathType.MARGIN).build();
 
         CompletableFuture<HttpClient.HttpResponse> future = client.request(req);
 
@@ -101,7 +103,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
     @Override
     public CompletableFuture<List<Address>> getAddresses() {
 
-        HttpClient.HttpRequest req = new HttpClient.HttpRequest(PathType.ADDRESS);
+        HttpRequest req = HttpRequest.builder().type(PathType.ADDRESS).build();
 
         CompletableFuture<HttpClient.HttpResponse> future = client.request(req);
 
@@ -114,7 +116,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
 
         Map<String, String> params = prepareParameter(pagination);
 
-        HttpClient.HttpRequest req = new HttpClient.HttpRequest(PathType.COIN_IN, params);
+        HttpRequest req = HttpRequest.builder().type(PathType.COIN_IN).parameters(params).build();
 
         CompletableFuture<HttpClient.HttpResponse> future = client.request(req);
 
@@ -127,7 +129,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
 
         Map<String, String> params = prepareParameter(pagination);
 
-        HttpClient.HttpRequest req = new HttpClient.HttpRequest(PathType.COIN_OUT, params);
+        HttpRequest req = HttpRequest.builder().type(PathType.COIN_OUT).parameters(params).build();
 
         CompletableFuture<HttpClient.HttpResponse> future = client.request(req);
 
@@ -138,7 +140,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
     @Override
     public CompletableFuture<List<Bank>> getBanks() {
 
-        HttpClient.HttpRequest req = new HttpClient.HttpRequest(PathType.BANK);
+        HttpRequest req = HttpRequest.builder().type(PathType.BANK).build();
 
         CompletableFuture<HttpClient.HttpResponse> future = client.request(req);
 
@@ -151,7 +153,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
 
         Map<String, String> params = prepareParameter(pagination);
 
-        HttpClient.HttpRequest req = new HttpClient.HttpRequest(PathType.DEPOSIT, params);
+        HttpRequest req = HttpRequest.builder().type(PathType.DEPOSIT).parameters(params).build();
 
         CompletableFuture<HttpClient.HttpResponse> future = client.request(req);
 
@@ -162,7 +164,9 @@ public class AccountServiceImpl extends BaseService implements AccountService {
     @Override
     public CompletableFuture<Withdraw.Response> withdraw(Withdraw request) {
 
-        HttpClient.HttpRequest req = new HttpClient.HttpRequest(PathType.WITHDRAW, gson.toJson(request));
+        String body = gson.toJson(request);
+
+        HttpRequest req = HttpRequest.builder().type(PathType.WITHDRAW).body(body).build();
 
         CompletableFuture<HttpClient.HttpResponse> future = client.request(req);
 
@@ -175,7 +179,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
 
         Map<String, String> params = prepareParameter(pagination);
 
-        HttpClient.HttpRequest req = new HttpClient.HttpRequest(PathType.WITHDRAWAL, params);
+        HttpRequest req = HttpRequest.builder().type(PathType.WITHDRAWAL).parameters(params).build();
 
         CompletableFuture<HttpClient.HttpResponse> future = client.request(req);
 

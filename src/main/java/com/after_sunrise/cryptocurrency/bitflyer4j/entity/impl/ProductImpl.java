@@ -2,31 +2,22 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Entity;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Product;
-import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
  * @author takanori.takase
  * @version 0.0.1
  */
+@Getter
+@AllArgsConstructor
 public class ProductImpl extends Entity implements Product {
 
     @SerializedName("product_code")
-    @VisibleForTesting
-    String product;
+    private final String product;
 
     @SerializedName("alias")
-    @VisibleForTesting
-    String alias;
-
-    @Override
-    public String getProduct() {
-        return product;
-    }
-
-    @Override
-    public String getAlias() {
-        return alias;
-    }
+    private final String alias;
 
 }

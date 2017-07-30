@@ -2,8 +2,9 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Entity;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Tick;
-import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -12,114 +13,44 @@ import java.time.ZonedDateTime;
  * @author takanori.takase
  * @version 0.0.1
  */
+@Getter
+@AllArgsConstructor
 public class TickImpl extends Entity implements Tick {
 
     @SerializedName("product_code")
-    @VisibleForTesting
-    String product;
+    private final String product;
 
     @SerializedName("timestamp")
-    @VisibleForTesting
-    ZonedDateTime timestamp;
+    private final ZonedDateTime timestamp;
 
     @SerializedName("tick_id")
-    @VisibleForTesting
-    Long id;
+    private final Long id;
 
     @SerializedName("best_ask")
-    @VisibleForTesting
-    BigDecimal bestAskPrice;
+    private final BigDecimal bestAskPrice;
 
     @SerializedName("best_ask_size")
-    @VisibleForTesting
-    BigDecimal bestAskSize;
+    private final BigDecimal bestAskSize;
 
     @SerializedName("best_bid")
-    @VisibleForTesting
-    BigDecimal bestBidPrice;
+    private final BigDecimal bestBidPrice;
 
     @SerializedName("best_bid_size")
-    @VisibleForTesting
-    BigDecimal bestBidSize;
+    private final BigDecimal bestBidSize;
 
     @SerializedName("total_ask_depth")
-    @VisibleForTesting
-    BigDecimal totalAskDepth;
+    private final BigDecimal totalAskDepth;
 
     @SerializedName("total_bid_depth")
-    @VisibleForTesting
-    BigDecimal totalBidDepth;
+    private final BigDecimal totalBidDepth;
 
     @SerializedName("ltp")
-    @VisibleForTesting
-    BigDecimal tradePrice;
+    private final BigDecimal tradePrice;
 
     @SerializedName("volume")
-    @VisibleForTesting
-    BigDecimal tradeVolume;
+    private final BigDecimal tradeVolume;
 
     @SerializedName("volume_by_product")
-    @VisibleForTesting
-    BigDecimal productVolume;
-
-    @Override
-    public String getProduct() {
-        return product;
-    }
-
-    @Override
-    public ZonedDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public BigDecimal getBestAskPrice() {
-        return bestAskPrice;
-    }
-
-    @Override
-    public BigDecimal getBestAskSize() {
-        return bestAskSize;
-    }
-
-    @Override
-    public BigDecimal getBestBidPrice() {
-        return bestBidPrice;
-    }
-
-    @Override
-    public BigDecimal getBestBidSize() {
-        return bestBidSize;
-    }
-
-    @Override
-    public BigDecimal getTotalAskDepth() {
-        return totalAskDepth;
-    }
-
-    @Override
-    public BigDecimal getTotalBidDepth() {
-        return totalBidDepth;
-    }
-
-    @Override
-    public BigDecimal getTradePrice() {
-        return tradePrice;
-    }
-
-    @Override
-    public BigDecimal getTradeVolume() {
-        return tradeVolume;
-    }
-
-    @Override
-    public BigDecimal getProductVolume() {
-        return productVolume;
-    }
+    private final BigDecimal productVolume;
 
 }

@@ -2,6 +2,7 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.core;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.io.Resources;
+import lombok.Getter;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.SystemConfiguration;
 import org.apache.commons.configuration2.builder.fluent.Configurations;
@@ -43,8 +44,10 @@ public enum ConfigurationType implements Supplier<Optional<Configuration>> {
      */
     SITE("bitflyer4j-site.properties");
 
+    @Getter
     private final String path;
 
+    @Getter
     private final String parentPath;
 
     ConfigurationType() {
@@ -58,14 +61,6 @@ public enum ConfigurationType implements Supplier<Optional<Configuration>> {
     ConfigurationType(String path, String parentPath) {
         this.path = path;
         this.parentPath = parentPath;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public String getParentPath() {
-        return parentPath;
     }
 
     @Override

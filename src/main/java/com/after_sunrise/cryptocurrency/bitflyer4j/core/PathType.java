@@ -1,5 +1,7 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.core;
 
+import lombok.Getter;
+
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.MethodType.GET;
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.MethodType.POST;
 
@@ -65,10 +67,13 @@ public enum PathType {
 
     TRADE_COMMISSION("/v1/me/getexecutions");
 
+    @Getter
     private final String path;
 
+    @Getter
     private final boolean sign;
 
+    @Getter
     private final MethodType method;
 
     PathType(String path) {
@@ -87,18 +92,6 @@ public enum PathType {
         this.path = path;
         this.sign = sign;
         this.method = method;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public boolean isSign() {
-        return sign;
-    }
-
-    public MethodType getMethod() {
-        return method;
     }
 
 }
