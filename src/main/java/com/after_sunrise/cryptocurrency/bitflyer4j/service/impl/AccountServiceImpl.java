@@ -1,7 +1,7 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.service.impl;
 
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient.HttpRequest;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient.HttpResponse;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.Pagination;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.PathType;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.*;
@@ -60,7 +60,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.PERMISSION).build();
 
-        CompletableFuture<HttpClient.HttpResponse> future = client.request(req);
+        CompletableFuture<HttpResponse> future = client.request(req);
 
         return future.thenApply(s -> gson.fromJson(s.getBody(), TYPE_STRINGS));
 
@@ -72,7 +72,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.BALANCE).build();
 
-        CompletableFuture<HttpClient.HttpResponse> future = client.request(req);
+        CompletableFuture<HttpResponse> future = client.request(req);
 
         return future.thenApply(s -> gson.fromJson(s.getBody(), TYPE_BALANCES));
 
@@ -83,7 +83,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.COLLATERAL).build();
 
-        CompletableFuture<HttpClient.HttpResponse> future = client.request(req);
+        CompletableFuture<HttpResponse> future = client.request(req);
 
         return future.thenApply(s -> gson.fromJson(s.getBody(), CollateralImpl.class));
 
@@ -94,7 +94,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.MARGIN).build();
 
-        CompletableFuture<HttpClient.HttpResponse> future = client.request(req);
+        CompletableFuture<HttpResponse> future = client.request(req);
 
         return future.thenApply(s -> gson.fromJson(s.getBody(), TYPE_MARGINS));
 
@@ -105,7 +105,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.ADDRESS).build();
 
-        CompletableFuture<HttpClient.HttpResponse> future = client.request(req);
+        CompletableFuture<HttpResponse> future = client.request(req);
 
         return future.thenApply(s -> gson.fromJson(s.getBody(), TYPE_ADDRESSES));
 
@@ -118,7 +118,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.COIN_IN).parameters(params).build();
 
-        CompletableFuture<HttpClient.HttpResponse> future = client.request(req);
+        CompletableFuture<HttpResponse> future = client.request(req);
 
         return future.thenApply(s -> gson.fromJson(s.getBody(), TYPE_COIN_INS));
 
@@ -131,7 +131,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.COIN_OUT).parameters(params).build();
 
-        CompletableFuture<HttpClient.HttpResponse> future = client.request(req);
+        CompletableFuture<HttpResponse> future = client.request(req);
 
         return future.thenApply(s -> gson.fromJson(s.getBody(), TYPE_COIN_OUTS));
 
@@ -142,7 +142,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.BANK).build();
 
-        CompletableFuture<HttpClient.HttpResponse> future = client.request(req);
+        CompletableFuture<HttpResponse> future = client.request(req);
 
         return future.thenApply(s -> gson.fromJson(s.getBody(), TYPE_BANKS));
 
@@ -155,7 +155,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.DEPOSIT).parameters(params).build();
 
-        CompletableFuture<HttpClient.HttpResponse> future = client.request(req);
+        CompletableFuture<HttpResponse> future = client.request(req);
 
         return future.thenApply(s -> gson.fromJson(s.getBody(), TYPE_DEPOSITS));
 
@@ -168,7 +168,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.WITHDRAW).body(body).build();
 
-        CompletableFuture<HttpClient.HttpResponse> future = client.request(req);
+        CompletableFuture<HttpResponse> future = client.request(req);
 
         return future.thenApply(s -> gson.fromJson(s.getBody(), Withdraw.Response.class));
 
@@ -181,7 +181,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.WITHDRAWAL).parameters(params).build();
 
-        CompletableFuture<HttpClient.HttpResponse> future = client.request(req);
+        CompletableFuture<HttpResponse> future = client.request(req);
 
         return future.thenApply(s -> gson.fromJson(s.getBody(), TYPE_WITHDRAWALS));
 

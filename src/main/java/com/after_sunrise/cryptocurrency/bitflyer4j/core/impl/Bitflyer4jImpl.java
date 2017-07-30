@@ -7,9 +7,8 @@ import com.after_sunrise.cryptocurrency.bitflyer4j.service.MarketService;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.OrderService;
 import com.google.inject.Injector;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.configuration2.Configuration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 
@@ -21,9 +20,8 @@ import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.VERSION;
  * @author takanori.takase
  * @version 0.0.1
  */
+@Slf4j
 public class Bitflyer4jImpl implements Bitflyer4j {
-
-    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Getter
     private final String version;

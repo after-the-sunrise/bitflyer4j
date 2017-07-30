@@ -17,22 +17,14 @@ import java.time.ZonedDateTime;
 @Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class TradeExecution extends Entity {
+public class TradePosition extends Entity {
 
     @SerializedName("product_code")
     private final String product;
 
-    @SerializedName("child_order_id")
-    private final String child_order_id;
-
-    @SerializedName("child_order_acceptance_id")
-    private final String child_order_acceptance_id;
-
     public interface Response {
 
-        Long getId();
-
-        String getOrderId();
+        String getProduct();
 
         SideType getSide();
 
@@ -42,9 +34,15 @@ public class TradeExecution extends Entity {
 
         BigDecimal getCommission();
 
-        ZonedDateTime getExecDate();
+        BigDecimal getSwapPoint();
 
-        String getAcceptanceId();
+        BigDecimal getRequiredCollateral();
+
+        ZonedDateTime getOpenDate();
+
+        BigDecimal getLeverage();
+
+        BigDecimal getProfitAndLoss();
 
     }
 

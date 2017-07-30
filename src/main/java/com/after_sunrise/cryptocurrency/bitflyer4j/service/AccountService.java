@@ -34,5 +34,4 @@ public interface AccountService {
 
     CompletableFuture<List<Withdrawal>> getWithdrawals(Pagination pagination);
 
-
 }
