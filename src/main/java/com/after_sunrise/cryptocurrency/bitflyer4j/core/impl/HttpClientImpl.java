@@ -1,7 +1,9 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.core.impl;
 
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.Environment;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.ExecutorFactory;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.MethodType;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.io.ByteStreams;
 import com.google.inject.Inject;
@@ -15,7 +17,10 @@ import org.apache.commons.lang3.StringUtils;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.Proxy;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.util.Map;
@@ -23,8 +28,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.*;
-import static java.lang.Integer.parseInt;
-import static java.net.Proxy.Type.HTTP;
 
 /**
  * @author takanori.takase
@@ -45,12 +48,16 @@ public class HttpClientImpl implements HttpClient {
 
     private final Configuration conf;
 
+    private final Environment environment;
+
     private final ExecutorService executor;
 
     @Inject
     public HttpClientImpl(Injector injector) {
 
         conf = injector.getInstance(Configuration.class);
+
+        environment = injector.getInstance(Environment.class);
 
         executor = injector.getInstance(ExecutorFactory.class).get(getClass());
 
@@ -102,27 +109,17 @@ public class HttpClientImpl implements HttpClient {
 
         URL url = createUrl(request.getType().getPath(), request.getParameters());
 
-        String proxyHost = HTTP_PROXY_HOST.apply(conf);
-
-        String proxyPort = HTTP_PROXY_PORT.apply(conf);
+        Proxy proxy = environment.getProxy();
 
         HttpURLConnection conn;
 
-        if (StringUtils.isNotEmpty(proxyHost) && StringUtils.isNotEmpty(proxyPort)) {
-
-            SocketAddress sa = new InetSocketAddress(proxyHost, parseInt(proxyPort));
-
-            conn = (HttpURLConnection) url.openConnection(new Proxy(HTTP, sa));
-
-            log.trace("Created connection : URL=[{}], Proxy=[{}]", url, sa);
-
-        } else {
-
+        if (proxy == null) {
             conn = (HttpURLConnection) url.openConnection();
-
-            log.trace("Created connection : URL=[{}]", url);
-
+        } else {
+            conn = (HttpURLConnection) url.openConnection(proxy);
         }
+
+        log.trace("Created connection : [{}] [{}]", url, proxy);
 
         return conn;
 
@@ -160,7 +157,15 @@ public class HttpClientImpl implements HttpClient {
     @VisibleForTesting
     HttpURLConnection configure(HttpURLConnection connection, HttpRequest request) throws IOException {
 
-        connection.setRequestMethod(request.getType().getMethod().get());
+        {
+
+            MethodType method = request.getType().getMethod();
+
+            connection.setRequestMethod(method.get());
+
+            log.trace("Configured method : {}", method);
+
+        }
 
         String timeout = HTTP_TIMEOUT.apply(conf);
 
@@ -172,13 +177,13 @@ public class HttpClientImpl implements HttpClient {
 
             connection.setReadTimeout(millis);
 
-            log.trace("Configured timeout : {}", millis);
+            log.trace("Configured timeouts : {} ms", millis);
 
         }
 
         if (request.getType().isSign()) {
 
-            String ts = computeTimestamp();
+            String ts = String.valueOf(environment.getTimeMillis() / TIME_PRECISION);
 
             String base = ts //
                     + request.getType().getMethod().get() //
@@ -215,15 +220,12 @@ public class HttpClientImpl implements HttpClient {
 
             connection.connect();
 
+            log.trace("Configured connect.");
+
         }
 
         return connection;
 
-    }
-
-    @VisibleForTesting
-    String computeTimestamp() {
-        return String.valueOf(System.currentTimeMillis() / TIME_PRECISION);
     }
 
     @VisibleForTesting
@@ -270,6 +272,10 @@ public class HttpClientImpl implements HttpClient {
 
     @VisibleForTesting
     HttpResponse receive(HttpURLConnection connection) throws IOException {
+
+        log.trace("Received Content-Type : ", connection.getContentType());
+
+        log.trace("Received Content-Length : ", connection.getContentLengthLong());
 
         try (InputStream in = connection.getInputStream()) {
 

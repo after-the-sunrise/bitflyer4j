@@ -87,7 +87,7 @@ Currently implemented paths are as follows:
     - [x] Margin Change History `/v1/me/getmycollateralhistory`
     - [x] Trading Commission `/v1/me/gettradingcommission`
 - Realtime API
-  - [ ] Order Book Snapshot `lightning_board_snapshot_*`
+  - [x] Order Book Snapshot `lightning_board_snapshot_*`
   - [ ] Order Book Update `lightning_board_*`
   - [ ] Ticker `lightning_ticker_*`
   - [ ] Execution `lightning_executions_*`

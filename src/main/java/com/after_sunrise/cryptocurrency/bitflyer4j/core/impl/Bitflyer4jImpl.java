@@ -5,7 +5,9 @@ import com.after_sunrise.cryptocurrency.bitflyer4j.core.ExecutorFactory;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.AccountService;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.MarketService;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.OrderService;
+import com.after_sunrise.cryptocurrency.bitflyer4j.service.RealtimeService;
 import com.google.inject.Injector;
+import com.pubnub.api.PubNub;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.configuration2.Configuration;
@@ -30,6 +32,9 @@ public class Bitflyer4jImpl implements Bitflyer4j {
     private final ExecutorFactory executorFactory;
 
     @Getter
+    private final PubNub pubNub;
+
+    @Getter
     private final MarketService marketService;
 
     @Getter
@@ -38,16 +43,23 @@ public class Bitflyer4jImpl implements Bitflyer4j {
     @Getter
     private final OrderService orderService;
 
+    @Getter
+    private final RealtimeService realtimeService;
+
     @Inject
     public Bitflyer4jImpl(Injector injector) {
 
         executorFactory = injector.getInstance(ExecutorFactory.class);
+
+        pubNub = injector.getInstance(PubNub.class);
 
         marketService = injector.getInstance(MarketService.class);
 
         accountService = injector.getInstance(AccountService.class);
 
         orderService = injector.getInstance(OrderService.class);
+
+        realtimeService = injector.getInstance(RealtimeService.class);
 
         version = VERSION.apply(injector.getInstance(Configuration.class));
 
@@ -59,6 +71,8 @@ public class Bitflyer4jImpl implements Bitflyer4j {
     public void close() throws Exception {
 
         executorFactory.shutdown();
+
+        pubNub.destroy();
 
         log.info("Terminated.");
 

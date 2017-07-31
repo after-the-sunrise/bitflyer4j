@@ -73,13 +73,15 @@ public class GsonProvider implements Provider<Gson> {
 
                 Map<String, Enum<?>> map = new LinkedHashMap<>();
 
-                for (Object o : ((Class<?>) t).getEnumConstants()) {
+                for (Object o : ((Class<?>) type).getEnumConstants()) {
 
                     Enum<?> element = (Enum<?>) o;
 
                     map.put(element.name(), element);
 
                 }
+
+                log.trace("Cached constants : {}", type);
 
                 return map;
 

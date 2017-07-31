@@ -21,7 +21,7 @@ import java.util.concurrent.CompletableFuture;
  * @author takanori.takase
  * @version 0.0.1
  */
-public class AccountServiceImpl extends BaseService implements AccountService {
+public class AccountServiceImpl extends HttpService implements AccountService {
 
     private static final Type TYPE_STRINGS = new TypeToken<List<String>>() {
     }.getType();

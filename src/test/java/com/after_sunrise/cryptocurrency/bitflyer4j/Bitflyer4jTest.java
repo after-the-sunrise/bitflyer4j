@@ -1,13 +1,18 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j;
 
+import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Board;
+import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Execution;
+import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Tick;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Withdraw;
-import com.after_sunrise.cryptocurrency.bitflyer4j.service.AccountService;
-import com.after_sunrise.cryptocurrency.bitflyer4j.service.MarketService;
-import com.after_sunrise.cryptocurrency.bitflyer4j.service.OrderService;
+import com.after_sunrise.cryptocurrency.bitflyer4j.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static java.math.BigDecimal.ONE;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * @author takanori.takase
@@ -82,6 +87,29 @@ public class Bitflyer4jTest {
             OrderService orderService = api.getOrderService();
 
             LOG.info("Orders : {}", orderService.listOrders(null, null).get());
+
+            RealtimeService realtimeService = api.getRealtimeService();
+
+            realtimeService.addListener(new RealtimeListener() {
+                @Override
+                public void onBoards(List<Board> values) {
+                    LOG.info("Realtime : {}", values);
+                }
+
+                @Override
+                public void onTicks(List<Tick> values) {
+                    LOG.info("Realtime : {}", values);
+                }
+
+                @Override
+                public void onExecutions(List<Execution> values) {
+                    LOG.info("Realtime : {}", values);
+                }
+            });
+
+            realtimeService.subscribeBoard(Arrays.asList("BTC_JPY"));
+
+            Thread.sleep(SECONDS.toMillis(10L));
 
         } catch (Exception e) {
 

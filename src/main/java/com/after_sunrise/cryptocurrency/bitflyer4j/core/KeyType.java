@@ -48,6 +48,13 @@ public enum KeyType implements Function<Configuration, String> {
     HTTP_URL("https://api.bitflyer.jp"),
 
     /**
+     * HTTP proxy type.
+     *
+     * @see java.net.Proxy.Type
+     */
+    HTTP_PROXY_TYPE(null),
+
+    /**
      * HTTP proxy host.
      */
     HTTP_PROXY_HOST(null),
@@ -128,10 +135,10 @@ public enum KeyType implements Function<Configuration, String> {
     public String apply(Configuration configuration) {
 
         if (configuration == null) {
-            return getDefaultValue();
+            return defaultValue;
         }
 
-        return configuration.getString(getKey(), getDefaultValue());
+        return configuration.getString(key, defaultValue);
 
     }
 

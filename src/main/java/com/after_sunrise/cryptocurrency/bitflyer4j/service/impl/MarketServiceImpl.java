@@ -23,10 +23,7 @@ import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
  * @author takanori.takase
  * @version 0.0.1
  */
-public class MarketServiceImpl extends BaseService implements MarketService {
-
-    private static final Type TYPE_STRINGS = new TypeToken<List<String>>() {
-    }.getType();
+public class MarketServiceImpl extends HttpService implements MarketService {
 
     private static final Type TYPE_PRODUCTS = new TypeToken<List<ProductImpl>>() {
     }.getType();

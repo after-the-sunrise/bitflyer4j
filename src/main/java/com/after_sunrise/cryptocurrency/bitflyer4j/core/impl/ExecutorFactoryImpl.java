@@ -70,7 +70,7 @@ public class ExecutorFactoryImpl implements ExecutorFactory, UncaughtExceptionHa
 
                 Entry<Class<?>, ExecutorService> entry = itr.next();
 
-                log.debug("Terminating executor : {}", entry.getKey());
+                log.debug("Terminating executor : {}", entry.getKey().getSimpleName());
 
                 entry.getValue().shutdown();
 
@@ -93,7 +93,7 @@ public class ExecutorFactoryImpl implements ExecutorFactory, UncaughtExceptionHa
 
             return services.computeIfAbsent(cls, c -> {
 
-                log.debug("Creating executor : {}", c);
+                log.debug("Creating executor : {}", c.getSimpleName());
 
                 ThreadFactory factory = new ThreadFactoryImpl(c, delegate, this);
 

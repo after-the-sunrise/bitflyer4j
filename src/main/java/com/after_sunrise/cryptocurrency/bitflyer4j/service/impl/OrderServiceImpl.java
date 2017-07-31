@@ -20,7 +20,7 @@ import java.util.concurrent.CompletableFuture;
  * @author takanori.takase
  * @version 0.0.1
  */
-public class OrderServiceImpl extends BaseService implements OrderService {
+public class OrderServiceImpl extends HttpService implements OrderService {
 
     private static final Type TYPE_ORDERS = new TypeToken<List<OrderListResponse>>() {
     }.getType();

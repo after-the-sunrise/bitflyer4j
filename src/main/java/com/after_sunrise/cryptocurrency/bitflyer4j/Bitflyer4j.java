@@ -3,6 +3,7 @@ package com.after_sunrise.cryptocurrency.bitflyer4j;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.AccountService;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.MarketService;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.OrderService;
+import com.after_sunrise.cryptocurrency.bitflyer4j.service.RealtimeService;
 
 /**
  * Root of the API library.
@@ -19,5 +20,7 @@ public interface Bitflyer4j extends AutoCloseable {
     AccountService getAccountService();
 
     OrderService getOrderService();
+
+    RealtimeService getRealtimeService();
 
 }

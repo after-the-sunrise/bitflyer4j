@@ -20,7 +20,7 @@ import static java.util.Collections.singletonMap;
  * @author takanori.takase
  * @version 0.0.1
  */
-public class BaseService {
+class HttpService {
 
     static final Type TYPE_MAP = new TypeToken<Map<String, String>>() {
     }.getType();
@@ -35,7 +35,7 @@ public class BaseService {
 
     final Gson gson;
 
-    BaseService(Injector injector) {
+    HttpService(Injector injector) {
 
         client = injector.getInstance(HttpClient.class);
 
