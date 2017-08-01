@@ -6,14 +6,14 @@ import com.google.inject.Injector;
 import com.google.inject.Provider;
 import com.pubnub.api.PNConfiguration;
 import com.pubnub.api.PubNub;
+import com.pubnub.api.enums.PNReconnectionPolicy;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.Proxy;
 
-import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.HTTP_TIMEOUT;
-import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.PUBNUB_KEY;
+import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.*;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
@@ -51,15 +51,13 @@ public class PubNubProvider implements Provider<PubNub> {
 
         }
 
-        String timeout = HTTP_TIMEOUT.apply(conf);
+        String secure = PUBNUB_SECURE.apply(conf);
 
-        if (timeout != null) {
+        if (StringUtils.isNotEmpty(secure)) {
 
-            long sec = MILLISECONDS.toSeconds(Integer.parseInt(timeout));
+            pnc.setSecure(Boolean.valueOf(secure));
 
-            pnc.setConnectTimeout((int) sec);
-
-            log.debug("Configured timeout : {} sec", sec);
+            log.debug("Configured secure : {}", Boolean.valueOf(secure));
 
         }
 
@@ -70,6 +68,28 @@ public class PubNubProvider implements Provider<PubNub> {
             pnc.setProxy(proxy);
 
             log.debug("Configured proxy : {}", proxy);
+
+        }
+
+        String timeout = HTTP_TIMEOUT.apply(conf);
+
+        if (StringUtils.isNotEmpty(timeout)) {
+
+            long sec = MILLISECONDS.toSeconds(Integer.parseInt(timeout));
+
+            pnc.setConnectTimeout((int) sec);
+
+            log.debug("Configured timeout : {} sec", sec);
+
+        }
+
+        String reconnect = PUBNUB_RECONNECT.apply(conf);
+
+        if (StringUtils.isNotEmpty(reconnect)) {
+
+            pnc.setReconnectionPolicy(PNReconnectionPolicy.valueOf(reconnect));
+
+            log.debug("Configured reconnect : {}", reconnect);
 
         }
 

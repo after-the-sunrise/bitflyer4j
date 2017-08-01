@@ -83,14 +83,14 @@ Currently implemented paths are as follows:
     - [x] Parent Order List `/v1/me/getparentorders`
     - [x] Parent Order Detail `/v1/me/getparentorder`
     - [x] Executions `/v1/me/getexecutions`
-    - [x] Open Interest Summary `/v1/me/getpositions`
-    - [x] Margin Change History `/v1/me/getmycollateralhistory`
+    - [ ] Open Interest Summary `/v1/me/getpositions`
+    - [ ] Margin Change History `/v1/me/getmycollateralhistory`
     - [x] Trading Commission `/v1/me/gettradingcommission`
 - Realtime API
   - [x] Order Book Snapshot `lightning_board_snapshot_*`
   - [ ] Order Book Update `lightning_board_*`
-  - [ ] Ticker `lightning_ticker_*`
-  - [ ] Execution `lightning_executions_*`
+  - [x] Ticker `lightning_ticker_*`
+  - [x] Execution `lightning_executions_*`
 
 
 ### Private API Authentication
@@ -125,8 +125,9 @@ The variables are fetched by the library in the same manner as described previou
 
 ```properties:${HOME}/.bitflyer4j
 # HTTP Proxy
+bitflyer4j.http_proxy_type=HTTP
 bitflyer4j.http_proxy_host=127.0.0.1
-bitflyer4j.http_proxy_host=8080
+bitflyer4j.http_proxy_port=8080
 ```
 
 

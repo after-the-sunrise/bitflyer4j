@@ -1,9 +1,6 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j;
 
-import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Board;
-import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Execution;
-import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Tick;
-import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Withdraw;
+import com.after_sunrise.cryptocurrency.bitflyer4j.entity.*;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +22,8 @@ public class Bitflyer4jTest {
     private static final boolean GET = Boolean.valueOf(System.getProperty("bitflyer4j.test_get"));
 
     private static final boolean POST = Boolean.valueOf(System.getProperty("bitflyer4j.test_post"));
+
+    private static final String PRODUCT = "BTC_JPY";
 
     public static void main(String[] args) {
 
@@ -88,6 +87,21 @@ public class Bitflyer4jTest {
 
             LOG.info("Orders : {}", orderService.listOrders(null, null).get());
 
+            if (GET) {
+
+                LOG.info("Parents : {}", orderService.listParents(null, null).get());
+
+                LOG.info("Executions : {}", orderService.listExecutions(null, null).get());
+
+                TradeCommission tradeCommission = TradeCommission.builder().product(PRODUCT).build();
+                LOG.info("Commission : {}", orderService.getCommission(tradeCommission).get());
+
+                // 404 Not Found
+                orderService.listCollaterals(null, null);
+                orderService.listPositions(null, null);
+
+            }
+
             RealtimeService realtimeService = api.getRealtimeService();
 
             realtimeService.addListener(new RealtimeListener() {
@@ -107,9 +121,15 @@ public class Bitflyer4jTest {
                 }
             });
 
-            realtimeService.subscribeBoard(Arrays.asList("BTC_JPY"));
+            realtimeService.subscribeBoard(Arrays.asList(PRODUCT)).get();
+            realtimeService.subscribeExecution(Arrays.asList(PRODUCT)).get();
+            realtimeService.subscribeTick(Arrays.asList(PRODUCT)).get();
 
-            Thread.sleep(SECONDS.toMillis(10L));
+            Thread.sleep(SECONDS.toMillis(5L));
+
+            realtimeService.unsubscribeBoard(Arrays.asList(PRODUCT)).get();
+            realtimeService.unsubscribeExecution(Arrays.asList(PRODUCT)).get();
+            realtimeService.unsubscribeTick(Arrays.asList(PRODUCT)).get();
 
         } catch (Exception e) {
 

@@ -70,9 +70,9 @@ public class Bitflyer4jImpl implements Bitflyer4j {
     @Override
     public void close() throws Exception {
 
-        executorFactory.shutdown();
-
         pubNub.destroy();
+
+        executorFactory.shutdown();
 
         log.info("Terminated.");
 

@@ -64,6 +64,8 @@ public class ExecutorFactoryImpl implements ExecutorFactory, UncaughtExceptionHa
 
         synchronized (services) {
 
+            int count = 0;
+
             Iterator<Entry<Class<?>, ExecutorService>> itr = services.entrySet().iterator();
 
             while (itr.hasNext()) {
@@ -76,9 +78,11 @@ public class ExecutorFactoryImpl implements ExecutorFactory, UncaughtExceptionHa
 
                 itr.remove();
 
+                count++;
+
             }
 
-            log.debug("Terminated executors.");
+            log.debug("Terminated {} executors.", count);
 
         }
 

@@ -1,5 +1,6 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.core;
 
+import com.pubnub.api.enums.PNReconnectionPolicy;
 import lombok.Getter;
 import org.apache.commons.configuration2.Configuration;
 
@@ -106,7 +107,21 @@ public enum KeyType implements Function<Configuration, String> {
      *
      * @see <a href="https://lightning.bitflyer.jp/docs?lang=en#realtime-api">API Documentation</a>
      */
-    PUBNUB_KEY("sub-c-52a9ab50-291b-11e5-baaa-0619f8945a4f");
+    PUBNUB_KEY("sub-c-52a9ab50-291b-11e5-baaa-0619f8945a4f"),
+
+    /**
+     * PubNub reconnect policy.
+     *
+     * @see <a href="https://www.pubnub.com/docs/java-se-java/api-reference-publish-and-subscribe#subscribe">PubNub Reference</a>
+     */
+    PUBNUB_RECONNECT(PNReconnectionPolicy.LINEAR.name()),
+
+    /**
+     * PubNub SSL flag ("https://").
+     *
+     * @see <a href="https://www.pubnub.com/docs/java-se-java/api-reference-misc#reconnect">PubNub Reference</a>
+     */
+    PUBNUB_SECURE(true);
 
     private static final String PREFIX = "bitflyer4j.";
 

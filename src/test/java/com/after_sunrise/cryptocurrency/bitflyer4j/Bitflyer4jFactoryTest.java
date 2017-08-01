@@ -1,5 +1,6 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j;
 
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.ConfigurationType;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.testng.annotations.BeforeMethod;
@@ -47,8 +48,8 @@ public class Bitflyer4jFactoryTest {
 
         }
 
-        Configuration v = new Configurations().properties(getResource("bitflyer4j-version.properties"));
-        Configuration s = new Configurations().properties(getResource("bitflyer4j-site.properties"));
+        Configuration v = new Configurations().properties(getResource(ConfigurationType.VERSION.getPath()));
+        Configuration s = new Configurations().properties(getResource(ConfigurationType.SITE.getPath()));
 
         // 1st should be version.
         assertEquals(VERSION.apply(conf), v.getString(VERSION.getKey()));

@@ -66,7 +66,6 @@ public class AccountServiceImpl extends HttpService implements AccountService {
 
     }
 
-
     @Override
     public CompletableFuture<List<Balance>> getBalances() {
 
@@ -170,7 +169,7 @@ public class AccountServiceImpl extends HttpService implements AccountService {
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
-        return future.thenApply(s -> gson.fromJson(s.getBody(), Withdraw.Response.class));
+        return future.thenApply(s -> gson.fromJson(s.getBody(), WithdrawResponse.class));
 
     }
 

@@ -19,9 +19,10 @@ import com.pubnub.api.models.consumer.PNStatus;
 import com.pubnub.api.models.consumer.pubsub.PNMessageResult;
 import com.pubnub.api.models.consumer.pubsub.PNPresenceEventResult;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.lang.reflect.Type;
@@ -30,8 +31,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
+import static com.after_sunrise.cryptocurrency.bitflyer4j.core.Loggers.PubNubLogger;
 import static java.util.Collections.*;
 
 /**
@@ -55,6 +56,8 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
     private final Set<RealtimeListener> listeners = synchronizedSet(new HashSet<>());
 
     private final Map<String, Consumer<String>> subscriptions = new ConcurrentHashMap<>();
+
+    private final Logger clientLog = LoggerFactory.getLogger(PubNubLogger.class);
 
     private final Configuration configuration;
 
@@ -171,53 +174,99 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
     }
 
+
     @VisibleForTesting
     CompletableFuture<List<String>> subscribe(String prefix, List<String> products, Consumer<String> consumer) {
 
-        if (CollectionUtils.isEmpty(products)) {
+        return CompletableFuture.supplyAsync(() -> {
 
-            log.debug("Skipping empty subscription.");
+            List<String> channels = new ArrayList<>();
 
-            return CompletableFuture.completedFuture(products);
+            Optional.ofNullable(products).ifPresent(ids -> {
 
-        }
+                ids.stream().filter(StringUtils::isNotEmpty).forEach(id -> {
 
-        List<String> ids = products.stream() //
-                .filter(StringUtils::isNotEmpty) //
-                .map(i -> prefix + i) //
-                .collect(Collectors.toList());
+                    String channel = prefix + id;
+
+                    Consumer<String> previous = subscriptions.putIfAbsent(channel, consumer);
+
+                    if (previous != null) {
+
+                        log.debug("Already subscribed : {}", channel);
+
+                    } else {
+
+                        channels.add(channel);
+
+                    }
+
+                });
+
+            });
+
+            log.debug("Subscribing : {}", channels);
+
+            pubNub.subscribe().channels(channels).execute();
+
+            return unmodifiableList(channels);
+
+        }, executor);
+
+    }
+
+
+    @Override
+    public CompletableFuture<List<String>> unsubscribeBoard(List<String> products) {
+        return unsubscribe(CHANNEL_BOARD_SNAPSHOT, products);
+    }
+
+    @Override
+    public CompletableFuture<List<String>> unsubscribeTick(List<String> products) {
+        return unsubscribe(CHANNEL_TICK, products);
+    }
+
+    @Override
+    public CompletableFuture<List<String>> unsubscribeExecution(List<String> products) {
+        return unsubscribe(CHANNEL_EXEC, products);
+    }
+
+    @VisibleForTesting
+    CompletableFuture<List<String>> unsubscribe(String prefix, List<String> products) {
 
         return CompletableFuture.supplyAsync(() -> {
 
-            List<String> subscribed = new ArrayList<>(ids.size());
+            List<String> channels = new ArrayList<>();
 
-            for (String id : ids) {
+            Optional.ofNullable(products).ifPresent(ids -> {
 
-                Consumer<String> previous = subscriptions.putIfAbsent(id, consumer);
+                ids.stream().filter(StringUtils::isNotEmpty).forEach(id -> {
 
-                if (previous != null) {
+                    String channel = prefix + id;
 
-                    log.debug("Already subscribed : {}", id);
+                    Consumer<String> previous = subscriptions.remove(channel);
 
-                    continue;
+                    if (previous == null) {
 
-                }
+                        log.debug("Already unsubscribed : {}", channel);
 
-                subscribed.add(id);
+                    } else {
 
-            }
+                        channels.add(channel);
 
-            if (!subscribed.isEmpty()) {
+                    }
 
-                log.debug("Subscribing : {}", ids);
+                });
 
-                pubNub.subscribe().channels(subscribed).execute();
+            });
 
-            }
+            log.debug("Unsubscribing : {}", channels);
 
-            return subscribed;
+            pubNub.unsubscribe().channels(channels).execute();
+
+            return unmodifiableList(channels);
 
         }, executor);
+
 
     }
 
@@ -250,7 +299,9 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
         String json = message.getMessage().toString();
 
-        log.trace("Message update : {} - [{}]", channel, json);
+        log.trace("Message update : {} - {}", channel, json);
+
+        clientLog.trace("REC : [{}] [{}]", channel, json);
 
         executor.submit(() -> {
 
@@ -260,11 +311,11 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
                 if (c == null) {
 
-                    log.trace("Skipping update {} - [{}]", channel, json);
+                    log.trace("Skipping : {} - [{}]", channel, json);
 
                 } else {
 
-                    log.trace("Processing update {} - [{}]", channel, json);
+                    log.trace("Processing : {} - [{}]", channel, json);
 
                     c.accept(json);
 
@@ -272,7 +323,7 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
             } catch (RuntimeException e) {
 
-                String msg = "Failed to process update : {} - [{}] {}";
+                String msg = "Failed to process : {} - [{}] {}";
 
                 log.warn(msg, channel, json, e);
 

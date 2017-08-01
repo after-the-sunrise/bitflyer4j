@@ -1,9 +1,7 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.core.impl;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonParseException;
+import com.google.gson.*;
+import com.google.gson.annotations.SerializedName;
 import com.google.inject.Provider;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -35,17 +33,33 @@ public class GsonProvider implements Provider<Gson> {
 
         GsonBuilder builder = new GsonBuilder();
 
+        builder.setExclusionStrategies(new ExclusionStrategy() {
+            @Override
+            public boolean shouldSkipField(FieldAttributes f) {
+                return f.getAnnotation(SerializedName.class) == null;
+            }
+
+            @Override
+            public boolean shouldSkipClass(Class<?> clazz) {
+                return false;
+            }
+        });
+
         builder.registerTypeAdapter(ZonedDateTime.class, (JsonDeserializer<ZonedDateTime>) (j, t, c) -> {
 
             if (j.isJsonNull()) {
                 return null;
             }
 
+            // cf : "2017-01-23T12:34:56.789"
             String value = j.getAsString();
+
+            // Handle "Z" at the end : "2017-01-23T12:34:56.7890123Z"
+            String trimmed = StringUtils.removeEnd(value, "Z");
 
             try {
 
-                return ZonedDateTime.parse(value, DTF);
+                return ZonedDateTime.parse(trimmed, DTF);
 
             } catch (DateTimeParseException e) {
 
@@ -103,7 +117,11 @@ public class GsonProvider implements Provider<Gson> {
 
         });
 
-        return builder.create();
+        Gson gson = builder.create();
+
+        log.debug("Created Gson instance.");
+
+        return gson;
 
     }
 

@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 
 import java.net.URL;
 
+import static com.after_sunrise.cryptocurrency.bitflyer4j.core.ConfigurationType.SITE;
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.PUBNUB_KEY;
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.VERSION;
 import static org.testng.Assert.assertEquals;
@@ -21,7 +22,7 @@ public class KeyTypeTest {
     @Test
     public void test() throws ConfigurationException {
 
-        URL url = Resources.getResource("bitflyer4j-site.properties");
+        URL url = Resources.getResource(SITE.getPath());
 
         Configuration conf = new Configurations().properties(url);
 

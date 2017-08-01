@@ -1,9 +1,6 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.core.impl;
 
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.Environment;
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.ExecutorFactory;
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient;
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.MethodType;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.*;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.io.ByteStreams;
 import com.google.inject.Inject;
@@ -13,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -23,11 +22,13 @@ import java.net.Proxy;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.*;
+import static com.after_sunrise.cryptocurrency.bitflyer4j.core.Loggers.HttpLogger;
 
 /**
  * @author takanori.takase
@@ -46,9 +47,13 @@ public class HttpClientImpl implements HttpClient {
 
     private static final String ACCESS_SIGN = "ACCESS-SIGN";
 
+    private final Logger clientLog = LoggerFactory.getLogger(HttpLogger.class);
+
     private final Configuration conf;
 
     private final Environment environment;
+
+    private final Throttler throttler;
 
     private final ExecutorService executor;
 
@@ -59,6 +64,8 @@ public class HttpClientImpl implements HttpClient {
 
         environment = injector.getInstance(Environment.class);
 
+        throttler = injector.getInstance(Throttler.class);
+
         executor = injector.getInstance(ExecutorFactory.class).get(getClass());
 
     }
@@ -68,11 +75,11 @@ public class HttpClientImpl implements HttpClient {
 
         return CompletableFuture.completedFuture(request).thenComposeAsync(req -> {
 
+            throttle(req.getType());
+
             CompletableFuture<HttpResponse> f = new CompletableFuture<>();
 
             try {
-
-                log.debug("SEND : {}", req);
 
                 HttpURLConnection connection = createConnection(req);
 
@@ -82,8 +89,6 @@ public class HttpClientImpl implements HttpClient {
 
                     HttpResponse response = receive(connection);
 
-                    log.debug("RECV : {}", response);
-
                     f.complete(response);
 
                 } finally {
@@ -92,7 +97,7 @@ public class HttpClientImpl implements HttpClient {
 
             } catch (IOException e) {
 
-                log.debug("FAIL : {}", e.getMessage());
+                clientLog.trace("FAIL : {}", e.getMessage());
 
                 f.completeExceptionally(e);
 
@@ -105,7 +110,22 @@ public class HttpClientImpl implements HttpClient {
     }
 
     @VisibleForTesting
+    void throttle(PathType type) {
+
+        throttler.throttleAddress();
+
+        if (!type.isSign()) {
+            return;
+        }
+
+        throttler.throttlePrivate();
+
+    }
+
+    @VisibleForTesting
     HttpURLConnection createConnection(HttpRequest request) throws IOException {
+
+        log.trace("Creating connection : {}", request);
 
         URL url = createUrl(request.getType().getPath(), request.getParameters());
 
@@ -155,13 +175,13 @@ public class HttpClientImpl implements HttpClient {
     }
 
     @VisibleForTesting
-    HttpURLConnection configure(HttpURLConnection connection, HttpRequest request) throws IOException {
+    HttpURLConnection configure(HttpURLConnection conn, HttpRequest request) throws IOException {
 
         {
 
             MethodType method = request.getType().getMethod();
 
-            connection.setRequestMethod(method.get());
+            conn.setRequestMethod(method.get());
 
             log.trace("Configured method : {}", method);
 
@@ -173,65 +193,71 @@ public class HttpClientImpl implements HttpClient {
 
             int millis = Integer.parseInt(timeout);
 
-            connection.setConnectTimeout(millis);
+            conn.setConnectTimeout(millis);
 
-            connection.setReadTimeout(millis);
+            conn.setReadTimeout(millis);
 
             log.trace("Configured timeouts : {} ms", millis);
 
         }
+
+        String body = request.getBody();
 
         if (request.getType().isSign()) {
 
             String ts = String.valueOf(environment.getTimeMillis() / TIME_PRECISION);
 
             String base = ts //
-                    + request.getType().getMethod().get() //
-                    + request.getType().getPath() //
-                    + StringUtils.trimToEmpty(request.getBody());
+                    + conn.getRequestMethod() //
+                    + conn.getURL().getFile() //
+                    + StringUtils.trimToEmpty(body);
 
             String sign = computeHash(base);
 
             String authKey = AUTH_KEY.apply(conf);
 
-            connection.addRequestProperty(ACCESS_KEY, authKey);
-            connection.addRequestProperty(ACCESS_TIME, ts);
-            connection.addRequestProperty(ACCESS_SIGN, sign);
+            conn.addRequestProperty(ACCESS_KEY, authKey);
+            conn.addRequestProperty(ACCESS_TIME, ts);
+            conn.addRequestProperty(ACCESS_SIGN, sign);
 
-            log.trace("Configured signature : key=[{}], base=[{}], sign=[{}]", authKey, base, sign);
+            log.trace("Configured signature : key=[{}] time=[{}] sign=[{}]", authKey, ts, sign);
 
         }
 
-        if (StringUtils.isNotEmpty(request.getBody())) {
+        Map<String, List<String>> properties = conn.getRequestProperties();
 
-            connection.setDoOutput(true);
+        if (StringUtils.isNotEmpty(body)) {
 
-            InputStream in = new ByteArrayInputStream(request.getBody().getBytes());
+            conn.setDoOutput(true);
 
-            OutputStream out = new BufferedOutputStream(connection.getOutputStream());
+            OutputStream out = new BufferedOutputStream(conn.getOutputStream());
 
-            ByteStreams.copy(in, out);
+            ByteStreams.copy(new ByteArrayInputStream(body.getBytes()), out);
 
             out.flush();
 
-            log.trace("Configured body : {}", request.getBody());
+            out.close();
+
+            log.trace("Configured body : [{}]", body);
+
+            clientLog.trace("SEND : [{}] [{}] [{}]", conn.getURL(), properties, body);
 
         } else {
 
-            connection.connect();
+            conn.connect();
 
             log.trace("Configured connect.");
 
+            clientLog.trace("SEND : [{}] [{}]", conn.getURL(), properties);
+
         }
 
-        return connection;
+        return conn;
 
     }
 
     @VisibleForTesting
     String computeHash(String base) throws IOException {
-
-        byte[] hash;
 
         try {
 
@@ -241,21 +267,23 @@ public class HttpClientImpl implements HttpClient {
 
             mac.init(new SecretKeySpec(authSecret.getBytes(), ALGORITHM));
 
-            hash = mac.doFinal(base.getBytes());
+            byte[] hash = mac.doFinal(base.getBytes());
+
+            StringBuilder sb = new StringBuilder();
+
+            for (byte b : hash) {
+                sb.append(String.format("%02x", b & 0xff));
+            }
+
+            log.trace("Computed hash : [{}] -> [{}]", base, sb);
+
+            return sb.toString();
 
         } catch (GeneralSecurityException e) {
 
-            throw new IOException(e);
+            throw new IOException("Failed to compute hash.", e);
 
         }
-
-        StringBuilder sb = new StringBuilder();
-
-        for (byte b : hash) {
-            sb.append(String.format("%02x", b & 0xff));
-        }
-
-        return sb.toString();
 
     }
 
@@ -273,21 +301,25 @@ public class HttpClientImpl implements HttpClient {
     @VisibleForTesting
     HttpResponse receive(HttpURLConnection connection) throws IOException {
 
-        log.trace("Received Content-Type : ", connection.getContentType());
+        int code = connection.getResponseCode();
 
-        log.trace("Received Content-Length : ", connection.getContentLengthLong());
+        String message = connection.getResponseMessage();
 
         try (InputStream in = connection.getInputStream()) {
-
-            int code = connection.getResponseCode();
-
-            String message = connection.getResponseMessage();
 
             byte[] bytes = ByteStreams.toByteArray(in);
 
             String body = new String(bytes, StandardCharsets.UTF_8);
 
+            clientLog.trace("RECV : [{} {}] [{}]", code, message, body);
+
+            log.trace("Received : Headers=[{}] Body=[{}]", connection.getHeaderFields(), body);
+
             return new HttpResponseImpl(code, message, body);
+
+        } catch (IOException e) {
+
+            throw new IOException(String.format("%s %s", code, message), e);
 
         }
 

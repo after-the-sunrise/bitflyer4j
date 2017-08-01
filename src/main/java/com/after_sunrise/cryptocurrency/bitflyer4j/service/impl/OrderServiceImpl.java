@@ -51,7 +51,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
-        return future.thenApply(s -> gson.fromJson(s.getBody(), OrderCreate.Response.class));
+        return future.thenApply(s -> gson.fromJson(s.getBody(), OrderCreateResponse.class));
 
     }
 
@@ -64,7 +64,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
-        return future.thenApply(s -> gson.fromJson(s.getBody(), OrderCancel.Response.class));
+        return future.thenApply(s -> gson.fromJson(s.getBody(), OrderCancelResponse.class));
 
     }
 
@@ -77,7 +77,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
-        return future.thenApply(s -> gson.fromJson(s.getBody(), ParentCreate.Response.class));
+        return future.thenApply(s -> gson.fromJson(s.getBody(), ParentCreateResponse.class));
 
     }
 
@@ -90,7 +90,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
-        return future.thenApply(s -> gson.fromJson(s.getBody(), ParentCancel.Response.class));
+        return future.thenApply(s -> gson.fromJson(s.getBody(), ParentCancelResponse.class));
 
     }
 
@@ -146,7 +146,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
-        return future.thenApply(s -> gson.fromJson(s.getBody(), ProductCancel.Response.class));
+        return future.thenApply(s -> gson.fromJson(s.getBody(), ProductCancelResponse.class));
 
     }
 
@@ -204,7 +204,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
-        return future.thenApply(s -> gson.fromJson(s.getBody(), TradeCommission.Response.class));
+        return future.thenApply(s -> gson.fromJson(s.getBody(), TradeCommissionResponse.class));
 
     }
 

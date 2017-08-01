@@ -30,13 +30,31 @@
         </rollingPolicy>
     </appender>
 
-    <root level="DEBUG">
+    <appender name="PUBNUB" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] %msg%n</pattern>
+        </encoder>
+        <file>logs/bitflyer4j-pubnub.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/bitflyer4j-pubnub_%d{yyyy-MM-dd}.tar.gz</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <root level="INFO">
         <appender-ref ref="STDO"/>
         <appender-ref ref="FILE"/>
     </root>
 
-    <logger level="DEBUG" name="com.after_sunrise.cryptocurrency.bitflyer4j.core.impl.HttpClientImpl">
+    <logger level="DEBUG" name="com.after_sunrise.cryptocurrency.bitflyer4j"/>
+
+    <logger level="TRACE" additivity="false" name="com.after_sunrise.cryptocurrency.bitflyer4j.core.Loggers$HttpLogger">
         <appender-ref ref="HTTP"/>
+    </logger>
+
+    <logger level="TRACE" additivity="false"
+            name="com.after_sunrise.cryptocurrency.bitflyer4j.core.Loggers$PubNubLogger">
+        <appender-ref ref="PUBNUB"/>
     </logger>
 
 </configuration>

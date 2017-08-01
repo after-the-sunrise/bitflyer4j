@@ -67,7 +67,7 @@ public enum PathType {
 
     TRADE_COLLATERAL("/v1/me/getmycollateralhistory"),
 
-    TRADE_COMMISSION("/v1/me/getexecutions");
+    TRADE_COMMISSION("/v1/me/gettradingcommission");
 
     @Getter
     private final String path;

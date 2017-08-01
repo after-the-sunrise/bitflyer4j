@@ -2,6 +2,7 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.core.impl;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
+import com.google.gson.annotations.SerializedName;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -19,6 +20,15 @@ public class GsonProviderTest {
         HOGE, FOO_BAR;
     }
 
+    private static class TestEntity {
+
+        String foo;
+
+        @SerializedName("hoge")
+        String bar;
+
+    }
+
     private GsonProvider target;
 
     private Gson gson;
@@ -29,6 +39,17 @@ public class GsonProviderTest {
         target = new GsonProvider();
 
         gson = target.get();
+
+    }
+
+    @Test
+    public void testGet_Exclude() throws Exception {
+
+        TestEntity entity = new TestEntity();
+        entity.foo = "a";
+        entity.bar = "b";
+
+        assertEquals(gson.toJson(entity), "{\"hoge\":\"b\"}");
 
     }
 
@@ -47,6 +68,16 @@ public class GsonProviderTest {
         assertEquals(result.getMinute(), 34);
         assertEquals(result.getSecond(), 56);
         assertEquals(result.getNano(), 780 * 1000L * 1000L);
+
+        result = gson.fromJson("\"2017-04-14T12:34:56.7890123Z\"", ZonedDateTime.class);
+        assertEquals(result.getZone().getId(), "GMT");
+        assertEquals(result.getYear(), 2017);
+        assertEquals(result.getMonthValue(), 4);
+        assertEquals(result.getDayOfMonth(), 14);
+        assertEquals(result.getHour(), 12);
+        assertEquals(result.getMinute(), 34);
+        assertEquals(result.getSecond(), 56);
+        assertEquals(result.getNano(), 789_012_300);
 
         try {
             gson.fromJson("\"foo\"", ZonedDateTime.class);

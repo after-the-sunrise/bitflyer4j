@@ -1,9 +1,6 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j;
 
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.ConfigurationType;
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.Environment;
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.ExecutorFactory;
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.*;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.impl.*;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.AccountService;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.MarketService;
@@ -57,6 +54,8 @@ public class Bitflyer4jFactory {
                 bind(PubNub.class).toProvider(PubNubProvider.class).asEagerSingleton();
 
                 bind(Environment.class).to(EnvironmentImpl.class).asEagerSingleton();
+
+                bind(Throttler.class).to(ThrottlerImpl.class).asEagerSingleton();
 
                 bind(ExecutorFactory.class).to(ExecutorFactoryImpl.class).asEagerSingleton();
 

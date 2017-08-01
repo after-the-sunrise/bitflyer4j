@@ -19,4 +19,10 @@ public interface RealtimeService {
 
     CompletableFuture<List<String>> subscribeExecution(List<String> products);
 
+    CompletableFuture<List<String>> unsubscribeBoard(List<String> products);
+
+    CompletableFuture<List<String>> unsubscribeTick(List<String> products);
+
+    CompletableFuture<List<String>> unsubscribeExecution(List<String> products);
+
 }
