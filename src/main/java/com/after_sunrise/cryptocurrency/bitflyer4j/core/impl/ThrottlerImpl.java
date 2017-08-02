@@ -1,40 +1,45 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.core.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.Environment;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.ExecutorFactory;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.Throttler;
-import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Injector;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.configuration2.Configuration;
 
 import javax.inject.Inject;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.*;
+import static java.lang.Long.MIN_VALUE;
+import static java.lang.Long.parseLong;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 /**
  * @author takanori.takase
  * @version 0.0.1
  */
 @Slf4j
-public class ThrottlerImpl implements Throttler {
+public class ThrottlerImpl implements Throttler, Runnable {
 
-    private static final long TIMEOUT = SECONDS.toMillis(1L);
-
-    private final Map<KeyType, BlockingQueue<Long>> queues = new ConcurrentHashMap<>();
-
-    private final ReentrantLock removeLock = new ReentrantLock();
+    private final Map<KeyType, BlockingQueue<AtomicLong>> queues = new ConcurrentHashMap<>();
 
     private final Configuration conf;
 
     private final Environment environment;
+
+    private final ExecutorService executor;
 
     @Inject
     public ThrottlerImpl(Injector injector) {
@@ -43,98 +48,128 @@ public class ThrottlerImpl implements Throttler {
 
         this.environment = injector.getInstance(Environment.class);
 
+        this.executor = injector.getInstance(ExecutorFactory.class).get(getClass());
+
+        this.executor.submit(this);
+
+    }
+
+    @Override
+    public void run() {
+
+        try {
+
+            while (!executor.isShutdown()) {
+
+                Instant now = Instant.ofEpochMilli(environment.getTimeMillis());
+
+                Duration interval = Duration.ofMillis(parseLong(HTTP_LIMIT_INTERVAL.apply(conf)));
+
+                Instant cutoff = now.minus(interval);
+
+                log.trace("Cleaning : Now=[{}] Interval=[{}] Cutoff=[{}]", now, interval, cutoff);
+
+                SortedSet<Instant> times = new TreeSet<>();
+
+                queues.forEach((k, v) -> {
+
+                    while (!v.isEmpty()) {
+
+                        long time = v.peek().get();
+
+                        if (time == MIN_VALUE) {
+                            break; // Race Condition with "AtomicLong#set(long)"
+                        }
+
+                        if (time >= cutoff.toEpochMilli()) {
+
+                            times.add(Instant.ofEpochMilli(time));
+
+                            break; // Not expired yet.
+
+                        }
+
+                        AtomicLong al = v.remove();
+
+                        log.trace("Cleared : {} - {} ", k, al);
+
+                    }
+
+                });
+
+                Instant earliest = times.isEmpty() ? now : times.first();
+
+                Duration sleep = Duration.between(now, earliest.plus(interval));
+
+                log.trace("Scheduling next clean : {}", sleep);
+
+                NANOSECONDS.sleep(sleep.toNanos());
+
+            }
+
+        } catch (InterruptedException e) {
+
+            log.warn("Cleaning interrupted.");
+
+        }
+
     }
 
     @Override
     public void throttleAddress() {
-
-        log.trace("Throttling address.");
-
         throttle(HTTP_LIMIT_CRITERIA_ADDRESS);
-
     }
 
     @Override
     public void throttlePrivate() {
-
-        log.trace("Throttling private.");
-
         throttle(HTTP_LIMIT_CRITERIA_PRIVATE);
-
     }
 
     @Override
     public void throttleDormant() {
-
-        log.trace("Throttling dormant.");
-
         throttle(HTTP_LIMIT_CRITERIA_DORMANT);
-
     }
 
-    @VisibleForTesting
-    void throttle(KeyType type) {
+    private void throttle(KeyType type) {
 
-        BlockingQueue<Long> queue = queues.computeIfAbsent(type, t -> {
+        try {
 
-            String size = t.apply(conf);
+            log.trace("Throttling {}", type);
 
-            return new LinkedBlockingQueue<>(Integer.parseInt(size));
+            BlockingQueue<AtomicLong> queue = queues.computeIfAbsent(type, t -> {
 
-        });
+                String size = t.apply(conf);
 
-        while (true) {
+                log.debug("Capacity : {} - {}", t, size);
 
-            long now = environment.getTimeMillis();
+                return new LinkedBlockingQueue<>(Integer.parseInt(size));
 
-            try {
+            });
 
-                boolean result = queue.offer(now, TIMEOUT, MILLISECONDS);
+            long timeout = parseLong(HTTP_LIMIT_INTERVAL.apply(conf));
 
-                if (result) {
-                    break;
-                }
+            // Do not set the current time yet.
+            AtomicLong ref = new AtomicLong(MIN_VALUE);
 
-            } catch (InterruptedException e) {
+            while (!queue.offer(ref, timeout, MILLISECONDS)) {
 
-                log.warn("Aborting throttle : {}", type);
-
-                break;
+                log.trace("Pending... {}", type);
 
             }
 
-            long interval = Long.parseLong(HTTP_LIMIT_INTERVAL.apply(conf));
+            // Only set when the throttle finishes.
+            ref.set(environment.getTimeMillis());
 
-            log.trace("Cleaning queue : Now={}, Interval=[{}]", now, interval);
+            log.trace("Throttled : {} - {}", type, ref);
 
-            try {
+        } catch (Exception e) {
 
-                removeLock.lock();
+            // Could be :
+            // 1. Capacity is not a number. (NumberFormatException)
+            // 2. Interval is not a number. (NumberFormatException)
+            // 3. Interrupted.
 
-                while (queue.remainingCapacity() <= 0) {
-
-                    Long head = queue.peek();
-
-                    if (head == null) {
-                        break;
-                    }
-
-                    if (head >= (now - interval)) {
-                        break;
-                    }
-
-                    queue.poll();
-
-                    log.trace("Removed queue item : {}", head);
-
-                }
-
-                log.trace("Cleaned queue : RemainingCapacity=[{}]", queue.remainingCapacity());
-
-            } finally {
-                removeLock.unlock();
-            }
-
+            log.warn("Bypassed : {} - {}", type, e);
 
         }
 

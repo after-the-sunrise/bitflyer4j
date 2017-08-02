@@ -31,7 +31,7 @@ public class Bitflyer4jImplTest {
 
         module = new TestModule();
 
-        module.setProperty(VERSION.getKey(), getClass().getSimpleName());
+        module.setProperty(VERSION, getClass().getSimpleName());
 
         target = new Bitflyer4jImpl(module.createInjector());
 

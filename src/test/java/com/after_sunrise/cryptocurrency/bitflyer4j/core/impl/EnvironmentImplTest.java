@@ -63,7 +63,7 @@ public class EnvironmentImplTest {
     @Test
     public void testGetProxy_Direct() throws Exception {
 
-        module.setProperty(HTTP_PROXY_TYPE.getKey(), DIRECT.name());
+        module.setProperty(HTTP_PROXY_TYPE, DIRECT.name());
 
         assertSame(target.getProxy(), Proxy.NO_PROXY);
         assertSame(target.getProxy(), Proxy.NO_PROXY);
@@ -74,9 +74,9 @@ public class EnvironmentImplTest {
     @Test
     public void testGetProxy_Http() throws Exception {
 
-        module.setProperty(HTTP_PROXY_TYPE.getKey(), HTTP.name());
-        module.setProperty(HTTP_PROXY_HOST.getKey(), "localhost");
-        module.setProperty(HTTP_PROXY_PORT.getKey(), "65535");
+        module.setProperty(HTTP_PROXY_TYPE, HTTP.name());
+        module.setProperty(HTTP_PROXY_HOST, "localhost");
+        module.setProperty(HTTP_PROXY_PORT, "65535");
 
         Proxy p = target.getProxy();
         assertEquals(((InetSocketAddress) p.address()).getHostName(), "localhost");

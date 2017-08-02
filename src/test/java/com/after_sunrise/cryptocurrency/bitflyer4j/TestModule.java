@@ -1,6 +1,7 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.Environment;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType;
 import com.google.inject.Injector;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.ex.ConfigurationException;
@@ -27,31 +28,23 @@ public class TestModule {
 
         environment = mock(Environment.class);
 
-        doAnswer(invocation -> timestamp).when(environment).getTimeMillis();
+        doAnswer(invocation -> System.currentTimeMillis()).when(environment).getTimeMillis();
 
         mocks.put(Environment.class, environment);
 
-    }
-
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
     }
 
     public <T> T getMock(Class<T> clz) {
         return clz.cast(mocks.computeIfAbsent(clz, Mockito::mock));
     }
 
-    public void setProperty(String key, String value) {
+    public void setProperty(KeyType key, String value) {
 
         Configuration conf = getMock(Configuration.class);
 
-        when(conf.getString(key)).thenReturn(value);
+        when(conf.getString(key.getKey())).thenReturn(value);
 
-        when(conf.getString(eq(key), anyString())).thenReturn(value);
+        when(conf.getString(eq(key.getKey()), anyString())).thenReturn(value);
 
     }
 
