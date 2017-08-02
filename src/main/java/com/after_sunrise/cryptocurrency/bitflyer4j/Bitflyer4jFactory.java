@@ -17,8 +17,10 @@ import com.google.inject.Guice;
 import com.google.inject.Module;
 import com.pubnub.api.PubNub;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.configuration2.AbstractConfiguration;
 import org.apache.commons.configuration2.CompositeConfiguration;
 import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.event.EventSource;
 
 import java.util.Arrays;
 
@@ -41,13 +43,15 @@ public class Bitflyer4jFactory {
 
         log.info("Creating instance.");
 
-        final Configuration conf = createConfiguration();
+        final AbstractConfiguration conf = createConfiguration();
 
         Module module = new AbstractModule() {
             @Override
             protected void configure() {
 
                 bind(Configuration.class).toInstance(conf);
+
+                bind(EventSource.class).toInstance(conf);
 
                 bind(Gson.class).toProvider(GsonProvider.class).asEagerSingleton();
 
@@ -85,7 +89,7 @@ public class Bitflyer4jFactory {
      * @return Composite configuration instance.
      */
     @VisibleForTesting
-    Configuration createConfiguration() {
+    AbstractConfiguration createConfiguration() {
 
         CompositeConfiguration composite = new CompositeConfiguration();
 
