@@ -47,10 +47,6 @@ public class GsonProvider implements Provider<Gson> {
 
         builder.registerTypeAdapter(ZonedDateTime.class, (JsonDeserializer<ZonedDateTime>) (j, t, c) -> {
 
-            if (j.isJsonNull()) {
-                return null;
-            }
-
             // cf : "2017-01-23T12:34:56.789"
             String value = j.getAsString();
 
@@ -72,10 +68,6 @@ public class GsonProvider implements Provider<Gson> {
         });
 
         builder.registerTypeHierarchyAdapter(Enum.class, (JsonDeserializer<Enum<?>>) (j, t, c) -> {
-
-            if (j.isJsonNull()) {
-                return null;
-            }
 
             String value = j.getAsString();
 

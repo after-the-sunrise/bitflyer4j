@@ -283,7 +283,7 @@ public class HttpClientImpl implements HttpClient {
     }
 
     @Value
-    private static class HttpResponseImpl implements HttpResponse {
+    static class HttpResponseImpl implements HttpResponse {
 
         private final int code;
 

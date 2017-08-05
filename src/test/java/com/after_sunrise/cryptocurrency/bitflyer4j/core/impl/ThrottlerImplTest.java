@@ -78,7 +78,7 @@ public class ThrottlerImplTest {
     public void testThrottleAddress() throws Exception {
 
         // 3 batches (8 + 8 + 4) = 2 clean ups
-        testThrottle(target::throttleAddress, 20, ofMillis(800));
+        invoke(target::throttleAddress, 20, ofMillis(800));
 
     }
 
@@ -86,7 +86,7 @@ public class ThrottlerImplTest {
     public void testThrottlePrivate() throws Exception {
 
         // 3 batches (4 + 4 + 2) = 2 clean ups
-        testThrottle(target::throttlePrivate, 10, ofMillis(800));
+        invoke(target::throttlePrivate, 10, ofMillis(800));
 
     }
 
@@ -94,12 +94,11 @@ public class ThrottlerImplTest {
     public void testThrottleDormant() throws Exception {
 
         // 3 batches (2 + 2 + 1) = 2 clean ups
-        testThrottle(target::throttleDormant, 5, ofMillis(800));
+        invoke(target::throttleDormant, 5, ofMillis(800));
 
     }
 
-
-    private void testThrottle(Runnable method, int count, Duration time) throws InterruptedException {
+    private void invoke(Runnable method, int count, Duration time) throws InterruptedException {
 
         Instant start = Instant.now();
 
@@ -114,6 +113,15 @@ public class ThrottlerImplTest {
         Duration elapsed = between(start, Instant.now());
 
         assertTrue(elapsed.compareTo(time) >= 0, String.format("Elapsed %s > Throttle %s", elapsed, time));
+
+    }
+
+    @Test
+    public void testThrottle() {
+
+        Thread.currentThread().interrupt();
+
+        target.throttle("fpo", () -> 1);
 
     }
 

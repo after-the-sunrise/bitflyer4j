@@ -4,6 +4,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,21 +45,17 @@ public class ExecutorFactoryImplTest {
 
             Class<?> c = cls == null ? target.getClass() : cls;
 
-            assertEquals(es.submit(() -> {
-                return Thread.currentThread().getName();
-            }).get(), c.getSimpleName() + "_001");
+            assertEquals(es.submit(() -> Thread.currentThread().getName()).get(), c.getSimpleName() + "_001");
 
-            assertSame(es.submit(() -> {
-                return Thread.currentThread().getUncaughtExceptionHandler();
-            }).get(), target);
+            assertSame(es.submit(() -> Thread.currentThread().getUncaughtExceptionHandler()).get(), target);
 
-            assertTrue(es.submit(() -> {
-                return Thread.currentThread().isDaemon();
-            }).get());
+            assertTrue(es.submit(() -> Thread.currentThread().isDaemon()).get());
 
             es.submit(() -> {
                 throw new RuntimeException("Test Exception");
             });
+
+            es.submit(() -> "Wait Termination").get();
 
             assertSame(target.get(cls), es);
 
@@ -72,6 +69,11 @@ public class ExecutorFactoryImplTest {
 
         }
 
+    }
+
+    @Test
+    public void testUncaughtException() {
+        target.uncaughtException(Thread.currentThread(), new IOException("test"));
     }
 
 }

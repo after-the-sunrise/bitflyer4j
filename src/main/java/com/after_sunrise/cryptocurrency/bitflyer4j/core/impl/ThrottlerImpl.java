@@ -3,6 +3,7 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.core.impl;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.Environment;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.ExecutorFactory;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.Throttler;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Injector;
 import lombok.extern.slf4j.Slf4j;
 
@@ -122,8 +123,9 @@ public class ThrottlerImpl implements Throttler, Runnable {
         throttle("Dormant", environment::getHttpLimitDormant);
     }
 
+    @VisibleForTesting
+    void throttle(String key, Supplier<Integer> limitSupplier) {
 
-    private void throttle(String key, Supplier<Integer> limitSupplier) {
         try {
 
             log.trace("Throttling {}", key);
@@ -155,11 +157,6 @@ public class ThrottlerImpl implements Throttler, Runnable {
             log.trace("Throttled : {} - {}", key, ref);
 
         } catch (Exception e) {
-
-            // Could be :
-            // 1. Capacity is not a number. (NumberFormatException)
-            // 2. Interval is not a number. (NumberFormatException)
-            // 3. Interrupted.
 
             log.warn("Bypassed : {} - {}", key, e);
 

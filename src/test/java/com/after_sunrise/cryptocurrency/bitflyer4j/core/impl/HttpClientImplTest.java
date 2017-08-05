@@ -27,6 +27,7 @@ import javax.ws.rs.core.Context;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -380,13 +381,66 @@ public class HttpClientImplTest {
     }
 
     @Test(expectedExceptions = IOException.class)
-    public void testReceive_Failure() throws Exception {
+    public void testReceive_ReceiveFailure() throws Exception {
 
         HttpURLConnection conn = mock(HttpURLConnection.class);
 
         when(conn.getInputStream()).thenThrow(new IOException("test"));
 
         target.receive(conn);
+
+    }
+
+    @Test(expectedExceptions = IOException.class)
+    public void testReceive_InputFailure() throws Exception {
+
+        InputStream in = mock(InputStream.class);
+        when(in.read(any(byte[].class))).thenThrow(new IOException("test"));
+
+        HttpURLConnection conn = mock(HttpURLConnection.class);
+        when(conn.getInputStream()).thenReturn(in);
+
+        target.receive(conn);
+
+    }
+
+    @Test(expectedExceptions = IOException.class)
+    public void testReceive_CloseFailure() throws Exception {
+
+        InputStream in = mock(InputStream.class);
+        when(in.read(any(byte[].class))).thenThrow(new IOException("testread"));
+        doThrow(new IOException("testclose")).when(in).close();
+
+        HttpURLConnection conn = mock(HttpURLConnection.class);
+        when(conn.getInputStream()).thenReturn(in);
+
+        target.receive(conn);
+
+    }
+
+    @Test
+    public void testHttpResponse() {
+
+        HttpResponseImpl i0 = new HttpResponseImpl(200, null, null);
+        assertEquals(i0.toString(), "HttpClientImpl.HttpResponseImpl(code=200, message=null, body=null)");
+        assertEquals(i0.hashCode(), i0.hashCode());
+        assertEquals(i0.hashCode(), new HttpResponseImpl(200, null, null).hashCode());
+        assertTrue(i0.equals(i0));
+        assertTrue(i0.equals(new HttpResponseImpl(200, null, null)));
+        assertFalse(i0.equals(null));
+        assertFalse(i0.equals(""));
+
+        HttpResponseImpl i1 = new HttpResponseImpl(200, "m", "b");
+        assertEquals(i1.toString(), "HttpClientImpl.HttpResponseImpl(code=200, message=m, body=b)");
+        assertEquals(i1.hashCode(), i1.hashCode());
+        assertEquals(i1.hashCode(), new HttpResponseImpl(200, "m", "b").hashCode());
+        assertTrue(i1.equals(i1));
+        assertTrue(i1.equals(new HttpResponseImpl(200, "m", "b")));
+        assertFalse(i1.equals(null));
+        assertFalse(i1.equals(""));
+
+        assertFalse(i0.equals(i1));
+        assertFalse(i1.equals(i0));
 
     }
 
