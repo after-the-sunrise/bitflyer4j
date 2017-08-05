@@ -2,7 +2,7 @@
 
 ## Overview
 
-[bitflyer4j](https://github.com/after-the-sunrise/bitflyer4j) is a Java wrapper library for the [bitFlyer Lightning](https://lightning.bitflyer.jp/docs?lang=en) API.
+[bitflyer4j](https://github.com/after-the-sunrise/bitflyer4j) (bitFlyer for Java) is a Java wrapper library for the bitFlyer's [Lightning API](https://lightning.bitflyer.jp/docs?lang=en).
 
 
 ## Getting Started
@@ -22,7 +22,6 @@ Use Maven or Gradle to import the library and its dependencies.
 ### Sample Code
 
 Copy and paste the following code snippet in the ``main`` method, and run. 
-It will print the list of available products in the System console.
 
 ```java:Sample.java
 public class Sample {
@@ -43,7 +42,51 @@ public class Sample {
 For the full list of supported features, please refer to the interface definitions, such as ``MarketService``, ``AccountService`` and/or ``OrderService``.
 
 
-## Feature Sets
+## Features
+
+### Private API Authentication
+
+In order to use the [Private API](https://lightning.bitflyer.jp/docs?lang=en#http-private-api), 
+specify the following authentication variables:
+  * `bitflyer4j.auth_key`
+  * `bitflyer4j.auth_secret`
+
+By default, the library will try to retrieve the environment variables in the following priority:
+  1. Runtime properties. (`-Dbitflyer4j.auth_key=... -Dbitflyer4j.auth_secret=...`)
+  2. `${HOME}/.bitflyer4j` properties file.
+  3. `bitflyer4j-site.properties` file in the classpath.
+
+The library will scan from the top of the list, skipping the ones which are not available/accessible, 
+and will use the first one found per variable.
+
+Note that Confidential parameters shall only be stored privately, 
+preferably by using the local `${HOME}/.bitflyer4j` properties 
+file.  *DO NOT COMMIT, LOG, NOR DISSEMINATE THE CREDENTIALS.* 
+ 
+```properties:${HOME}/.bitflyer4j
+# Authentication
+bitflyer4j.auth_key=MY_KEY_HERE
+bitflyer4j.auth_secret=MY_SECRET_HERE
+```
+
+
+### Network Proxy
+
+In case if this library is to be used behind a network proxy, specify the following environment variables.
+The variables are fetched by the library in the same manner, as described previously in the authentication section.
+
+```properties:${HOME}/.bitflyer4j
+# HTTP Proxy
+bitflyer4j.http_proxy_type=HTTP
+bitflyer4j.http_proxy_host=127.0.0.1
+bitflyer4j.http_proxy_port=8080
+```
+
+
+### Other Configurations
+
+For the complete list of configurable parameters, refer to the `KeyType` javadoc.
+
 
 ### Endpoint Paths
 
@@ -91,46 +134,3 @@ Currently implemented paths are as follows:
   - [ ] Order Book Update `lightning_board_*`
   - [x] Ticker `lightning_ticker_*`
   - [x] Execution `lightning_executions_*`
-
-
-### Private API Authentication
-
-In order to use the [Private API](https://lightning.bitflyer.jp/docs?lang=en#http-private-api), 
-specify the authentication credentials as follows in the environment system variables:
-  * `bitflyer4j.auth_key`
-  * `bitflyer4j.auth_secret`
-
-By default, the library will try to retrieve the variables in the following priority:
-  1. System properties. (`-Dbitflyer4j.auth_key=... -Dbitflyer4j.auth_secret=...`)
-  2. `${HOME}/.bitflyer4j` properties file.
-  3. `bitflyer4j-site.properties` file in the classpath.
-
-The library will scan from the top of the list, skipping the files which are not available/accessible, 
-and will use the first one found per entry.
-
-Confidential parameters shall only be stored privately by using the local `${HOME}/.bitflyer4j` properties 
-file.  *DO NOT COMMIT/PUSH, LOG/PRINT, NOR EXPOSE/DISSEMINATE THE CREDENTIALS.* 
- 
-```properties:${HOME}/.bitflyer4j
-# Authentication
-bitflyer4j.auth_key=MY_KEY_HERE
-bitflyer4j.auth_secret=MY_SECRET_HERE
-```
-
-
-### Network Proxy
-
-In case if this library needs to be used behind a HTTP proxy, specify the following environmental variables.
-The variables are fetched by the library in the same manner as described previously in the authentication section.
-
-```properties:${HOME}/.bitflyer4j
-# HTTP Proxy
-bitflyer4j.http_proxy_type=HTTP
-bitflyer4j.http_proxy_host=127.0.0.1
-bitflyer4j.http_proxy_port=8080
-```
-
-
-### Other Configurations
-
-For the complete list of configurable parameters, refer to the `KeyType` javadoc.
