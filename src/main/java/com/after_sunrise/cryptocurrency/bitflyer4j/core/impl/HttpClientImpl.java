@@ -38,13 +38,13 @@ public class HttpClientImpl implements HttpClient {
 
     private static final long TIME_PRECISION = 1000L;
 
-    private static final String ALGORITHM = "HmacSHA256";
+    static final String ALGORITHM = "HmacSHA256";
 
-    private static final String ACCESS_KEY = "ACCESS-KEY";
+    static final String ACCESS_KEY = "ACCESS-KEY";
 
-    private static final String ACCESS_TIME = "ACCESS-TIMESTAMP";
+    static final String ACCESS_TIME = "ACCESS-TIMESTAMP";
 
-    private static final String ACCESS_SIGN = "ACCESS-SIGN";
+    static final String ACCESS_SIGN = "ACCESS-SIGN";
 
     private final Logger clientLog = LoggerFactory.getLogger(HttpLogger.class);
 

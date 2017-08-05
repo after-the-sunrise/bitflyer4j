@@ -25,16 +25,19 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Context;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.PathType.*;
+import static com.after_sunrise.cryptocurrency.bitflyer4j.core.impl.HttpClientImpl.*;
 import static com.google.common.io.ByteStreams.toByteArray;
 import static com.google.common.util.concurrent.MoreExecutors.newDirectExecutorService;
 import static java.net.HttpURLConnection.HTTP_ACCEPTED;
@@ -284,12 +287,12 @@ public class HttpClientImplTest {
     }
 
     @Test
-    public void testConfigure() throws Exception {
+    public void testConfigure_GET() throws Exception {
 
         HttpURLConnection conn = mock(HttpURLConnection.class);
+        when(module.getEnvironment().getTimeout()).thenReturn(null);
 
         HttpRequest request = HttpRequest.builder().type(HEALTH).build();
-
         conn = target.configure(conn, request);
 
         // Method
@@ -309,9 +312,44 @@ public class HttpClientImplTest {
     }
 
     @Test
+    public void testConfigure_POST() throws Exception {
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        HttpURLConnection conn = mock(HttpURLConnection.class);
+        when(conn.getRequestMethod()).thenReturn("HEAD");
+        when(conn.getURL()).thenReturn(new URL("http://localhost:" + getPort() + "/foo/bar?a=b"));
+        when(conn.getOutputStream()).thenReturn(out);
+        when(module.getEnvironment().getTimeout()).thenReturn(Duration.ofMillis(9876));
+        when(module.getEnvironment().getAuthKey()).thenReturn("testkey");
+        when(module.getEnvironment().getAuthSecret()).thenReturn("testsecret");
+
+        HttpRequest request = HttpRequest.builder().type(BALANCE).body("test").build();
+        conn = target.configure(conn, request);
+
+        // Method
+        verify(conn).setRequestMethod(request.getType().getMethod().name());
+
+        // Timeout
+        verify(conn).setConnectTimeout(9876);
+        verify(conn).setReadTimeout(9876);
+
+        // Request Property
+        verify(conn).addRequestProperty(ACCESS_KEY, "testkey");
+        verify(conn).addRequestProperty(ACCESS_TIME, "1234567890");
+        verify(conn).addRequestProperty(ACCESS_SIGN, "6e29ed1d31e7957c2f7277cc3d6dadab1f51e31759f392cb97e568fd42155f5f");
+
+        // Body
+        verify(conn).getOutputStream();
+        verify(conn, never()).connect();
+        assertEquals(new String(out.toByteArray()), request.getBody());
+
+    }
+
+    @Test
     public void testComputeHash() throws Exception {
 
-        String hash = target.computeHash("HmacSHA256", "foo");
+        String hash = target.computeHash(ALGORITHM, "foo");
 
         assertEquals(hash, "dc25fe75c43656c2a96a63801e089aec84d8fa4fba77ae7a24a52950b9779af9");
 
