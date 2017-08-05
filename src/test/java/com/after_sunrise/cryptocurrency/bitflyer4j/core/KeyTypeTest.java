@@ -1,17 +1,15 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.core;
 
-import com.google.common.io.Resources;
 import org.apache.commons.configuration2.Configuration;
-import org.apache.commons.configuration2.builder.fluent.Configurations;
+import org.apache.commons.configuration2.MapConfiguration;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.testng.annotations.Test;
 
-import java.net.URL;
+import java.util.HashMap;
 
-import static com.after_sunrise.cryptocurrency.bitflyer4j.core.ConfigurationType.SITE;
-import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.PUBNUB_KEY;
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.VERSION;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNull;
 
 /**
  * @author takanori.takase
@@ -22,19 +20,51 @@ public class KeyTypeTest {
     @Test
     public void test() throws ConfigurationException {
 
-        URL url = Resources.getResource(SITE.getPath());
-
-        Configuration conf = new Configurations().properties(url);
-
         // Null input.  (= Default value.)
         assertEquals(VERSION.fetch(null), VERSION.getDefaultValue());
 
-        // Retrieved from properties.
+        // Not found. (= Default value.)
+        Configuration conf = new MapConfiguration(new HashMap<>());
+        assertEquals(VERSION.fetch(conf), VERSION.getDefaultValue());
+
+        // Retrieved from properties. (Empty)
+        conf.setProperty(VERSION.getKey(), "");
+        assertNull(VERSION.fetch(conf));
+
+        // Retrieved from properties. (Configured)
+        conf.setProperty(VERSION.getKey(), "test");
         assertEquals(VERSION.fetch(conf), "test");
 
-        // Not found. (= Default value.)
-        assertEquals(PUBNUB_KEY.fetch(conf), PUBNUB_KEY.getDefaultValue());
+    }
+
+    @Test
+    public void testFetch_Unconfigured() throws ConfigurationException {
+
+        Configuration c = new MapConfiguration(new HashMap<>());
+
+        for (KeyType type : KeyType.values()) {
+
+            type.fetch(null);
+
+            type.fetch(c);
+
+        }
 
     }
-    
+
+    @Test
+    public void testFetch_Empty() throws ConfigurationException {
+
+        Configuration c = new MapConfiguration(new HashMap<>());
+
+        for (KeyType type : KeyType.values()) {
+            c.setProperty(type.getKey(), "");
+        }
+
+        for (KeyType type : KeyType.values()) {
+            assertNull(type.fetch(c));
+        }
+
+    }
+
 }

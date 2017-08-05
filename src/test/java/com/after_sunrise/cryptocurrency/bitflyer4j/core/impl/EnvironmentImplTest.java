@@ -15,6 +15,7 @@ import java.util.HashMap;
 
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.*;
 import static java.lang.Long.parseLong;
+import static java.net.Proxy.Type.DIRECT;
 import static java.net.Proxy.Type.SOCKS;
 import static java.time.Duration.ofMillis;
 import static org.testng.Assert.assertEquals;
@@ -89,6 +90,9 @@ public class EnvironmentImplTest {
         conf.setProperty(HTTP_PROXY_HOST.getKey(), "");
         conf.setProperty(HTTP_PROXY_TYPE.getKey(), "");
         assertNull(target.getProxy());
+
+        conf.setProperty(HTTP_PROXY_TYPE.getKey(), DIRECT.name());
+        assertEquals(target.getProxy(), Proxy.NO_PROXY);
 
         conf.setProperty(HTTP_PROXY_PORT.getKey(), "65535");
         conf.setProperty(HTTP_PROXY_HOST.getKey(), "localhost");
