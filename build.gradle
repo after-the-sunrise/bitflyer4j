@@ -27,6 +27,7 @@ dependencies {
     runtime 'commons-beanutils:commons-beanutils:1.9.3'
     testCompile 'org.testng:testng:6.10'
     testCompile 'org.mockito:mockito-all:1.10.19'
+    testCompile 'org.jboss.resteasy:resteasy-undertow:3.1.4.Final'
     testRuntime 'ch.qos.logback:logback-classic:1.2.3'
 }
 
@@ -54,6 +55,9 @@ jar.doFirst {
 }
 
 signing {
+    required {
+        gradle.taskGraph.hasTask("uploadArchives")
+    }
     sign configurations.archives
 }
 
@@ -104,6 +108,9 @@ uploadArchives {
 
 test {
     useTestNG()
+}
+
+jacocoTestReport {
 }
 
 findbugs {

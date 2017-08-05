@@ -212,7 +212,7 @@ public class HttpClientImpl implements HttpClient {
                     + conn.getURL().getFile() //
                     + StringUtils.trimToEmpty(body);
 
-            String sign = computeHash(base);
+            String sign = computeHash(ALGORITHM, base);
 
             String authKey = AUTH_KEY.apply(conf);
 
@@ -257,11 +257,11 @@ public class HttpClientImpl implements HttpClient {
     }
 
     @VisibleForTesting
-    String computeHash(String base) throws IOException {
+    String computeHash(String algorithm, String base) throws IOException {
 
         try {
 
-            Mac mac = Mac.getInstance(ALGORITHM);
+            Mac mac = Mac.getInstance(algorithm);
 
             String authSecret = AUTH_SECRET.apply(conf);
 
