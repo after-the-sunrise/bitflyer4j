@@ -2,11 +2,9 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.core.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.Environment;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.ExecutorFactory;
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.Throttler;
 import com.google.inject.Injector;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.configuration2.Configuration;
 
 import javax.inject.Inject;
 import java.time.Duration;
@@ -18,11 +16,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
-import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.*;
-import static java.lang.Long.MIN_VALUE;
-import static java.lang.Long.parseLong;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
@@ -33,9 +29,7 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
 @Slf4j
 public class ThrottlerImpl implements Throttler, Runnable {
 
-    private final Map<KeyType, BlockingQueue<AtomicLong>> queues = new ConcurrentHashMap<>();
-
-    private final Configuration conf;
+    private final Map<String, BlockingQueue<AtomicReference<Instant>>> queues = new ConcurrentHashMap<>();
 
     private final Environment environment;
 
@@ -43,8 +37,6 @@ public class ThrottlerImpl implements Throttler, Runnable {
 
     @Inject
     public ThrottlerImpl(Injector injector) {
-
-        this.conf = injector.getInstance(Configuration.class);
 
         this.environment = injector.getInstance(Environment.class);
 
@@ -61,9 +53,9 @@ public class ThrottlerImpl implements Throttler, Runnable {
 
             while (!executor.isShutdown()) {
 
-                Instant now = Instant.ofEpochMilli(environment.getTimeMillis());
+                Instant now = environment.getNow();
 
-                Duration interval = Duration.ofMillis(parseLong(HTTP_LIMIT_INTERVAL.apply(conf)));
+                Duration interval = environment.getHttpLimitInterval();
 
                 Instant cutoff = now.minus(interval);
 
@@ -75,23 +67,23 @@ public class ThrottlerImpl implements Throttler, Runnable {
 
                     while (!v.isEmpty()) {
 
-                        long time = v.peek().get();
+                        Instant time = v.peek().get();
 
-                        if (time == MIN_VALUE) {
+                        if (time == null) {
                             break; // Race Condition with "AtomicLong#set(long)"
                         }
 
-                        if (time >= cutoff.toEpochMilli()) {
+                        if (time.isAfter(cutoff)) {
 
-                            times.add(Instant.ofEpochMilli(time));
+                            times.add(time);
 
                             break; // Not expired yet.
 
                         }
 
-                        AtomicLong al = v.remove();
+                        v.remove();
 
-                        log.trace("Cleared : {} - {} ", k, al);
+                        log.trace("Cleared : {} - {} ", k, time);
 
                     }
 
@@ -117,50 +109,50 @@ public class ThrottlerImpl implements Throttler, Runnable {
 
     @Override
     public void throttleAddress() {
-        throttle(HTTP_LIMIT_CRITERIA_ADDRESS);
+        throttle("Address", environment::getHttpLimitAddress);
     }
 
     @Override
     public void throttlePrivate() {
-        throttle(HTTP_LIMIT_CRITERIA_PRIVATE);
+        throttle("Private", environment::getHttpLimitPrivate);
     }
 
     @Override
     public void throttleDormant() {
-        throttle(HTTP_LIMIT_CRITERIA_DORMANT);
+        throttle("Dormant", environment::getHttpLimitDormant);
     }
 
-    private void throttle(KeyType type) {
 
+    private void throttle(String key, Supplier<Integer> limitSupplier) {
         try {
 
-            log.trace("Throttling {}", type);
+            log.trace("Throttling {}", key);
 
-            BlockingQueue<AtomicLong> queue = queues.computeIfAbsent(type, t -> {
+            BlockingQueue<AtomicReference<Instant>> queue = queues.computeIfAbsent(key, t -> {
 
-                String size = t.apply(conf);
+                Integer size = limitSupplier.get();
 
                 log.debug("Capacity : {} - {}", t, size);
 
-                return new LinkedBlockingQueue<>(Integer.parseInt(size));
+                return new LinkedBlockingQueue<>(size);
 
             });
 
-            long timeout = parseLong(HTTP_LIMIT_INTERVAL.apply(conf));
+            Duration timeout = environment.getHttpLimitInterval();
 
             // Do not set the current time yet.
-            AtomicLong ref = new AtomicLong(MIN_VALUE);
+            AtomicReference<Instant> ref = new AtomicReference<>();
 
-            while (!queue.offer(ref, timeout, MILLISECONDS)) {
+            while (!queue.offer(ref, timeout.toMillis(), MILLISECONDS)) {
 
-                log.trace("Pending... {}", type);
+                log.trace("Pending... {}", key);
 
             }
 
             // Only set when the throttle finishes.
-            ref.set(environment.getTimeMillis());
+            ref.set(environment.getNow());
 
-            log.trace("Throttled : {} - {}", type, ref);
+            log.trace("Throttled : {} - {}", key, ref);
 
         } catch (Exception e) {
 
@@ -169,7 +161,7 @@ public class ThrottlerImpl implements Throttler, Runnable {
             // 2. Interval is not a number. (NumberFormatException)
             // 3. Interrupted.
 
-            log.warn("Bypassed : {} - {}", type, e);
+            log.warn("Bypassed : {} - {}", key, e);
 
         }
 

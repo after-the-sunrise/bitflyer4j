@@ -8,7 +8,6 @@ import com.google.inject.Injector;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,12 +21,12 @@ import java.net.Proxy;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 
-import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.*;
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.Loggers.HttpLogger;
 
 /**
@@ -49,8 +48,6 @@ public class HttpClientImpl implements HttpClient {
 
     private final Logger clientLog = LoggerFactory.getLogger(HttpLogger.class);
 
-    private final Configuration conf;
-
     private final Environment environment;
 
     private final Throttler throttler;
@@ -59,8 +56,6 @@ public class HttpClientImpl implements HttpClient {
 
     @Inject
     public HttpClientImpl(Injector injector) {
-
-        conf = injector.getInstance(Configuration.class);
 
         environment = injector.getInstance(Environment.class);
 
@@ -148,7 +143,7 @@ public class HttpClientImpl implements HttpClient {
     @VisibleForTesting
     URL createUrl(String path, Map<String, String> parameters) throws MalformedURLException {
 
-        String endpoint = HTTP_URL.apply(conf);
+        String endpoint = environment.getUrl();
 
         StringBuilder sb = new StringBuilder(endpoint);
 
@@ -187,17 +182,15 @@ public class HttpClientImpl implements HttpClient {
 
         }
 
-        String timeout = HTTP_TIMEOUT.apply(conf);
+        Duration timeout = environment.getTimeout();
 
         if (timeout != null) {
 
-            int millis = Integer.parseInt(timeout);
+            conn.setConnectTimeout((int) timeout.toMillis());
 
-            conn.setConnectTimeout(millis);
+            conn.setReadTimeout((int) timeout.toMillis());
 
-            conn.setReadTimeout(millis);
-
-            log.trace("Configured timeouts : {} ms", millis);
+            log.trace("Configured timeouts : {} ms", timeout);
 
         }
 
@@ -205,7 +198,9 @@ public class HttpClientImpl implements HttpClient {
 
         if (request.getType().isSign()) {
 
-            String ts = String.valueOf(environment.getTimeMillis() / TIME_PRECISION);
+            long now = environment.getNow().toEpochMilli();
+
+            String ts = String.valueOf(now / TIME_PRECISION);
 
             String base = ts //
                     + conn.getRequestMethod() //
@@ -214,7 +209,7 @@ public class HttpClientImpl implements HttpClient {
 
             String sign = computeHash(ALGORITHM, base);
 
-            String authKey = AUTH_KEY.apply(conf);
+            String authKey = environment.getAuthKey();
 
             conn.addRequestProperty(ACCESS_KEY, authKey);
             conn.addRequestProperty(ACCESS_TIME, ts);
@@ -263,7 +258,7 @@ public class HttpClientImpl implements HttpClient {
 
             Mac mac = Mac.getInstance(algorithm);
 
-            String authSecret = AUTH_SECRET.apply(conf);
+            String authSecret = environment.getAuthSecret();
 
             mac.init(new SecretKeySpec(authSecret.getBytes(), ALGORITHM));
 

@@ -30,10 +30,10 @@ import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
+import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
-import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.*;
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.PathType.*;
 import static com.google.common.io.ByteStreams.toByteArray;
 import static com.google.common.util.concurrent.MoreExecutors.newDirectExecutorService;
@@ -121,11 +121,11 @@ public class HttpClientImplTest {
     public void setUp() throws Exception {
 
         module = new TestModule();
-        module.setProperty(HTTP_URL, "http://localhost:" + getPort());
-        module.setProperty(AUTH_KEY, "testkey");
-        module.setProperty(AUTH_SECRET, "testsecret");
-        doReturn(1234567890987L).when(module.getMock(Environment.class)).getTimeMillis();
-        doReturn(newDirectExecutorService()).when(module.getMock(ExecutorFactory.class)).get(any(Class.class));
+        when(module.getEnvironment().getNow()).thenReturn(Instant.ofEpochMilli(1234567890987L));
+        when(module.getEnvironment().getUrl()).thenReturn("http://localhost:" + getPort());
+        when(module.getEnvironment().getAuthKey()).thenReturn("testkey");
+        when(module.getEnvironment().getAuthSecret()).thenReturn("testsecret");
+        when(module.getMock(ExecutorFactory.class).get(any(Class.class))).thenReturn(newDirectExecutorService());
 
         target = new HttpClientImpl(module.createInjector());
 

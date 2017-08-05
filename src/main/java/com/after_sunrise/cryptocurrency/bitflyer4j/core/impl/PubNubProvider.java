@@ -2,19 +2,16 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.core.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.Environment;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import com.google.inject.Provider;
 import com.pubnub.api.PNConfiguration;
 import com.pubnub.api.PubNub;
 import com.pubnub.api.enums.PNReconnectionPolicy;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.Proxy;
-
-import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.*;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import java.time.Duration;
+import java.util.Objects;
 
 /**
  * @author takanori.takase
@@ -23,17 +20,11 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 @Slf4j
 public class PubNubProvider implements Provider<PubNub> {
 
-    private final Configuration conf;
-
     private final Environment environment;
 
     @Inject
-    public PubNubProvider(Injector injector) {
-
-        this.conf = injector.getInstance(Configuration.class);
-
-        this.environment = injector.getInstance(Environment.class);
-
+    public PubNubProvider(Environment environment) {
+        this.environment = environment;
     }
 
     @Override
@@ -41,7 +32,7 @@ public class PubNubProvider implements Provider<PubNub> {
 
         PNConfiguration pnc = new PNConfiguration();
 
-        String key = PUBNUB_KEY.apply(conf);
+        String key = environment.getPubNubKey();
 
         if (StringUtils.isNotEmpty(key)) {
 
@@ -51,9 +42,9 @@ public class PubNubProvider implements Provider<PubNub> {
 
         }
 
-        String secure = PUBNUB_SECURE.apply(conf);
+        Boolean secure = environment.getPubNubSecure();
 
-        if (StringUtils.isNotEmpty(secure)) {
+        if (Objects.equals(Boolean.TRUE, secure)) {
 
             pnc.setSecure(Boolean.valueOf(secure));
 
@@ -71,11 +62,11 @@ public class PubNubProvider implements Provider<PubNub> {
 
         }
 
-        String timeout = HTTP_TIMEOUT.apply(conf);
+        Duration timeout = environment.getTimeout();
 
-        if (StringUtils.isNotEmpty(timeout)) {
+        if (timeout != null) {
 
-            long sec = MILLISECONDS.toSeconds(Integer.parseInt(timeout));
+            long sec = timeout.getSeconds();
 
             pnc.setConnectTimeout((int) sec);
 
@@ -83,11 +74,11 @@ public class PubNubProvider implements Provider<PubNub> {
 
         }
 
-        String reconnect = PUBNUB_RECONNECT.apply(conf);
+        PNReconnectionPolicy reconnect = environment.getPubNubReconnect();
 
-        if (StringUtils.isNotEmpty(reconnect)) {
+        if (reconnect != null) {
 
-            pnc.setReconnectionPolicy(PNReconnectionPolicy.valueOf(reconnect));
+            pnc.setReconnectionPolicy(reconnect);
 
             log.debug("Configured reconnect : {}", reconnect);
 

@@ -1,6 +1,7 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.core.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.Bitflyer4j;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.Environment;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.ExecutorFactory;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.AccountService;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.MarketService;
@@ -10,11 +11,8 @@ import com.google.inject.Injector;
 import com.pubnub.api.PubNub;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.configuration2.Configuration;
 
 import javax.inject.Inject;
-
-import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.VERSION;
 
 /**
  * Implementation using dependency injection.
@@ -61,7 +59,7 @@ public class Bitflyer4jImpl implements Bitflyer4j {
 
         realtimeService = injector.getInstance(RealtimeService.class);
 
-        version = VERSION.apply(injector.getInstance(Configuration.class));
+        version = injector.getInstance(Environment.class).getVersion();
 
         log.info("Initialized : {}", version);
 

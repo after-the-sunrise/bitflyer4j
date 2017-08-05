@@ -27,15 +27,14 @@ public class KeyTypeTest {
         Configuration conf = new Configurations().properties(url);
 
         // Null input.  (= Default value.)
-        assertEquals(VERSION.apply(null), VERSION.getDefaultValue());
+        assertEquals(VERSION.fetch(null), VERSION.getDefaultValue());
 
         // Retrieved from properties.
-        assertEquals(VERSION.apply(conf), "test");
+        assertEquals(VERSION.fetch(conf), "test");
 
         // Not found. (= Default value.)
-        assertEquals(PUBNUB_KEY.apply(conf), PUBNUB_KEY.getDefaultValue());
+        assertEquals(PUBNUB_KEY.fetch(conf), PUBNUB_KEY.getDefaultValue());
 
     }
-
-
+    
 }

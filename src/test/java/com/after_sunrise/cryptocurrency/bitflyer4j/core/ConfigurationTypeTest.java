@@ -33,7 +33,7 @@ public class ConfigurationTypeTest {
 
             switch (type) {
                 case VERSION:
-                    assertNotNull(VERSION.apply(conf));
+                    assertNotNull(conf.getString(VERSION.getKey()));
                     assertEquals(map.size(), 1);
                     break;
                 case SYSTEM:
@@ -45,8 +45,8 @@ public class ConfigurationTypeTest {
                     // Do nothing. (Dependent on the test machine.)
                     break;
                 case SITE:
-                    assertEquals(VERSION.apply(conf), "test");
-                    assertEquals(SITE.apply(conf), "test");
+                    assertEquals(conf.getString(VERSION.getKey()), "test");
+                    assertEquals(conf.getString(SITE.getKey()), "test");
                     break;
                 default:
                     fail("Unknown type : " + type);

@@ -19,7 +19,6 @@ import com.pubnub.api.models.consumer.PNStatus;
 import com.pubnub.api.models.consumer.pubsub.PNMessageResult;
 import com.pubnub.api.models.consumer.pubsub.PNPresenceEventResult;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,8 +58,6 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
     private final Logger clientLog = LoggerFactory.getLogger(PubNubLogger.class);
 
-    private final Configuration configuration;
-
     private final ExecutorService executor;
 
     private final Gson gson;
@@ -69,8 +66,6 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
     @Inject
     public RealtimeServiceImpl(Injector injector) {
-
-        this.configuration = injector.getInstance(Configuration.class);
 
         this.executor = injector.getInstance(ExecutorFactory.class).get(getClass());
 

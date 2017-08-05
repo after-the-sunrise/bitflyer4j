@@ -1,12 +1,11 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.Environment;
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType;
 import com.google.inject.Injector;
-import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.mockito.Mockito;
 
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,32 +19,20 @@ public class TestModule {
 
     private final Map<Class<?>, Object> mocks = new HashMap<>();
 
-    private final Environment environment;
-
-    private long timestamp = System.currentTimeMillis();
-
     public TestModule() throws ConfigurationException {
+        doAnswer(invocation -> Instant.now()).when(getEnvironment()).getNow();
+    }
 
-        environment = mock(Environment.class);
+    public TestModule(Instant now) throws ConfigurationException {
+        doAnswer(invocation -> now).when(getEnvironment()).getNow();
+    }
 
-        doAnswer(invocation -> System.currentTimeMillis()).when(environment).getTimeMillis();
-
-        mocks.put(Environment.class, environment);
-
+    public Environment getEnvironment() {
+        return getMock(Environment.class);
     }
 
     public <T> T getMock(Class<T> clz) {
         return clz.cast(mocks.computeIfAbsent(clz, Mockito::mock));
-    }
-
-    public void setProperty(KeyType key, String value) {
-
-        Configuration conf = getMock(Configuration.class);
-
-        when(conf.getString(key.getKey())).thenReturn(value);
-
-        when(conf.getString(eq(key.getKey()), anyString())).thenReturn(value);
-
     }
 
     public Injector createInjector() {

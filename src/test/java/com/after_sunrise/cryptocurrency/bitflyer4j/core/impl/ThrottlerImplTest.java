@@ -11,7 +11,8 @@ import java.time.Instant;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.*;
+import static java.time.Duration.between;
+import static java.time.Duration.ofMillis;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.mockito.Mockito.when;
@@ -40,10 +41,11 @@ public class ThrottlerImplTest {
         workers = Executors.newCachedThreadPool();
 
         module = new TestModule();
-        module.setProperty(HTTP_LIMIT_INTERVAL, "400");
-        module.setProperty(HTTP_LIMIT_CRITERIA_ADDRESS, "8");
-        module.setProperty(HTTP_LIMIT_CRITERIA_PRIVATE, "4");
-        module.setProperty(HTTP_LIMIT_CRITERIA_DORMANT, "2");
+        when(module.getEnvironment().getHttpLimitInterval()).thenReturn(ofMillis(400));
+        when(module.getEnvironment().getHttpLimitAddress()).thenReturn(8);
+        when(module.getEnvironment().getHttpLimitPrivate()).thenReturn(4);
+        when(module.getEnvironment().getHttpLimitDormant()).thenReturn(2);
+
         when(module.getMock(ExecutorFactory.class).get(ThrottlerImpl.class)).thenReturn(executor);
 
         target = new ThrottlerImpl(module.createInjector());
@@ -76,7 +78,7 @@ public class ThrottlerImplTest {
     public void testThrottleAddress() throws Exception {
 
         // 3 batches (8 + 8 + 4) = 2 clean ups
-        testThrottle(target::throttleAddress, 20, Duration.ofMillis(800));
+        testThrottle(target::throttleAddress, 20, ofMillis(800));
 
     }
 
@@ -84,7 +86,7 @@ public class ThrottlerImplTest {
     public void testThrottlePrivate() throws Exception {
 
         // 3 batches (4 + 4 + 2) = 2 clean ups
-        testThrottle(target::throttlePrivate, 10, Duration.ofMillis(800));
+        testThrottle(target::throttlePrivate, 10, ofMillis(800));
 
     }
 
@@ -92,7 +94,7 @@ public class ThrottlerImplTest {
     public void testThrottleDormant() throws Exception {
 
         // 3 batches (2 + 2 + 1) = 2 clean ups
-        testThrottle(target::throttleDormant, 5, Duration.ofMillis(800));
+        testThrottle(target::throttleDormant, 5, ofMillis(800));
 
     }
 
@@ -109,7 +111,7 @@ public class ThrottlerImplTest {
 
         workers.awaitTermination(TIMEOUT, MILLISECONDS);
 
-        Duration elapsed = Duration.between(start, Instant.now());
+        Duration elapsed = between(start, Instant.now());
 
         assertTrue(elapsed.compareTo(time) >= 0, String.format("Elapsed %s > Throttle %s", elapsed, time));
 

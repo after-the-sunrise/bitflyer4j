@@ -1,95 +1,133 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.core.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.Environment;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType;
+import com.pubnub.api.enums.PNReconnectionPolicy;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.configuration2.Configuration;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.configuration2.event.ConfigurationEvent;
+import org.apache.commons.configuration2.event.EventListener;
+import org.apache.commons.configuration2.event.EventSource;
 
 import javax.inject.Inject;
-import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.net.Proxy.Type;
-import java.util.concurrent.atomic.AtomicReference;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.*;
-import static java.lang.Integer.parseInt;
+import static java.util.Collections.synchronizedMap;
+import static org.apache.commons.configuration2.event.ConfigurationEvent.ANY;
 
 /**
  * @author takanori.takase
  * @version 0.0.1
  */
 @Slf4j
-public class EnvironmentImpl implements Environment {
+public class EnvironmentImpl implements Environment, EventListener<ConfigurationEvent> {
 
-    private final AtomicReference<Proxy[]> proxy = new AtomicReference<>();
+    private final Map<KeyType, Object> cache = synchronizedMap(new HashMap<>());
 
     private final Configuration conf;
 
+    private final EventSource source;
+
     @Inject
-    public EnvironmentImpl(Configuration conf) {
+    public EnvironmentImpl(Configuration conf, EventSource source) {
+
         this.conf = conf;
+
+        this.source = source;
+
+        this.source.addEventListener(ANY, this);
+
+        this.onEvent(null);
+
     }
 
     @Override
-    public long getTimeMillis() {
-        return System.currentTimeMillis();
+    public void onEvent(ConfigurationEvent event) {
+
+        log.debug("Refreshing cache : {}", event);
+
+        Map<KeyType, Object> map = new HashMap<>();
+
+        Arrays.stream(KeyType.values()).forEach(t -> map.put(t, t.fetch(conf)));
+
+        cache.putAll(map);
+
+    }
+
+    @Override
+    public Instant getNow() {
+        return Instant.now();
+    }
+
+    @Override
+    public String getVersion() {
+        return String.class.cast(cache.get(VERSION));
+    }
+
+    @Override
+    public String getUrl() {
+        return String.class.cast(cache.get(HTTP_URL));
     }
 
     @Override
     public Proxy getProxy() {
-
-        synchronized (proxy) {
-
-            Proxy[] p = proxy.get();
-
-            if (p == null) {
-
-                p = new Proxy[]{createProxy()};
-
-                proxy.set(p);
-
-            }
-
-            return p[0];
-
-        }
-
+        return Proxy.class.cast(cache.get(HTTP_PROXY_TYPE));
     }
 
-    private Proxy createProxy() {
+    @Override
+    public Duration getTimeout() {
+        return Duration.class.cast(cache.get(HTTP_TIMEOUT));
+    }
 
-        String type = HTTP_PROXY_TYPE.apply(conf);
+    @Override
+    public String getAuthKey() {
+        return String.class.cast(cache.get(AUTH_KEY));
+    }
 
-        if (StringUtils.isEmpty(type)) {
+    @Override
+    public String getAuthSecret() {
+        return String.class.cast(cache.get(AUTH_SECRET));
+    }
 
-            log.debug("Skipping HTTP proxy.");
+    @Override
+    public Duration getHttpLimitInterval() {
+        return Duration.class.cast(cache.get(HTTP_LIMIT_INTERVAL));
+    }
 
-            return null;
+    @Override
+    public Integer getHttpLimitAddress() {
+        return Integer.class.cast(cache.get(HTTP_LIMIT_CRITERIA_ADDRESS));
+    }
 
-        }
+    @Override
+    public Integer getHttpLimitPrivate() {
+        return Integer.class.cast(cache.get(HTTP_LIMIT_CRITERIA_PRIVATE));
+    }
 
-        Type t = Type.valueOf(type);
+    @Override
+    public Integer getHttpLimitDormant() {
+        return Integer.class.cast(cache.get(HTTP_LIMIT_CRITERIA_DORMANT));
+    }
 
-        Proxy p;
+    @Override
+    public String getPubNubKey() {
+        return String.class.cast(cache.get(PUBNUB_KEY));
+    }
 
-        if (t == Type.DIRECT) {
+    @Override
+    public PNReconnectionPolicy getPubNubReconnect() {
+        return PNReconnectionPolicy.class.cast(cache.get(PUBNUB_RECONNECT));
+    }
 
-            p = Proxy.NO_PROXY;
-
-        } else {
-
-            String host = HTTP_PROXY_HOST.apply(conf);
-
-            String port = HTTP_PROXY_PORT.apply(conf);
-
-            p = new Proxy(t, new InetSocketAddress(host, parseInt(port)));
-
-        }
-
-        log.debug("Created HTTP proxy : {}", p);
-
-        return p;
-
+    @Override
+    public Boolean getPubNubSecure() {
+        return Boolean.class.cast(cache.get(PUBNUB_SECURE));
     }
 
 }
