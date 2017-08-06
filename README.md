@@ -23,16 +23,86 @@ Use Maven or Gradle to import the library and its dependencies.
 
 Copy and paste the following code snippet in the ``main`` method, and run. 
 
-```java:Sample.java
-public class Sample {
+#### Query Tick
+```java
+public class QueryTickSample {
 
     public static void main(String[] args) throws Exception {
 
-        // Create an API instance.
         Bitflyer4j api = new Bitflyer4jFactory().createInstance();
 
-        // Query and print the results.
         System.out.println(api.getMarketService().getTick("BTC_JPY").get());
+
+    }
+
+}
+```
+
+#### Send New Order
+```java
+public class SendOrderSample {
+
+    public static void main(String[] args) throws Exception {
+
+        Bitflyer4j api = new Bitflyer4jFactory().createInstance();
+
+        OrderCreate request = OrderCreate.builder().product("BTC_JPY")
+                .type(ConditionType.LIMIT).side(SideType.BUY)
+                .price(BigDecimal.TEN).size(BigDecimal.ONE).build();
+
+        System.out.println(api.getOrderService().sendOrder(request).get());
+
+    }
+
+}
+```
+
+#### Cancel Existing Order
+```java
+public class CancelOrderSample {
+
+    public static void main(String[] args) throws Exception {
+
+        Bitflyer4j api = new Bitflyer4jFactory().createInstance();
+
+        OrderCancel request = OrderCancel.builder()
+                .product("BTC_JPY").orderId("JOR20150707-055555-022222").build();
+
+        System.out.println(api.getOrderService().cancelOrder(request).get());
+
+    }
+
+}
+```
+
+#### Subscribe to Realtime Feed
+```java
+public class RealtimeSample {
+
+    public static void main(String[] args) throws Exception {
+
+        Bitflyer4j api = new Bitflyer4jFactory().createInstance();
+
+        api.getRealtimeService().addListener(new RealtimeListener() {
+            @Override
+            public void onBoards(List<Board> values) {
+                System.out.println(values);
+            }
+
+            @Override
+            public void onTicks(List<Tick> values) {
+                System.out.println(values);
+            }
+
+            @Override
+            public void onExecutions(List<Execution> values) {
+                System.out.println(values);
+            }
+        });
+
+        api.getRealtimeService().subscribeTick(Arrays.asList("BTC_JPY")).get();
+
+        TimeUnit.SECONDS.sleep(30L);
 
     }
 
