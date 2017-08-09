@@ -7,16 +7,24 @@
 
 ## Getting Started
 
-### Repository
+### Download
 
-Use Maven or Gradle to import the library and its dependencies.
+Use Maven or Gradle to import the library and its dependencies from the central.
 
+#### Maven (`pom.xml`)
 ```xml
 <dependency>
     <groupId>com.after_sunrise.cryptocurrency</groupId>
     <artifactId>bitflyer4j</artifactId>
     <version>${VERSION}</version>
 </dependency>
+```
+
+#### Gradle (`build.gradle`)
+```gradle
+dependencies {
+    compile 'com.after_sunrise.cryptocurrency:bitflyer4j:${VERSION}'
+}
 ```
 
 ### Sample Code
