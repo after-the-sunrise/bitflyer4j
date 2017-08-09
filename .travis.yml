@@ -9,3 +9,6 @@ notifications:
 
 install:
   - gradle assemble -x signArchives
+
+after_success:
+  - gradle jacocoTestReport coveralls
