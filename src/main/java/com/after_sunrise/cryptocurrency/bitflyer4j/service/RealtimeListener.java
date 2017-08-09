@@ -18,4 +18,22 @@ public interface RealtimeListener {
 
     void onExecutions(List<Execution> values);
 
+    /**
+     * @author takanori.takase
+     * @version 0.0.2
+     */
+    class RealtimeListenerAdapter implements RealtimeListener {
+        @Override
+        public void onBoards(List<Board> values) {
+        }
+
+        @Override
+        public void onTicks(List<Tick> values) {
+        }
+
+        @Override
+        public void onExecutions(List<Execution> values) {
+        }
+    }
+
 }
