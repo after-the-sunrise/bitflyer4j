@@ -1,4 +1,4 @@
-# bitflyer4j ![Travis-CI Build Status](https://travis-ci.org/after-the-sunrise/bitflyer4j.svg?branch=master) [![Coverage Status](https://coveralls.io/repos/github/after-the-sunrise/bitflyer4j/badge.svg)](https://coveralls.io/github/after-the-sunrise/bitflyer4j)
+# bitflyer4j [![Build Status](https://travis-ci.org/after-the-sunrise/bitflyer4j.svg?branch=master)](https://travis-ci.org/after-the-sunrise/bitflyer4j) [![Coverage Status](https://coveralls.io/repos/github/after-the-sunrise/bitflyer4j/badge.svg?branch=master)](https://coveralls.io/github/after-the-sunrise/bitflyer4j?branch=master)
 
 ## Overview
 
