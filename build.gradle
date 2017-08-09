@@ -4,7 +4,7 @@ plugins {
     id 'findbugs'
     id 'maven'
     id 'signing'
-    id 'com.github.kt3k.coveralls'
+    id 'com.github.kt3k.coveralls' version '2.8.1'
 }
 
 group = 'com.after_sunrise.cryptocurrency'
