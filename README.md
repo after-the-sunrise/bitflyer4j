@@ -83,19 +83,9 @@ public class RealtimeSample {
 
         Bitflyer4j api = new Bitflyer4jFactory().createInstance();
 
-        api.getRealtimeService().addListener(new RealtimeListener() {
-            @Override
-            public void onBoards(List<Board> values) {
-                System.out.println(values);
-            }
-
+        api.getRealtimeService().addListener(new RealtimeListenerAdapter() {
             @Override
             public void onTicks(List<Tick> values) {
-                System.out.println(values);
-            }
-
-            @Override
-            public void onExecutions(List<Execution> values) {
                 System.out.println(values);
             }
         });
