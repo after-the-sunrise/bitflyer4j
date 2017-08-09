@@ -22,6 +22,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.time.Duration;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -38,6 +40,10 @@ public class HttpClientImpl implements HttpClient {
 
     private static final long TIME_PRECISION = 1000L;
 
+    static final String AGENT_KEY = "User-Agent";
+
+    static final String AGENT_VAL = "bitflyer4j/";
+
     static final String ALGORITHM = "HmacSHA256";
 
     static final String ACCESS_KEY = "ACCESS-KEY";
@@ -45,6 +51,15 @@ public class HttpClientImpl implements HttpClient {
     static final String ACCESS_TIME = "ACCESS-TIMESTAMP";
 
     static final String ACCESS_SIGN = "ACCESS-SIGN";
+
+    static final Map<String, String> HEADERS;
+
+    static {
+        Map<String, String> map = new LinkedHashMap<>();
+        map.put("Accept", "application/json");
+        map.put("Accept-Charset", "UTF-8");
+        HEADERS = Collections.unmodifiableMap(map);
+    }
 
     private final Logger clientLog = LoggerFactory.getLogger(HttpLogger.class);
 
@@ -174,6 +189,14 @@ public class HttpClientImpl implements HttpClient {
 
         {
 
+            HEADERS.forEach(conn::addRequestProperty);
+
+            conn.addRequestProperty(AGENT_KEY, AGENT_VAL + environment.getVersion());
+
+        }
+
+        {
+
             MethodType method = request.getType().getMethod();
 
             conn.setRequestMethod(method.get());
@@ -211,9 +234,9 @@ public class HttpClientImpl implements HttpClient {
 
             String authKey = environment.getAuthKey();
 
-            conn.addRequestProperty(ACCESS_KEY, authKey);
-            conn.addRequestProperty(ACCESS_TIME, ts);
-            conn.addRequestProperty(ACCESS_SIGN, sign);
+            conn.setRequestProperty(ACCESS_KEY, authKey);
+            conn.setRequestProperty(ACCESS_TIME, ts);
+            conn.setRequestProperty(ACCESS_SIGN, sign);
 
             log.trace("Configured signature : key=[{}] time=[{}] sign=[{}]", authKey, ts, sign);
 

@@ -125,6 +125,7 @@ public class HttpClientImplTest {
     public void setUp() throws Exception {
 
         module = new TestModule();
+        when(module.getEnvironment().getVersion()).thenReturn("0.0.0");
         when(module.getEnvironment().getNow()).thenReturn(Instant.ofEpochMilli(1234567890987L));
         when(module.getEnvironment().getUrl()).thenReturn("http://localhost:" + getPort());
         when(module.getEnvironment().getAuthKey()).thenReturn("testkey");
@@ -304,6 +305,9 @@ public class HttpClientImplTest {
         verify(conn, never()).setReadTimeout(anyInt());
 
         // Request Property
+        verify(conn).addRequestProperty("Accept", "application/json");
+        verify(conn).addRequestProperty("Accept-Charset", "UTF-8");
+        verify(conn).addRequestProperty("User-Agent", "bitflyer4j/0.0.0");
         verify(conn, never()).setRequestProperty(anyString(), anyString());
 
         // Body
@@ -336,9 +340,12 @@ public class HttpClientImplTest {
         verify(conn).setReadTimeout(9876);
 
         // Request Property
-        verify(conn).addRequestProperty(ACCESS_KEY, "testkey");
-        verify(conn).addRequestProperty(ACCESS_TIME, "1234567890");
-        verify(conn).addRequestProperty(ACCESS_SIGN, "6e29ed1d31e7957c2f7277cc3d6dadab1f51e31759f392cb97e568fd42155f5f");
+        verify(conn).addRequestProperty("Accept", "application/json");
+        verify(conn).addRequestProperty("Accept-Charset", "UTF-8");
+        verify(conn).addRequestProperty("User-Agent", "bitflyer4j/0.0.0");
+        verify(conn).setRequestProperty(ACCESS_KEY, "testkey");
+        verify(conn).setRequestProperty(ACCESS_TIME, "1234567890");
+        verify(conn).setRequestProperty(ACCESS_SIGN, "6e29ed1d31e7957c2f7277cc3d6dadab1f51e31759f392cb97e568fd42155f5f");
 
         // Body
         verify(conn).getOutputStream();
