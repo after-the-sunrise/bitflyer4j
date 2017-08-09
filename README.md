@@ -153,9 +153,42 @@ bitflyer4j.http_proxy_port=8080
 ```
 
 
+### HTTP Access Throttling
+
+bitFlyer limits the number of HTTP requests allowed per interval.
+
+In this library, each HTTP calls are queued first, and a background thread takes them out of the queue, 
+with a throttling mechanism to avoid DOS-attacking the service and comply with the limit.  Therefore, 
+each HTTP calls are designed to return a `java.util.concurrent.CompletableFuture` instance, 
+which is completed only after the HTTP request has been actually executed by the background thread.
+
+To make these asynchronous HTTP calls synchronous, simply call the `CompletableFuture#get()` method.
+
+
 ### Other Configurations
 
-For the complete list of configurable parameters, refer to the `KeyType` javadoc.
+Although there should be no need to overwrite the defaut configurations, the following parameters are externalized 
+and can be overwritten by the environment variables.  For the complete list of configurable parameters and details, 
+refer to the `KeyType` javadoc.
+
+
+|Property Key                          |Default Value                             |Description                                                                           |
+|--------------------------------------|------------------------------------------|--------------------------------------------------------------------------------------|
+|bitflyer4j.site                       |                                          |Optional free-text label to identify the environment which the client app is running. |
+|bitflyer4j.auth_key                   |                                          |Authentication key for the private API.                                               |
+|bitflyer4j.auth_secret                |                                          |Authentication secret for the private API.                                            |
+|bitflyer4j.http_url                   |https://api.bitflyer.jp                   |Endpoint URL of the service.                                                          |
+|bitflyer4j.http_proxy_type            |                                          |Proxy type (DIRECT/HTTP/SOCKS) used for HTTP calls. Leave empty to disable proxy.     |
+|bitflyer4j.http_proxy_host            |                                          |Address of the proxy server. Proxy type must be specified for the proxy enablement.   |
+|bitflyer4j.http_proxy_port            |                                          |Port of the proxy server. Proxy type must be specified for the proxy enablement.      |
+|bitflyer4j.http_timeout               |                                          |HTTP socket/read timeout interval in millis. Leave empty for no timeout.              |
+|bitflyer4j.http_limit_interval        |60000                                     |HTTP access throttling interval in millis.                                            |
+|bitflyer4j.http_limit_criteria_address|500                                       |Number of allowed HTTP access for a single source IP, within the throttling interval. |
+|bitflyer4j.http_limit_criteria_private|200                                       |Number of allowed HTTP access for private API calls, within the throttling interval.  |
+|bitflyer4j.http_limit_criteria_dormant|10                                        |Number of allowed HTTP access for dormant accounts, within the throttling interval.   |
+|bitflyer4j.pubnub_key                 |sub-c-52a9ab50-291b-11e5-baaa-0619f8945a4f|PubNub subscription key for realtime subscription.                                    |
+|bitflyer4j.pubnub_reconnect           |LINEAR                                    |PubNub reconnect policy.                                                              |
+|bitflyer4j.pubnub_secure              |true                                      |PubNub secure flag for enabling SSL.                                                  |
 
 
 ### Endpoint Paths

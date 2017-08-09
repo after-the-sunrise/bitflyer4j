@@ -8,6 +8,8 @@ import org.testng.annotations.Test;
 import java.util.HashMap;
 
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.VERSION;
+import static java.lang.Math.max;
+import static org.apache.commons.lang3.StringUtils.*;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
 
@@ -63,6 +65,47 @@ public class KeyTypeTest {
 
         for (KeyType type : KeyType.values()) {
             assertNull(type.fetch(c));
+        }
+
+    }
+
+    /**
+     * Print key detail template for README.
+     */
+    public static void main(String[] args) {
+
+        int maxKey = 0;
+        int maxVal = 0;
+
+        for (KeyType type : KeyType.values()) {
+            maxKey = max(maxKey, type.getKey().length());
+            maxVal = max(maxVal, trimToEmpty(type.getDefaultValue()).length());
+        }
+
+        System.out.println("|" //
+                + rightPad("Property Key", maxKey, " ") //
+                + "|" //
+                + rightPad("Default Value", maxVal, " ") //
+                + "|" //
+                + rightPad("Description", maxVal * 2, " ") //
+                + "|");
+
+        System.out.println("|" //
+                + repeat("-", maxKey) //
+                + "|" //
+                + repeat("-", maxVal) //
+                + "|" //
+                + repeat("-", maxVal * 2) //
+                + "|");
+
+        for (KeyType type : KeyType.values()) {
+            System.out.println("|" //
+                    + rightPad(type.getKey(), maxKey, " ") //
+                    + "|" //
+                    + rightPad(trimToEmpty(type.getDefaultValue()), maxVal, " ") //
+                    + "|" //
+                    + repeat(" ", maxVal * 2) //
+                    + "|");
         }
 
     }
