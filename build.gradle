@@ -59,7 +59,7 @@ jar.doFirst {
 
 signing {
     required {
-        gradle.taskGraph.hasTask("uploadArchives")
+        !version.endsWith("SNAPSHOT") && gradle.taskGraph.hasTask("uploadArchives")
     }
     sign configurations.archives
 }
