@@ -130,7 +130,7 @@ public class EntityTest {
             assertFalse(entity.equals(null));
 
         }
-        
+
     }
 
     private void testBuilder(Class<?> clazz) throws ReflectiveOperationException {
