@@ -66,8 +66,8 @@ signing {
 
 uploadArchives {
     project.ext {
-        url = 'https://github.com/after-the-sunrise/bitflyer4j'
-        scm = 'scm:git:https://github.com/after-the-sunrise/bitflyer4j.git'
+        url = 'https://github.com/after-the-sunrise/' + archivesBaseName
+        scm = 'scm:git:https://github.com/after-the-sunrise/' + archivesBaseName + '.git'
         user = project.hasProperty('ossrhUsername') ? ossrhUsername : System.getenv("ossrhUsername")
         pass = project.hasProperty('ossrhPassword') ? ossrhPassword : System.getenv("ossrhPassword")
     }
