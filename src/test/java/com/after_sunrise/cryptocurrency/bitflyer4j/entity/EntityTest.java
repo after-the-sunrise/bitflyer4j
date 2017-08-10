@@ -3,6 +3,7 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.entity;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.*;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl.*;
 import com.google.gson.annotations.SerializedName;
+import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Constructor;
@@ -120,7 +121,7 @@ public class EntityTest {
 
             Object[] args = new Object[c.getParameterTypes().length];
 
-            Object entity = c.newInstance(args);
+            Object entity = testGet(c.newInstance(args));
 
             assertNotNull(entity.toString());
 
@@ -140,7 +141,7 @@ public class EntityTest {
 
         Method build = builder.getClass().getMethod("build");
 
-        Object emptyEntity = build.invoke(builder);
+        Object emptyEntity = testGet(build.invoke(builder));
         assertNotNull(emptyEntity.toString());
         assertEquals(emptyEntity.hashCode(), emptyEntity.hashCode());
         assertTrue(emptyEntity.equals(emptyEntity));
@@ -165,12 +166,32 @@ public class EntityTest {
 
         }
 
-        Object filledEntity = build.invoke(builder);
+        Object filledEntity = testGet(build.invoke(builder));
         assertNotNull(filledEntity.toString());
         assertEquals(filledEntity.hashCode(), filledEntity.hashCode());
         assertTrue(filledEntity.equals(filledEntity));
         assertFalse(filledEntity.equals(clazz));
         assertFalse(filledEntity.equals(null));
+
+    }
+
+    private Object testGet(Object o) throws ReflectiveOperationException {
+
+        for (Method m : o.getClass().getMethods()) {
+
+            if (m.getParameterCount() != 0) {
+                continue;
+            }
+
+            if (!StringUtils.startsWith(m.getName(), "get")) {
+                continue;
+            }
+
+            m.invoke(o);
+
+        }
+
+        return o;
 
     }
 

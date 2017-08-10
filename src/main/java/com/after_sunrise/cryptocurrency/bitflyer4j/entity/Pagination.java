@@ -4,13 +4,13 @@ import com.google.gson.annotations.SerializedName;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Getter;
 
 /**
  * @author takanori.takase
  * @version 0.0.1
  */
-@Value
+@Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Pagination extends Entity {
