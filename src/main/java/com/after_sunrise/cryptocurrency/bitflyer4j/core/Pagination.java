@@ -16,12 +16,12 @@ import lombok.Value;
 public class Pagination {
 
     @SerializedName("count")
-    private final Integer count;
+    private final Long count;
 
     @SerializedName("before")
-    private final Integer before;
+    private final Long before;
 
     @SerializedName("after")
-    private final Integer after;
+    private final Long after;
 
 }

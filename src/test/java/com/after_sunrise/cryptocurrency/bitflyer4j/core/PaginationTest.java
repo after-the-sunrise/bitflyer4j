@@ -32,22 +32,22 @@ public class PaginationTest {
         assertEquals(b.build().hashCode(), p0.hashCode());
         assertEquals(b.build().toString(), p0.toString());
 
-        Pagination p1 = b.count(1).before(2).after(3).build();
+        Pagination p1 = b.count(1L).before(2L).after(3L).build();
         assertFalse(p0.equals(p1));
         assertFalse(p1.equals(p0));
         assertEquals(b.build().hashCode(), p1.hashCode());
 
-        p1 = b.count(1).before(null).after(null).build();
+        p1 = b.count(1L).before(null).after(null).build();
         assertFalse(p0.equals(p1));
         assertFalse(p1.equals(p0));
         assertEquals(b.build().hashCode(), p1.hashCode());
 
-        p1 = b.count(null).before(2).after(null).build();
+        p1 = b.count(null).before(2L).after(null).build();
         assertFalse(p0.equals(p1));
         assertFalse(p1.equals(p0));
         assertEquals(b.build().hashCode(), p1.hashCode());
 
-        p1 = b.count(null).before(null).after(3).build();
+        p1 = b.count(null).before(null).after(3L).build();
         assertFalse(p0.equals(p1));
         assertFalse(p1.equals(p0));
         assertEquals(b.build().hashCode(), p1.hashCode());
