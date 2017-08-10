@@ -9,7 +9,8 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author takanori.takase
@@ -39,8 +40,13 @@ public class TestModule {
 
         Injector injector = mock(Injector.class);
 
-        doAnswer(invocation -> getMock(invocation.getArgumentAt(0, Class.class))) //
-                .when(injector).getInstance(any(Class.class));
+        doAnswer(invocation -> {
+
+            Class<?> c = invocation.getArgumentAt(0, Class.class);
+
+            return getMock(c);
+
+        }).when(injector).getInstance(Mockito.<Class<?>>any());
 
         return injector;
 
