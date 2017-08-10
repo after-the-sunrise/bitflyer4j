@@ -58,6 +58,7 @@ public class EntityTest {
         test(OrderCancel.class);
         test(OrderCreate.class);
         test(OrderList.class);
+        test(Pagination.class);
         test(ParentCancel.class);
         test(ParentCreate.class);
         test(ParentCreate.Parameter.class);
@@ -103,7 +104,7 @@ public class EntityTest {
 
     }
 
-    private <E extends Entity<?>> void test(Class<E> clazz) throws ReflectiveOperationException {
+    private <E extends Entity> void test(Class<E> clazz) throws ReflectiveOperationException {
 
         try {
 

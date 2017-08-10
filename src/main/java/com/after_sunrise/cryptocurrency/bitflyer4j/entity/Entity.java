@@ -14,7 +14,7 @@ import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
  * @author takanori.takase
  * @version 0.0.1
  */
-public class Entity<T> implements Comparable<Entity> {
+public class Entity implements Comparable<Entity> {
 
     private static final AtomicLong COUNT = new AtomicLong();
 

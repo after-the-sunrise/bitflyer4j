@@ -1,4 +1,4 @@
-package com.after_sunrise.cryptocurrency.bitflyer4j.core;
+package com.after_sunrise.cryptocurrency.bitflyer4j.entity;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.AccessLevel;
@@ -13,7 +13,7 @@ import lombok.Value;
 @Value
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Pagination {
+public class Pagination extends Entity {
 
     @SerializedName("count")
     private final Long count;

@@ -1,6 +1,5 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.service;
 
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.Pagination;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.*;
 
 import java.time.LocalDate;
