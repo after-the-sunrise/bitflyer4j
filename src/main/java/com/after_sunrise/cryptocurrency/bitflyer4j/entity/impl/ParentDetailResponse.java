@@ -25,7 +25,7 @@ public class ParentDetailResponse extends Entity implements ParentDetail.Respons
 
     @Getter
     @AllArgsConstructor
-    static class ParentDetailParameter extends Entity implements ParentDetail.Response.Parameter {
+    public static class ParentDetailParameter extends Entity implements ParentDetail.Response.Parameter {
 
         @SerializedName("product_code")
         private final String product;

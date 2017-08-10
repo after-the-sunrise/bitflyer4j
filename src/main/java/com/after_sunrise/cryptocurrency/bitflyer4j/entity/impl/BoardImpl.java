@@ -22,7 +22,7 @@ public class BoardImpl extends Entity implements Board {
 
     @Getter
     @AllArgsConstructor
-    static class QuoteImpl extends Entity implements Quote {
+    public static class QuoteImpl extends Entity implements Quote {
 
         @SerializedName("price")
         private final BigDecimal price;
