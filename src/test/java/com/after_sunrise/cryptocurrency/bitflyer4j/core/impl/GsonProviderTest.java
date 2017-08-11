@@ -16,11 +16,11 @@ import static org.testng.Assert.*;
  **/
 public class GsonProviderTest {
 
-    private static enum TestType {
+    private enum TestType {
         HOGE, FOO_BAR;
     }
 
-    private static class TestEntity {
+    private class TestEntity {
 
         String foo;
 
@@ -79,6 +79,9 @@ public class GsonProviderTest {
         assertEquals(result.getSecond(), 56);
         assertEquals(result.getNano(), 789_012_300);
 
+        assertNull(gson.fromJson("null", ZonedDateTime.class));
+        assertNull(gson.fromJson("\"\"", ZonedDateTime.class));
+
         try {
             gson.fromJson("\"foo\"", ZonedDateTime.class);
             fail();
@@ -92,6 +95,8 @@ public class GsonProviderTest {
     public void testGet_Enum() throws Exception {
 
         assertNull(gson.fromJson("null", TestType.class));
+
+        assertNull(gson.fromJson("\"\"", TestType.class));
 
         assertEquals(gson.fromJson("\"HOGE\"", TestType.class), TestType.HOGE);
 

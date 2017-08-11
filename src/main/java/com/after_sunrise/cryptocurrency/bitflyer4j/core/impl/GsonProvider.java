@@ -50,6 +50,10 @@ public class GsonProvider implements Provider<Gson> {
             // cf : "2017-01-23T12:34:56.789"
             String value = j.getAsString();
 
+            if (StringUtils.isEmpty(value)) {
+                return null;
+            }
+
             // Handle "Z" at the end : "2017-01-23T12:34:56.7890123Z"
             String trimmed = StringUtils.removeEnd(value, "Z");
 
@@ -70,6 +74,10 @@ public class GsonProvider implements Provider<Gson> {
         builder.registerTypeHierarchyAdapter(Enum.class, (JsonDeserializer<Enum<?>>) (j, t, c) -> {
 
             String value = j.getAsString();
+
+            if (StringUtils.isEmpty(value)) {
+                return null;
+            }
 
             value = StringUtils.replaceChars(value, ' ', '_');
 
