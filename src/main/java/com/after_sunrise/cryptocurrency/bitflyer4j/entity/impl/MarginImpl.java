@@ -19,7 +19,7 @@ public class MarginImpl extends Entity implements Margin {
     @SerializedName("currency_code")
     private final String currency;
 
-    @SerializedName("status")
+    @SerializedName("amount")
     private final BigDecimal amount;
 
 }
