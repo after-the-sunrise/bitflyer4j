@@ -1,0 +1,10 @@
+[
+  "/v1/me/getpermissions",
+  "/v1/me/getbalance",
+  "/v1/me/getcollateral",
+  "/v1/me/getchildorders",
+  "/v1/me/getparentorders",
+  "/v1/me/getparentorder",
+  "/v1/me/getexecutions",
+  "/v1/me/getpositions"
+]

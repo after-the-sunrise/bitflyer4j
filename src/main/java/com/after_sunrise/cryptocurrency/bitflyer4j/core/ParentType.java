@@ -6,6 +6,6 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.core;
  */
 public enum ParentType {
 
-    IFD, OCO, IFDOCO
+    STOP, IFD, OCO, IFDOCO
 
 }

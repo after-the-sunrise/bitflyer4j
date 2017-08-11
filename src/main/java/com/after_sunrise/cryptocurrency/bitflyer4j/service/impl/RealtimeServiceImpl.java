@@ -11,6 +11,7 @@ import com.after_sunrise.cryptocurrency.bitflyer4j.service.RealtimeListener;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.RealtimeService;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Injector;
 import com.pubnub.api.PubNub;
@@ -54,7 +55,7 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
     private final Set<RealtimeListener> listeners = synchronizedSet(new HashSet<>());
 
-    private final Map<String, Consumer<String>> subscriptions = new ConcurrentHashMap<>();
+    private final Map<String, Consumer<JsonElement>> subscriptions = new ConcurrentHashMap<>();
 
     private final Logger clientLog = LoggerFactory.getLogger(PubNubLogger.class);
 
@@ -169,13 +170,14 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
     }
 
-
     @VisibleForTesting
-    CompletableFuture<List<String>> subscribe(String prefix, List<String> products, Consumer<String> consumer) {
+    CompletableFuture<List<String>> subscribe(String prefix, List<String> products, Consumer<JsonElement> c) {
 
         return CompletableFuture.supplyAsync(() -> {
 
             List<String> channels = new ArrayList<>();
+
+            List<String> sources = new ArrayList<>();
 
             Optional.ofNullable(products).ifPresent(ids -> {
 
@@ -183,7 +185,7 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
                     String channel = prefix + id;
 
-                    Consumer<String> previous = subscriptions.putIfAbsent(channel, consumer);
+                    Consumer<JsonElement> previous = subscriptions.putIfAbsent(channel, c);
 
                     if (previous != null) {
 
@@ -193,6 +195,8 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
                         channels.add(channel);
 
+                        sources.add(id);
+
                     }
 
                 });
@@ -201,9 +205,11 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
             log.debug("Subscribing : {}", channels);
 
-            pubNub.subscribe().channels(channels).execute();
+            if (!channels.isEmpty()) {
+                pubNub.subscribe().channels(channels).execute();
+            }
 
-            return unmodifiableList(channels);
+            return unmodifiableList(sources);
 
         }, executor);
 
@@ -232,13 +238,15 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
             List<String> channels = new ArrayList<>();
 
+            List<String> sources = new ArrayList<>();
+
             Optional.ofNullable(products).ifPresent(ids -> {
 
                 ids.stream().filter(StringUtils::isNotEmpty).forEach(id -> {
 
                     String channel = prefix + id;
 
-                    Consumer<String> previous = subscriptions.remove(channel);
+                    Consumer<JsonElement> previous = subscriptions.remove(channel);
 
                     if (previous == null) {
 
@@ -248,6 +256,8 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
                         channels.add(channel);
 
+                        sources.add(id);
+
                     }
 
                 });
@@ -256,12 +266,13 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
             log.debug("Unsubscribing : {}", channels);
 
-            pubNub.unsubscribe().channels(channels).execute();
+            if (!channels.isEmpty()) {
+                pubNub.unsubscribe().channels(channels).execute();
+            }
 
-            return unmodifiableList(channels);
+            return unmodifiableList(sources);
 
         }, executor);
-
 
     }
 
@@ -290,29 +301,29 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
     @Override
     public void message(PubNub pubnub, PNMessageResult message) {
 
-        String channel = message.getChannel();
+        String channel = StringUtils.trimToEmpty(message.getChannel());
 
-        String json = message.getMessage().toString();
+        JsonElement je = message.getMessage();
 
-        log.trace("Message update : {} - {}", channel, json);
+        log.trace("Message update : {} - {}", channel, je);
 
-        clientLog.trace("REC : [{}] [{}]", channel, json);
+        clientLog.trace("REC : [{}] [{}]", channel, je);
 
         executor.submit(() -> {
 
             try {
 
-                Consumer<String> c = subscriptions.get(channel);
+                Consumer<JsonElement> c = subscriptions.get(channel);
 
                 if (c == null) {
 
-                    log.trace("Skipping : {} - [{}]", channel, json);
+                    log.trace("Skipping : {} - [{}]", channel, je);
 
                 } else {
 
-                    log.trace("Processing : {} - [{}]", channel, json);
+                    log.trace("Processing : {} - [{}]", channel, je);
 
-                    c.accept(json);
+                    c.accept(je);
 
                 }
 
@@ -320,7 +331,7 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
                 String msg = "Failed to process : {} - [{}] {}";
 
-                log.warn(msg, channel, json, e);
+                log.warn(msg, channel, je, e);
 
             }
 

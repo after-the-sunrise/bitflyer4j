@@ -1,0 +1,11 @@
+[
+  {
+    "id": 37415288,
+    "side": "BUY",
+    "price": 359956.0,
+    "size": 0.015,
+    "exec_date": "2017-08-05T21:51:37.6940477Z",
+    "buy_child_order_acceptance_id": "JRF20170805-215136-338070",
+    "sell_child_order_acceptance_id": "JRF20170805-215134-449447"
+  }
+]

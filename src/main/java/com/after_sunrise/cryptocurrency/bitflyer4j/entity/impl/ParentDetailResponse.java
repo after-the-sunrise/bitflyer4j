@@ -56,6 +56,9 @@ public class ParentDetailResponse extends Entity implements ParentDetail.Respons
     @SerializedName("parent_order_id")
     private final String parentId;
 
+    @SerializedName("parent_order_acceptance_id")
+    private final String acceptanceId;
+
     @SerializedName("order_method")
     private final ParentType type;
 

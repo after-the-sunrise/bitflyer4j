@@ -4,6 +4,7 @@ import com.after_sunrise.cryptocurrency.bitflyer4j.core.*;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl.*;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.StringUtils;
+import org.mockito.Mockito;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Constructor;
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.testng.Assert.*;
@@ -35,6 +37,7 @@ public class EntityTest {
         put(BigDecimal.TEN);
         put(Instant.now());
         put(ZonedDateTime.now());
+        put(Mockito.mock(List.class));
         put(ConditionType.MARKET);
         put(ConfigurationType.VERSION);
         put(DepositStatusType.COMPLETED);

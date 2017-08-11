@@ -1,0 +1,12 @@
+[
+  {
+    "type": "NORMAL",
+    "currency_code": "BTC",
+    "address": "3AYrDq8zhF82NJ2ZaLwBMPmaNziaKPaxa7"
+  },
+  {
+    "type": "NORMAL",
+    "currency_code": "ETH",
+    "address": "0x7fbB2CC24a3C0cd3789a44e9073381Ca6470853f"
+  }
+]

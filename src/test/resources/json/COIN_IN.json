@@ -1,0 +1,12 @@
+[
+  {
+    "id": 100,
+    "order_id": "CDP20151227-024141-055555",
+    "currency_code": "BTC",
+    "amount": 0.00002,
+    "address": "1WriteySQufKZ2pVuM1oMhPrTtTVFq35j",
+    "tx_hash": "9f92ee65a176bb9545f7becb8706c50d07d4cee5ffca34d8be3ef11d411405ae",
+    "status": "COMPLETED",
+    "event_date": "2015-11-27T08:59:20.301"
+  }
+]

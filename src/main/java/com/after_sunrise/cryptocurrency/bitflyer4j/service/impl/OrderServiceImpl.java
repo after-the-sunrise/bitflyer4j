@@ -50,7 +50,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
-        return future.thenApply(s -> gson.fromJson(s.getBody(), OrderCreateResponse.class));
+        return future.thenApply(s -> gson.fromJson(fill(s.getBody()), OrderCreateResponse.class));
 
     }
 
@@ -63,7 +63,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
-        return future.thenApply(s -> gson.fromJson(s.getBody(), OrderCancelResponse.class));
+        return future.thenApply(s -> gson.fromJson(fill(s.getBody()), OrderCancelResponse.class));
 
     }
 
@@ -76,7 +76,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
-        return future.thenApply(s -> gson.fromJson(s.getBody(), ParentCreateResponse.class));
+        return future.thenApply(s -> gson.fromJson(fill(s.getBody()), ParentCreateResponse.class));
 
     }
 
@@ -89,7 +89,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
-        return future.thenApply(s -> gson.fromJson(s.getBody(), ParentCancelResponse.class));
+        return future.thenApply(s -> gson.fromJson(fill(s.getBody()), ParentCancelResponse.class));
 
     }
 
@@ -104,7 +104,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
-        return future.thenApply(s -> gson.fromJson(s.getBody(), TYPE_ORDERS));
+        return future.thenApply(s -> gson.fromJson(fill(s.getBody()), TYPE_ORDERS));
 
     }
 
@@ -119,7 +119,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
-        return future.thenApply(s -> gson.fromJson(s.getBody(), TYPE_PARENTS));
+        return future.thenApply(s -> gson.fromJson(fill(s.getBody()), TYPE_PARENTS));
 
     }
 
@@ -132,7 +132,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
-        return future.thenApply(s -> gson.fromJson(s.getBody(), ParentDetailResponse.class));
+        return future.thenApply(s -> gson.fromJson(fill(s.getBody()), ParentDetailResponse.class));
 
     }
 
@@ -145,7 +145,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
-        return future.thenApply(s -> gson.fromJson(s.getBody(), ProductCancelResponse.class));
+        return future.thenApply(s -> gson.fromJson(fill(s.getBody()), ProductCancelResponse.class));
 
     }
 
@@ -160,22 +160,20 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
-        return future.thenApply(s -> gson.fromJson(s.getBody(), TYPE_EXECS));
+        return future.thenApply(s -> gson.fromJson(fill(s.getBody()), TYPE_EXECS));
 
     }
 
     @Override
-    public CompletableFuture<List<TradePosition.Response>> listPositions(TradePosition request, Pagination pagination) {
+    public CompletableFuture<List<TradePosition.Response>> listPositions(TradePosition request) {
 
-        Map<String, String> params = prepareParameter(pagination);
-
-        params = prepareParameter(params, request);
+        Map<String, String> params = prepareParameter(request);
 
         HttpRequest req = HttpRequest.builder().type(PathType.TRADE_POSITION).parameters(params).build();
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
-        return future.thenApply(s -> gson.fromJson(s.getBody(), TYPE_POSITIONS));
+        return future.thenApply(s -> gson.fromJson(fill(s.getBody()), TYPE_POSITIONS));
 
     }
 
@@ -190,7 +188,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
-        return future.thenApply(s -> gson.fromJson(s.getBody(), TYPE_COLLATERALS));
+        return future.thenApply(s -> gson.fromJson(fill(s.getBody()), TYPE_COLLATERALS));
 
     }
 
@@ -203,7 +201,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         CompletableFuture<HttpResponse> future = client.request(req);
 
-        return future.thenApply(s -> gson.fromJson(s.getBody(), TradeCommissionResponse.class));
+        return future.thenApply(s -> gson.fromJson(fill(s.getBody()), TradeCommissionResponse.class));
 
     }
 

@@ -29,7 +29,7 @@ public interface OrderService {
 
     CompletableFuture<List<TradeExecution.Response>> listExecutions(TradeExecution request, Pagination pagination);
 
-    CompletableFuture<List<TradePosition.Response>> listPositions(TradePosition request, Pagination pagination);
+    CompletableFuture<List<TradePosition.Response>> listPositions(TradePosition request);
 
     CompletableFuture<List<TradeCollateral.Response>> listCollaterals(TradeCollateral request, Pagination pagination);
 

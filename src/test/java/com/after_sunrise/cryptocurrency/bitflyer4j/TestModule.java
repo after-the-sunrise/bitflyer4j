@@ -36,6 +36,10 @@ public class TestModule {
         return clz.cast(mocks.computeIfAbsent(clz, Mockito::mock));
     }
 
+    public <T> void putMock(Class<T> clz, T mock) {
+        mocks.put(clz, mock);
+    }
+
     public Injector createInjector() {
 
         Injector injector = mock(Injector.class);

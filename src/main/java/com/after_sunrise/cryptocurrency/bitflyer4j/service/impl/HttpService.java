@@ -29,6 +29,8 @@ class HttpService {
 
     static final String FROM_DATE = "from_date";
 
+    static final String EMPTY = "{}";
+
     final Logger log = LoggerFactory.getLogger(getClass());
 
     final HttpClient client;
@@ -91,6 +93,10 @@ class HttpService {
 
         return merged;
 
+    }
+
+    String fill(String json) {
+        return StringUtils.isEmpty(json) ? EMPTY : json;
     }
 
 }

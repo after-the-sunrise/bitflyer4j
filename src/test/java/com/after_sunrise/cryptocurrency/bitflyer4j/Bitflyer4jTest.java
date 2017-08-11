@@ -98,7 +98,7 @@ public class Bitflyer4jTest {
 
                 // 404 Not Found
                 orderService.listCollaterals(null, null);
-                orderService.listPositions(null, null);
+                orderService.listPositions(null);
 
             }
 

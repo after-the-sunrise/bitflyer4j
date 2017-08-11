@@ -1,0 +1,17 @@
+[
+  {
+    "currency_code": "JPY",
+    "amount": 1024078,
+    "available": 508000
+  },
+  {
+    "currency_code": "BTC",
+    "amount": 10.24,
+    "available": 4.12
+  },
+  {
+    "currency_code": "ETH",
+    "amount": 20.48,
+    "available": 16.38
+  }
+]

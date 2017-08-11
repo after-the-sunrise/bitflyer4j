@@ -33,6 +33,8 @@ public class ParentDetail extends Entity {
 
         String getParentId();
 
+        String getAcceptanceId();
+
         ParentType getType();
 
         Integer getExpiry();
