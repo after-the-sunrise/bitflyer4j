@@ -1,4 +1,5 @@
-# bitflyer4j [![Build Status](https://travis-ci.org/after-the-sunrise/bitflyer4j.svg?branch=master)](https://travis-ci.org/after-the-sunrise/bitflyer4j) [![Coverage Status](https://coveralls.io/repos/github/after-the-sunrise/bitflyer4j/badge.svg?branch=master)](https://coveralls.io/github/after-the-sunrise/bitflyer4j?branch=master)
+# bitflyer4j 
+[![Build Status][travis-icon]][travis-page] [![Coverage Status][coverall-icon]][coverall-page] ![Maven Central][maven-badge]
 
 ## Overview
 
@@ -235,3 +236,9 @@ Currently implemented paths are as follows:
   - [ ] Order Book Update `lightning_board_*`
   - [x] Ticker `lightning_ticker_*`
   - [x] Execution `lightning_executions_*`
+
+[travis-page]:https://travis-ci.org/after-the-sunrise/bitflyer4j
+[travis-icon]:https://travis-ci.org/after-the-sunrise/bitflyer4j.svg?branch=master
+[coverall-page]:https://coveralls.io/github/after-the-sunrise/bitflyer4j?branch=master
+[coverall-icon]:https://coveralls.io/repos/github/after-the-sunrise/bitflyer4j/badge.svg?branch=master
+[maven-badge]:https://maven-badges.herokuapp.com/maven-central/com.after_sunrise.cryptocurrency/bitflyer4j/badge.svg
