@@ -1,5 +1,5 @@
 # bitflyer4j 
-[![Build Status][travis-icon]][travis-page] [![Coverage Status][coverall-icon]][coverall-page] ![Maven Central][maven-badge]
+[![Build Status][travis-icon]][travis-page] [![Coverage Status][coverall-icon]][coverall-page] [![Maven Central][maven-icon]][maven-page]
 
 ## Overview
 
@@ -241,4 +241,5 @@ Currently implemented paths are as follows:
 [travis-icon]:https://travis-ci.org/after-the-sunrise/bitflyer4j.svg?branch=master
 [coverall-page]:https://coveralls.io/github/after-the-sunrise/bitflyer4j?branch=master
 [coverall-icon]:https://coveralls.io/repos/github/after-the-sunrise/bitflyer4j/badge.svg?branch=master
-[maven-badge]:https://maven-badges.herokuapp.com/maven-central/com.after_sunrise.cryptocurrency/bitflyer4j/badge.svg
+[maven-page]:https://maven-badges.herokuapp.com/maven-central/com.after_sunrise.cryptocurrency/bitflyer4j
+[maven-icon]:https://maven-badges.herokuapp.com/maven-central/com.after_sunrise.cryptocurrency/bitflyer4j/badge.svg
