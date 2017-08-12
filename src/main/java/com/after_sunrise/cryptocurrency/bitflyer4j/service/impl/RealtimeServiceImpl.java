@@ -196,7 +196,7 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
                     if (previous != null) {
 
-                        log.debug("Already subscribed : {}", channel);
+                        log.trace("Already subscribed : {}", channel);
 
                     } else {
 
@@ -257,7 +257,7 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
                     if (previous == null) {
 
-                        log.debug("Already unsubscribed : {}", channel);
+                        log.trace("Already unsubscribed : {}", channel);
 
                     } else {
 
@@ -286,11 +286,13 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
     @Override
     public void status(PubNub pubnub, PNStatus status) {
 
-        int code = status.getStatusCode();
-
         List<String> channels = status.getAffectedChannels();
 
-        log.debug("Status update : {} - {}", code, channels);
+        int code = status.getStatusCode();
+
+        clientLog.trace("STS : [{}] [{}]", channels, code);
+
+        executor.submit(() -> log.debug("Status update : {} - {}", code, channels));
 
     }
 
@@ -301,7 +303,9 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
         String event = presence.getEvent();
 
-        log.debug("Presence update : {} - {}", channel, event);
+        clientLog.trace("PRC : [{}] [{}]", channel, event);
+
+        executor.submit(() -> log.debug("Presence update : {} - {}", channel, event));
 
     }
 
@@ -312,11 +316,11 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
         JsonElement je = message.getMessage();
 
-        log.trace("Message update : {} - {}", channel, je);
-
         clientLog.trace("REC : [{}] [{}]", channel, je);
 
         executor.submit(() -> {
+
+            log.trace("Message update : {} - {}", channel, je);
 
             try {
 
