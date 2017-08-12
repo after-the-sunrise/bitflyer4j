@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static com.google.common.util.concurrent.MoreExecutors.newDirectExecutorService;
@@ -102,7 +103,7 @@ public class RealtimeServiceImplTest {
                 if (realtimeListener == l2) {
                     throw new RuntimeException("test");
                 }
-                realtimeListener.onTicks(Collections.emptyList());
+                realtimeListener.onTicks("hoge", Collections.emptyList());
             }
         }
 
@@ -185,7 +186,7 @@ public class RealtimeServiceImplTest {
 
             return null;
 
-        }).when(l1).onBoards(anyListOf(Board.class));
+        }).when(l1).onBoards(anyString(), any(Board.class));
 
         List<String> ids = target.subscribeBoard(Arrays.asList("A")).get();
         assertEquals(ids.size(), 1);
@@ -195,7 +196,7 @@ public class RealtimeServiceImplTest {
                 .channel("lightning_board_snapshot_A") //
                 .message(load("BOARD", JsonObject.class)).build());
 
-        verify(l1).onBoards(anyListOf(Board.class));
+        verify(l1).onBoards(anyString(), any(Board.class));
 
         ids = target.unsubscribeBoard(Arrays.asList("A")).get();
         assertEquals(ids.size(), 1);
@@ -229,7 +230,7 @@ public class RealtimeServiceImplTest {
 
             return null;
 
-        }).when(l1).onTicks(anyListOf(Tick.class));
+        }).when(l1).onTicks(anyString(), anyListOf(Tick.class));
 
         List<String> ids = target.subscribeTick(Arrays.asList("A")).get();
         assertEquals(ids.size(), 1);
@@ -239,7 +240,7 @@ public class RealtimeServiceImplTest {
                 .channel("lightning_ticker_A") //
                 .message(load("TICKER", JsonObject.class)).build());
 
-        verify(l1).onTicks(anyListOf(Tick.class));
+        verify(l1).onTicks(anyString(), anyListOf(Tick.class));
 
         ids = target.unsubscribeTick(Arrays.asList("A")).get();
         assertEquals(ids.size(), 1);
@@ -268,7 +269,7 @@ public class RealtimeServiceImplTest {
 
             return null;
 
-        }).when(l1).onExecutions(anyListOf(Execution.class));
+        }).when(l1).onExecutions(anyString(), anyListOf(Execution.class));
 
         List<String> ids = target.subscribeExecution(Arrays.asList("A")).get();
         assertEquals(ids.size(), 1);
@@ -278,7 +279,7 @@ public class RealtimeServiceImplTest {
                 .channel("lightning_executions_A") //
                 .message(load("EXEC", JsonArray.class)).build());
 
-        verify(l1).onExecutions(anyListOf(Execution.class));
+        verify(l1).onExecutions(anyString(), anyListOf(Execution.class));
 
         ids = target.unsubscribeExecution(Arrays.asList("A")).get();
         assertEquals(ids.size(), 1);
@@ -291,7 +292,7 @@ public class RealtimeServiceImplTest {
 
         String prefix = "lightning_topic_";
 
-        Consumer<JsonElement> c = json -> {
+        BiConsumer<String, JsonElement> c = (channel, json) -> {
         };
 
         List<String> ids = target.subscribe(prefix, asList("A", "B"), c).get();

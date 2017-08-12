@@ -19,17 +19,17 @@ public class RealtimeListenerTest {
 
     @Test
     public void testOnBoards() throws Exception {
-        target.onBoards(null);
+        target.onBoards(null, null);
     }
 
     @Test
     public void testOnTicks() throws Exception {
-        target.onTicks(null);
+        target.onTicks(null, null);
     }
 
     @Test
     public void testOnExecutions() throws Exception {
-        target.onExecutions(null);
+        target.onExecutions(null, null);
     }
 
 }

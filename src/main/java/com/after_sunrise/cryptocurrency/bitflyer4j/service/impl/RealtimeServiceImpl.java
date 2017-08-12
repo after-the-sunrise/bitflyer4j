@@ -30,6 +30,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.Loggers.PubNubLogger;
@@ -55,7 +56,7 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
     private final Set<RealtimeListener> listeners = synchronizedSet(new HashSet<>());
 
-    private final Map<String, Consumer<JsonElement>> subscriptions = new ConcurrentHashMap<>();
+    private final Map<String, BiConsumer<String, JsonElement>> subscriptions = new ConcurrentHashMap<>();
 
     private final Logger clientLog = LoggerFactory.getLogger(PubNubLogger.class);
 
@@ -134,11 +135,13 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
     @Override
     public CompletableFuture<List<String>> subscribeBoard(List<String> products) {
 
-        return subscribe(CHANNEL_BOARD_SNAPSHOT, products, json -> {
+        return subscribe(CHANNEL_BOARD_SNAPSHOT, products, (channel, json) -> {
+
+            String product = StringUtils.removeStart(channel, CHANNEL_BOARD_SNAPSHOT);
 
             Board value = gson.fromJson(json, BoardImpl.class);
 
-            forEach(l -> l.onBoards(singletonList(value)));
+            forEach(l -> l.onBoards(product, value));
 
         });
 
@@ -147,11 +150,13 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
     @Override
     public CompletableFuture<List<String>> subscribeTick(List<String> products) {
 
-        return subscribe(CHANNEL_TICK, products, json -> {
+        return subscribe(CHANNEL_TICK, products, (channel, json) -> {
+
+            String product = StringUtils.removeStart(channel, CHANNEL_TICK);
 
             Tick value = gson.fromJson(json, TickImpl.class);
 
-            forEach(l -> l.onTicks(singletonList(value)));
+            forEach(l -> l.onTicks(product, singletonList(value)));
 
         });
 
@@ -160,18 +165,20 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
     @Override
     public CompletableFuture<List<String>> subscribeExecution(List<String> products) {
 
-        return subscribe(CHANNEL_EXEC, products, json -> {
+        return subscribe(CHANNEL_EXEC, products, (channel, json) -> {
+
+            String product = StringUtils.removeStart(channel, CHANNEL_EXEC);
 
             List<Execution> values = gson.fromJson(json, TYPE_EXECUTIONS);
 
-            forEach(l -> l.onExecutions(unmodifiableList(values)));
+            forEach(l -> l.onExecutions(product, unmodifiableList(values)));
 
         });
 
     }
 
     @VisibleForTesting
-    CompletableFuture<List<String>> subscribe(String prefix, List<String> products, Consumer<JsonElement> c) {
+    CompletableFuture<List<String>> subscribe(String prefix, List<String> products, BiConsumer<String, JsonElement> c) {
 
         return CompletableFuture.supplyAsync(() -> {
 
@@ -185,7 +192,7 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
                     String channel = prefix + id;
 
-                    Consumer<JsonElement> previous = subscriptions.putIfAbsent(channel, c);
+                    BiConsumer<String, JsonElement> previous = subscriptions.putIfAbsent(channel, c);
 
                     if (previous != null) {
 
@@ -246,7 +253,7 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
                     String channel = prefix + id;
 
-                    Consumer<JsonElement> previous = subscriptions.remove(channel);
+                    BiConsumer<String, JsonElement> previous = subscriptions.remove(channel);
 
                     if (previous == null) {
 
@@ -313,7 +320,7 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
             try {
 
-                Consumer<JsonElement> c = subscriptions.get(channel);
+                BiConsumer<String, JsonElement> c = subscriptions.get(channel);
 
                 if (c == null) {
 
@@ -323,7 +330,7 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
                     log.trace("Processing : {} - [{}]", channel, je);
 
-                    c.accept(je);
+                    c.accept(channel, je);
 
                 }
 

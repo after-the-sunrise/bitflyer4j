@@ -106,18 +106,18 @@ public class Bitflyer4jTest {
 
             realtimeService.addListener(new RealtimeListener() {
                 @Override
-                public void onBoards(List<Board> values) {
-                    LOG.info("Realtime : {}", values);
+                public void onBoards(String p, Board value) {
+                    LOG.info("Realtime : ({}) {}", p, value);
                 }
 
                 @Override
-                public void onTicks(List<Tick> values) {
-                    LOG.info("Realtime : {}", values);
+                public void onTicks(String p, List<Tick> values) {
+                    LOG.info("Realtime : ({}) {}", p, values);
                 }
 
                 @Override
-                public void onExecutions(List<Execution> values) {
-                    LOG.info("Realtime : {}", values);
+                public void onExecutions(String p, List<Execution> values) {
+                    LOG.info("Realtime : ({}) {}", p, values);
                 }
             });
 

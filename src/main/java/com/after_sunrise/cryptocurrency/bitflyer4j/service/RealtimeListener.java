@@ -12,11 +12,11 @@ import java.util.List;
  */
 public interface RealtimeListener {
 
-    void onBoards(List<Board> values);
+    void onBoards(String product, Board value);
 
-    void onTicks(List<Tick> values);
+    void onTicks(String product, List<Tick> values);
 
-    void onExecutions(List<Execution> values);
+    void onExecutions(String product, List<Execution> values);
 
     /**
      * @author takanori.takase
@@ -24,15 +24,15 @@ public interface RealtimeListener {
      */
     class RealtimeListenerAdapter implements RealtimeListener {
         @Override
-        public void onBoards(List<Board> values) {
+        public void onBoards(String product, Board value) {
         }
 
         @Override
-        public void onTicks(List<Tick> values) {
+        public void onTicks(String product, List<Tick> values) {
         }
 
         @Override
-        public void onExecutions(List<Execution> values) {
+        public void onExecutions(String product, List<Execution> values) {
         }
     }
 
