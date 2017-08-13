@@ -324,7 +324,13 @@ public class HttpClientImpl implements HttpClient {
 
         String message = connection.getResponseMessage();
 
-        try (InputStream in = connection.getInputStream()) {
+        InputStream in = connection.getErrorStream();
+
+        try {
+
+            if (in == null) {
+                in = connection.getInputStream();
+            }
 
             byte[] bytes = ByteStreams.toByteArray(in);
 
@@ -340,6 +346,25 @@ public class HttpClientImpl implements HttpClient {
 
             throw new IOException(String.format("%s %s", code, message), e);
 
+        } finally {
+
+            closeQuietly(in);
+
+        }
+
+    }
+
+    @VisibleForTesting
+    void closeQuietly(InputStream in) {
+
+        if (in == null) {
+            return;
+        }
+
+        try {
+            in.close();
+        } catch (IOException e) {
+            // Ignore
         }
 
     }
