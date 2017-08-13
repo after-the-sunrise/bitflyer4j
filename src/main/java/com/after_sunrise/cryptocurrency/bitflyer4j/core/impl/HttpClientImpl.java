@@ -58,6 +58,7 @@ public class HttpClientImpl implements HttpClient {
         Map<String, String> map = new LinkedHashMap<>();
         map.put("Accept", "application/json");
         map.put("Accept-Charset", "UTF-8");
+        map.put("Content-Type", "application/json");
         HEADERS = Collections.unmodifiableMap(map);
     }
 
@@ -217,7 +218,7 @@ public class HttpClientImpl implements HttpClient {
 
         }
 
-        String body = request.getBody();
+        String body = StringUtils.trimToEmpty(request.getBody());
 
         if (request.getType().isSign()) {
 
@@ -228,7 +229,7 @@ public class HttpClientImpl implements HttpClient {
             String base = ts //
                     + conn.getRequestMethod() //
                     + conn.getURL().getFile() //
-                    + StringUtils.trimToEmpty(body);
+                    + body;
 
             String sign = computeHash(ALGORITHM, base);
 
