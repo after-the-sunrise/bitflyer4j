@@ -23,14 +23,10 @@ import javax.inject.Inject;
 @Slf4j
 public class Bitflyer4jImpl implements Bitflyer4j {
 
+    private final Injector injector;
+
     @Getter
     private final String version;
-
-    @Getter
-    private final ExecutorFactory executorFactory;
-
-    @Getter
-    private final PubNub pubNub;
 
     @Getter
     private final MarketService marketService;
@@ -45,11 +41,11 @@ public class Bitflyer4jImpl implements Bitflyer4j {
     private final RealtimeService realtimeService;
 
     @Inject
-    public Bitflyer4jImpl(Injector injector) {
+    public Bitflyer4jImpl(Injector i) {
 
-        executorFactory = injector.getInstance(ExecutorFactory.class);
+        injector = i;
 
-        pubNub = injector.getInstance(PubNub.class);
+        version = injector.getInstance(Environment.class).getVersion();
 
         marketService = injector.getInstance(MarketService.class);
 
@@ -59,8 +55,6 @@ public class Bitflyer4jImpl implements Bitflyer4j {
 
         realtimeService = injector.getInstance(RealtimeService.class);
 
-        version = injector.getInstance(Environment.class).getVersion();
-
         log.info("Initialized : {}", version);
 
     }
@@ -68,9 +62,9 @@ public class Bitflyer4jImpl implements Bitflyer4j {
     @Override
     public void close() throws Exception {
 
-        pubNub.destroy();
+        injector.getInstance(PubNub.class).destroy();
 
-        executorFactory.shutdown();
+        injector.getInstance(ExecutorFactory.class).shutdown();
 
         log.info("Terminated.");
 
