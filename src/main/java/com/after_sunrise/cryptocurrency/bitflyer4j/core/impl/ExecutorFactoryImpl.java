@@ -93,9 +93,11 @@ public class ExecutorFactoryImpl implements ExecutorFactory, UncaughtExceptionHa
 
         Class<?> cls = clazz == null ? getClass() : clazz;
 
+        ExecutorService executor;
+
         synchronized (services) {
 
-            return services.computeIfAbsent(cls, c -> {
+            executor = services.computeIfAbsent(cls, c -> {
 
                 log.debug("Creating executor : {}", c.getSimpleName());
 
@@ -106,6 +108,8 @@ public class ExecutorFactoryImpl implements ExecutorFactory, UncaughtExceptionHa
             });
 
         }
+
+        return executor;
 
     }
 
