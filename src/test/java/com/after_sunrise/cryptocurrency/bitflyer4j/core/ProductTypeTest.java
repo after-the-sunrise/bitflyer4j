@@ -29,7 +29,11 @@ public class ProductTypeTest {
 
             assertNotNull(type.getLotSize());
 
+            assertNotNull(type.getTickSize());
+
             assertNotEquals(type.getLotSize().signum(), INTEGER_ZERO);
+
+            assertNotEquals(type.getTickSize().signum(), INTEGER_ZERO);
 
         }
 
@@ -53,6 +57,23 @@ public class ProductTypeTest {
         assertNull(BTC.roundToLotSize(null, DOWN));
         assertNull(BTC.roundToLotSize(value, null));
         assertNull(BTC.roundToLotSize(null, null));
+
+    }
+
+    @Test
+    public void testRoundToTickSize() throws Exception {
+
+        BigDecimal value = new BigDecimal("0.000000015");
+
+        assertEquals(BTC.roundToTickSize(value, UP), new BigDecimal("0.00000002"));
+        assertEquals(BTC.roundToTickSize(value, HALF_UP), new BigDecimal("0.00000002"));
+
+        assertEquals(BTC.roundToTickSize(value, DOWN), new BigDecimal("0.00000001"));
+        assertEquals(BTC.roundToTickSize(value, HALF_DOWN), new BigDecimal("0.00000001"));
+
+        assertNull(BTC.roundToTickSize(null, DOWN));
+        assertNull(BTC.roundToTickSize(value, null));
+        assertNull(BTC.roundToTickSize(null, null));
 
     }
 
