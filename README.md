@@ -98,8 +98,8 @@ public class RealtimeSample {
 
         api.getRealtimeService().addListener(new RealtimeListenerAdapter() {
             @Override
-            public void onTicks(List<Tick> values) {
-                System.out.println(values);
+            public void onTicks(String product, List<Tick> values) {
+                System.out.println("(" + product + ")" + values);
             }
         });
 
