@@ -1,4 +1,4 @@
-package com.after_sunrise.cryptocurrency.bitflyer4j.core.impl;
+package com.after_sunrise.cryptocurrency.bitflyer4j.core;
 
 import lombok.Getter;
 import org.apache.commons.lang3.math.NumberUtils;

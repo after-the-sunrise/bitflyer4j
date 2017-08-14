@@ -1,11 +1,11 @@
-package com.after_sunrise.cryptocurrency.bitflyer4j.core.impl;
+package com.after_sunrise.cryptocurrency.bitflyer4j.core;
 
 import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
 
-import static com.after_sunrise.cryptocurrency.bitflyer4j.core.impl.ProductType.BTC;
-import static com.after_sunrise.cryptocurrency.bitflyer4j.core.impl.ProductType.find;
+import static com.after_sunrise.cryptocurrency.bitflyer4j.core.ProductType.BTC;
+import static com.after_sunrise.cryptocurrency.bitflyer4j.core.ProductType.find;
 import static java.math.RoundingMode.*;
 import static org.apache.commons.lang3.math.NumberUtils.INTEGER_ZERO;
 import static org.testng.Assert.*;
