@@ -1,7 +1,6 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.service.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient.HttpRequest;
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient.HttpResponse;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.PathType;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.*;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl.*;
@@ -48,9 +47,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.ORDER_SEND).body(body).build();
 
-        CompletableFuture<HttpResponse> future = client.request(req);
-
-        return future.thenApply(s -> gson.fromJson(fill(s.getBody()), OrderCreateResponse.class));
+        return request(req, OrderCreateResponse.class);
 
     }
 
@@ -61,9 +58,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.ORDER_CANCEL).body(body).build();
 
-        CompletableFuture<HttpResponse> future = client.request(req);
-
-        return future.thenApply(s -> gson.fromJson(fill(s.getBody()), OrderCancelResponse.class));
+        return request(req, OrderCancelResponse.class);
 
     }
 
@@ -74,9 +69,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.PARENT_SEND).body(body).build();
 
-        CompletableFuture<HttpResponse> future = client.request(req);
-
-        return future.thenApply(s -> gson.fromJson(fill(s.getBody()), ParentCreateResponse.class));
+        return request(req, ParentCreateResponse.class);
 
     }
 
@@ -87,9 +80,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.PARENT_CANCEL).body(body).build();
 
-        CompletableFuture<HttpResponse> future = client.request(req);
-
-        return future.thenApply(s -> gson.fromJson(fill(s.getBody()), ParentCancelResponse.class));
+        return request(req, ParentCancelResponse.class);
 
     }
 
@@ -102,9 +93,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.ORDER_LIST).parameters(params).build();
 
-        CompletableFuture<HttpResponse> future = client.request(req);
-
-        return future.thenApply(s -> gson.fromJson(fill(s.getBody()), TYPE_ORDERS));
+        return request(req, TYPE_ORDERS);
 
     }
 
@@ -117,9 +106,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.PARENT_LIST).parameters(params).build();
 
-        CompletableFuture<HttpResponse> future = client.request(req);
-
-        return future.thenApply(s -> gson.fromJson(fill(s.getBody()), TYPE_PARENTS));
+        return request(req, TYPE_PARENTS);
 
     }
 
@@ -130,9 +117,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.PARENT_DETAIL).parameters(params).build();
 
-        CompletableFuture<HttpResponse> future = client.request(req);
-
-        return future.thenApply(s -> gson.fromJson(fill(s.getBody()), ParentDetailResponse.class));
+        return request(req, ParentDetailResponse.class);
 
     }
 
@@ -143,9 +128,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.PRODUCT_CANCEL).body(body).build();
 
-        CompletableFuture<HttpResponse> future = client.request(req);
-
-        return future.thenApply(s -> gson.fromJson(fill(s.getBody()), ProductCancelResponse.class));
+        return request(req, ProductCancelResponse.class);
 
     }
 
@@ -158,9 +141,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.TRADE_EXECUTION).parameters(params).build();
 
-        CompletableFuture<HttpResponse> future = client.request(req);
-
-        return future.thenApply(s -> gson.fromJson(fill(s.getBody()), TYPE_EXECS));
+        return request(req, TYPE_EXECS);
 
     }
 
@@ -171,9 +152,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.TRADE_POSITION).parameters(params).build();
 
-        CompletableFuture<HttpResponse> future = client.request(req);
-
-        return future.thenApply(s -> gson.fromJson(fill(s.getBody()), TYPE_POSITIONS));
+        return request(req, TYPE_POSITIONS);
 
     }
 
@@ -186,9 +165,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.TRADE_COLLATERAL).parameters(params).build();
 
-        CompletableFuture<HttpResponse> future = client.request(req);
-
-        return future.thenApply(s -> gson.fromJson(fill(s.getBody()), TYPE_COLLATERALS));
+        return request(req, TYPE_COLLATERALS);
 
     }
 
@@ -199,9 +176,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.TRADE_COMMISSION).parameters(params).build();
 
-        CompletableFuture<HttpResponse> future = client.request(req);
-
-        return future.thenApply(s -> gson.fromJson(fill(s.getBody()), TradeCommissionResponse.class));
+        return request(req, TradeCommissionResponse.class);
 
     }
 

@@ -1,7 +1,6 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.service.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient.HttpRequest;
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient.HttpResponse;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.PathType;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.*;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl.*;
@@ -43,9 +42,7 @@ public class MarketServiceImpl extends HttpService implements MarketService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.MARKET).build();
 
-        CompletableFuture<HttpResponse> future = client.request(req);
-
-        return future.thenApply(s -> gson.fromJson(s.getBody(), TYPE_PRODUCTS));
+        return request(req, TYPE_PRODUCTS);
 
     }
 
@@ -56,9 +53,7 @@ public class MarketServiceImpl extends HttpService implements MarketService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.BOARD).parameters(parameters).build();
 
-        CompletableFuture<HttpResponse> future = client.request(req);
-
-        return future.thenApply(s -> gson.fromJson(s.getBody(), BoardImpl.class));
+        return request(req, BoardImpl.class);
 
     }
 
@@ -69,9 +64,7 @@ public class MarketServiceImpl extends HttpService implements MarketService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.TICKER).parameters(parameters).build();
 
-        CompletableFuture<HttpResponse> future = client.request(req);
-
-        return future.thenApply(s -> gson.fromJson(s.getBody(), TickImpl.class));
+        return request(req, TickImpl.class);
 
     }
 
@@ -84,9 +77,7 @@ public class MarketServiceImpl extends HttpService implements MarketService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.EXECUTION).parameters(params).build();
 
-        CompletableFuture<HttpResponse> future = client.request(req);
-
-        return future.thenApply(s -> gson.fromJson(s.getBody(), TYPE_EXECUTIONS));
+        return request(req, TYPE_EXECUTIONS);
 
     }
 
@@ -95,9 +86,7 @@ public class MarketServiceImpl extends HttpService implements MarketService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.HEALTH).build();
 
-        CompletableFuture<HttpResponse> future = client.request(req);
-
-        return future.thenApply(s -> gson.fromJson(s.getBody(), StatusImpl.class));
+        return request(req, StatusImpl.class);
 
     }
 
@@ -110,9 +99,7 @@ public class MarketServiceImpl extends HttpService implements MarketService {
 
         HttpRequest req = HttpRequest.builder().type(PathType.CHAT).parameters(params).build();
 
-        CompletableFuture<HttpResponse> future = client.request(req);
-
-        return future.thenApply(s -> gson.fromJson(s.getBody(), TYPE_CHATS));
+        return request(req, TYPE_CHATS);
 
     }
 

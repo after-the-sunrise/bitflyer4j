@@ -124,7 +124,7 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
             } catch (RuntimeException e) {
 
-                log.warn("Listener consumption failed : {}", e);
+                log.warn("Listener consumption failed : " + listener, e);
 
             }
 

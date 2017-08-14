@@ -22,7 +22,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.time.Duration;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +29,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.Loggers.HttpLogger;
+import static java.util.Collections.singletonMap;
+import static java.util.Collections.unmodifiableMap;
 
 /**
  * @author takanori.takase
@@ -54,12 +55,14 @@ public class HttpClientImpl implements HttpClient {
 
     static final Map<String, String> HEADERS;
 
+    static final Map<String, String> HEADERS_BODY;
+
     static {
         Map<String, String> map = new LinkedHashMap<>();
         map.put("Accept", "application/json");
         map.put("Accept-Charset", "UTF-8");
-        map.put("Content-Type", "application/json");
-        HEADERS = Collections.unmodifiableMap(map);
+        HEADERS = unmodifiableMap(map);
+        HEADERS_BODY = singletonMap("Content-Type", "application/json");
     }
 
     private final Logger clientLog = LoggerFactory.getLogger(HttpLogger.class);
@@ -190,9 +193,9 @@ public class HttpClientImpl implements HttpClient {
 
         {
 
-            HEADERS.forEach(conn::addRequestProperty);
+            HEADERS.forEach(conn::setRequestProperty);
 
-            conn.addRequestProperty(AGENT_KEY, AGENT_VAL + environment.getVersion());
+            conn.setRequestProperty(AGENT_KEY, AGENT_VAL + environment.getVersion());
 
         }
 
@@ -246,6 +249,8 @@ public class HttpClientImpl implements HttpClient {
         Map<String, List<String>> properties = conn.getRequestProperties();
 
         if (StringUtils.isNotEmpty(body)) {
+
+            HEADERS_BODY.forEach(conn::setRequestProperty);
 
             conn.setDoOutput(true);
 

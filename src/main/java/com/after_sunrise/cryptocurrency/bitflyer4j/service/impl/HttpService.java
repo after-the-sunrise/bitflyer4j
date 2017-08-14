@@ -1,6 +1,7 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.service.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient;
+import com.after_sunrise.cryptocurrency.bitflyer4j.entity.RejectException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Injector;
@@ -10,9 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 import static java.util.Collections.singletonMap;
 
@@ -95,8 +98,30 @@ class HttpService {
 
     }
 
-    String fill(String json) {
-        return StringUtils.isEmpty(json) ? EMPTY : json;
+    <T> CompletableFuture<T> request(HttpClient.HttpRequest request, Class<? extends T> clazz) {
+        return request(request, (Type) clazz);
+    }
+
+    <T> CompletableFuture<T> request(HttpClient.HttpRequest request, Type type) {
+
+        CompletableFuture<HttpClient.HttpResponse> future = client.request(request);
+
+        return future.thenApply(response -> {
+
+            String body = StringUtils.defaultIfEmpty(response.getBody(), EMPTY);
+
+            if (response.getCode() != HttpURLConnection.HTTP_OK) {
+
+                Map<String, String> details = gson.fromJson(body, TYPE_MAP);
+
+                throw new RejectException(response.getCode(), response.getMessage(), details);
+
+            }
+
+            return gson.fromJson(body, type);
+
+        });
+
     }
 
 }

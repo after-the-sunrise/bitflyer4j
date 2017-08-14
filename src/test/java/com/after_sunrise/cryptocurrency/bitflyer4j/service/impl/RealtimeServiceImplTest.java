@@ -93,7 +93,6 @@ public class RealtimeServiceImplTest {
 
     }
 
-
     @Test
     public void testListener() throws ExecutionException, InterruptedException {
 
@@ -161,10 +160,12 @@ public class RealtimeServiceImplTest {
     public void testSubscribeBoard() throws Exception {
 
         assertTrue(target.addListener(l1).get());
+        assertTrue(target.addListener(l2).get());
+        assertTrue(target.addListener(l3).get());
 
         doAnswer(invocation -> {
 
-            List<?> values = invocation.getArgumentAt(0, List.class);
+            List<?> values = invocation.getArgumentAt(1, List.class);
             assertEquals(values.size(), 1);
 
             Board value = (Board) values.get(0);
@@ -187,6 +188,8 @@ public class RealtimeServiceImplTest {
             return null;
 
         }).when(l1).onBoards(anyString(), any(Board.class));
+        doThrow(new RuntimeException("test")).when(l2).onBoards(anyString(), any(Board.class));
+        doNothing().when(l3).onBoards(anyString(), any(Board.class));
 
         List<String> ids = target.subscribeBoard(Arrays.asList("A")).get();
         assertEquals(ids.size(), 1);
@@ -197,6 +200,14 @@ public class RealtimeServiceImplTest {
                 .message(load("BOARD", JsonObject.class)).build());
 
         verify(l1).onBoards(anyString(), any(Board.class));
+        verify(l2).onBoards(anyString(), any(Board.class));
+        verify(l3).onBoards(anyString(), any(Board.class));
+
+        target.message(pubNub, PNMessageResult.builder() //
+                .channel("lightning_board_snapshot_A") //
+                .message(new JsonArray()).build());
+
+        verifyNoMoreInteractions(l1, l2, l3);
 
         ids = target.unsubscribeBoard(Arrays.asList("A")).get();
         assertEquals(ids.size(), 1);
@@ -208,10 +219,12 @@ public class RealtimeServiceImplTest {
     public void testSubscribeTick() throws Exception {
 
         assertTrue(target.addListener(l1).get());
+        assertTrue(target.addListener(l2).get());
+        assertTrue(target.addListener(l3).get());
 
         doAnswer(invocation -> {
 
-            List<?> values = invocation.getArgumentAt(0, List.class);
+            List<?> values = invocation.getArgumentAt(1, List.class);
             assertEquals(values.size(), 1);
 
             Tick value = (Tick) values.get(0);
@@ -231,6 +244,8 @@ public class RealtimeServiceImplTest {
             return null;
 
         }).when(l1).onTicks(anyString(), anyListOf(Tick.class));
+        doThrow(new RuntimeException("test")).when(l2).onTicks(anyString(), anyListOf(Tick.class));
+        doNothing().when(l3).onTicks(anyString(), anyListOf(Tick.class));
 
         List<String> ids = target.subscribeTick(Arrays.asList("A")).get();
         assertEquals(ids.size(), 1);
@@ -241,6 +256,14 @@ public class RealtimeServiceImplTest {
                 .message(load("TICKER", JsonObject.class)).build());
 
         verify(l1).onTicks(anyString(), anyListOf(Tick.class));
+        verify(l2).onTicks(anyString(), anyListOf(Tick.class));
+        verify(l3).onTicks(anyString(), anyListOf(Tick.class));
+
+        target.message(pubNub, PNMessageResult.builder() //
+                .channel("lightning_ticker_A") //
+                .message(new JsonArray()).build());
+
+        verifyNoMoreInteractions(l1, l2, l3);
 
         ids = target.unsubscribeTick(Arrays.asList("A")).get();
         assertEquals(ids.size(), 1);
@@ -252,10 +275,12 @@ public class RealtimeServiceImplTest {
     public void testSubscribeExecution() throws Exception {
 
         assertTrue(target.addListener(l1).get());
+        assertTrue(target.addListener(l2).get());
+        assertTrue(target.addListener(l3).get());
 
         doAnswer(invocation -> {
 
-            List<?> values = invocation.getArgumentAt(0, List.class);
+            List<?> values = invocation.getArgumentAt(1, List.class);
             assertEquals(values.size(), 1);
 
             Execution value = (Execution) values.get(0);
@@ -270,6 +295,8 @@ public class RealtimeServiceImplTest {
             return null;
 
         }).when(l1).onExecutions(anyString(), anyListOf(Execution.class));
+        doThrow(new RuntimeException("test")).when(l2).onExecutions(anyString(), anyListOf(Execution.class));
+        doNothing().when(l3).onExecutions(anyString(), anyListOf(Execution.class));
 
         List<String> ids = target.subscribeExecution(Arrays.asList("A")).get();
         assertEquals(ids.size(), 1);
@@ -280,6 +307,14 @@ public class RealtimeServiceImplTest {
                 .message(load("EXEC", JsonArray.class)).build());
 
         verify(l1).onExecutions(anyString(), anyListOf(Execution.class));
+        verify(l2).onExecutions(anyString(), anyListOf(Execution.class));
+        verify(l3).onExecutions(anyString(), anyListOf(Execution.class));
+
+        target.message(pubNub, PNMessageResult.builder() //
+                .channel("lightning_executions_A") //
+                .message(new JsonObject()).build());
+
+        verifyNoMoreInteractions(l1, l2, l3);
 
         ids = target.unsubscribeExecution(Arrays.asList("A")).get();
         assertEquals(ids.size(), 1);

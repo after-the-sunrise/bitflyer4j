@@ -141,6 +141,9 @@ public class EntityTest {
     private void testBuilder(Class<?> clazz) throws ReflectiveOperationException {
 
         Object builder = clazz.getMethod("builder").invoke(clazz);
+        assertNotNull(builder.toString());
+        assertEquals(builder.hashCode(), builder.hashCode());
+        assertTrue(builder.equals(builder));
 
         Method build = builder.getClass().getMethod("build");
 
