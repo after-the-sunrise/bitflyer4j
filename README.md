@@ -196,8 +196,7 @@ refer to the `KeyType` javadoc.
 
 ### Endpoint Paths
 
-The library is aimed to cover the paths documented in the official documentation. 
-Currently implemented paths are as follows:  
+Currently implemented API endpoint paths are as follows:
 
 - HTTP Public API
   - [x] Market List : `/v1/markets`
