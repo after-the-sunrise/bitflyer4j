@@ -30,7 +30,7 @@ public enum KeyType {
     /**
      * Site ID.
      */
-    SITE("LOCAL"),
+    SITE("local"),
 
     /**
      * Authentication key.

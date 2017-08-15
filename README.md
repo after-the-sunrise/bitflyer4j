@@ -177,7 +177,7 @@ refer to the `KeyType` javadoc.
 
 |Property Key                          |Default Value                             |Description                                                                           |
 |--------------------------------------|------------------------------------------|--------------------------------------------------------------------------------------|
-|bitflyer4j.site                       |                                          |Optional free-text label to identify the environment which the client app is running. |
+|bitflyer4j.site                       |local                                     |Optional free-text label to identify the environment which the client app is running. |
 |bitflyer4j.auth_key                   |                                          |Authentication key for the private API.                                               |
 |bitflyer4j.auth_secret                |                                          |Authentication secret for the private API.                                            |
 |bitflyer4j.http_url                   |https://api.bitflyer.jp                   |Endpoint URL of the service.                                                          |
