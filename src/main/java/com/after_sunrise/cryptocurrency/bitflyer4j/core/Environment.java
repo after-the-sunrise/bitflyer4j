@@ -16,6 +16,8 @@ public interface Environment {
 
     String getVersion();
 
+    String getSite();
+
     String getUrl();
 
     Proxy getProxy();

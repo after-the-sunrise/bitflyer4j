@@ -69,6 +69,19 @@ public class EnvironmentImplTest {
     }
 
     @Test
+    public void testGetSite() {
+
+        assertEquals(target.getSite(), SITE.getDefaultValue());
+
+        conf.setProperty(SITE.getKey(), "");
+        assertNull(target.getSite());
+
+        conf.setProperty(SITE.getKey(), "testsite");
+        assertEquals(target.getSite(), "testsite");
+
+    }
+
+    @Test
     public void testGetUrl() {
 
         assertEquals(target.getUrl(), HTTP_URL.getDefaultValue());

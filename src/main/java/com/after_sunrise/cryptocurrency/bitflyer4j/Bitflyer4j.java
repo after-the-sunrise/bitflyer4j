@@ -15,6 +15,8 @@ public interface Bitflyer4j extends AutoCloseable {
 
     String getVersion();
 
+    String getSite();
+
     MarketService getMarketService();
 
     AccountService getAccountService();

@@ -25,8 +25,7 @@ public class Bitflyer4jImpl implements Bitflyer4j {
 
     private final Injector injector;
 
-    @Getter
-    private final String version;
+    private final Environment environment;
 
     @Getter
     private final MarketService marketService;
@@ -45,7 +44,7 @@ public class Bitflyer4jImpl implements Bitflyer4j {
 
         injector = i;
 
-        version = injector.getInstance(Environment.class).getVersion();
+        environment = injector.getInstance(Environment.class);
 
         marketService = injector.getInstance(MarketService.class);
 
@@ -55,7 +54,7 @@ public class Bitflyer4jImpl implements Bitflyer4j {
 
         realtimeService = injector.getInstance(RealtimeService.class);
 
-        log.info("Initialized : {}", version);
+        log.info("Initialized : {} - {}", getVersion(), getSite());
 
     }
 
@@ -68,6 +67,16 @@ public class Bitflyer4jImpl implements Bitflyer4j {
 
         log.info("Terminated.");
 
+    }
+
+    @Override
+    public String getVersion() {
+        return environment.getVersion();
+    }
+
+    @Override
+    public String getSite() {
+        return environment.getSite();
     }
 
 }

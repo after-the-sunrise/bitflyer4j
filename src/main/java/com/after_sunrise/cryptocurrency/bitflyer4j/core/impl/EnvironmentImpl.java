@@ -71,6 +71,11 @@ public class EnvironmentImpl implements Environment, EventListener<Configuration
     }
 
     @Override
+    public String getSite() {
+        return String.class.cast(cache.get(SITE));
+    }
+
+    @Override
     public String getUrl() {
         return String.class.cast(cache.get(HTTP_URL));
     }

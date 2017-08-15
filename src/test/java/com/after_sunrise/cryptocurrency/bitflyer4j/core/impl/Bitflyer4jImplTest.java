@@ -33,6 +33,8 @@ public class Bitflyer4jImplTest {
 
         when(module.getEnvironment().getVersion()).thenReturn(getClass().getSimpleName());
 
+        when(module.getEnvironment().getSite()).thenReturn(getClass().getTypeName());
+
         target = new Bitflyer4jImpl(module.createInjector());
 
     }
@@ -52,6 +54,13 @@ public class Bitflyer4jImplTest {
     public void testGetVersion() throws Exception {
 
         assertEquals(target.getVersion(), getClass().getSimpleName());
+
+    }
+
+    @Test
+    public void testGetSite() throws Exception {
+
+        assertEquals(target.getSite(), getClass().getTypeName());
 
     }
 
