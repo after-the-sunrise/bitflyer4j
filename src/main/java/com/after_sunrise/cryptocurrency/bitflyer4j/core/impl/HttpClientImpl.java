@@ -16,10 +16,9 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.net.URLEncoder;
 import java.security.GeneralSecurityException;
 import java.time.Duration;
 import java.util.LinkedHashMap;
@@ -29,6 +28,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.Loggers.HttpLogger;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Collections.singletonMap;
 import static java.util.Collections.unmodifiableMap;
 
@@ -60,7 +60,7 @@ public class HttpClientImpl implements HttpClient {
     static {
         Map<String, String> map = new LinkedHashMap<>();
         map.put("Accept", "application/json");
-        map.put("Accept-Charset", "UTF-8");
+        map.put("Accept-Charset", UTF_8.name());
         HEADERS = unmodifiableMap(map);
         HEADERS_BODY = singletonMap("Content-Type", "application/json");
     }
@@ -160,7 +160,7 @@ public class HttpClientImpl implements HttpClient {
     }
 
     @VisibleForTesting
-    URL createUrl(String path, Map<String, String> parameters) throws MalformedURLException {
+    URL createUrl(String path, Map<String, String> parameters) throws IOException {
 
         String endpoint = environment.getUrl();
 
@@ -170,17 +170,24 @@ public class HttpClientImpl implements HttpClient {
 
         if (MapUtils.isNotEmpty(parameters)) {
 
-            int length = sb.length();
+            final int length = sb.length();
 
-            parameters.entrySet().stream() //
-                    .filter(entry -> StringUtils.isNotEmpty(entry.getKey())) //
-                    .filter(entry -> StringUtils.isNotEmpty(entry.getValue())) //
-                    .forEach(entry -> {
-                        sb.append(sb.length() == length ? '?' : '&');
-                        sb.append(entry.getKey());
-                        sb.append('=');
-                        sb.append(entry.getValue());
-                    });
+            for (Map.Entry<String, String> entry : parameters.entrySet()) {
+
+                if (StringUtils.isEmpty(entry.getKey())) {
+                    continue;
+                }
+
+                if (StringUtils.isEmpty(entry.getValue())) {
+                    continue;
+                }
+
+                sb.append(sb.length() == length ? '?' : '&');
+                sb.append(URLEncoder.encode(entry.getKey(), UTF_8.name()));
+                sb.append('=');
+                sb.append(URLEncoder.encode(entry.getValue(), UTF_8.name()));
+
+            }
 
         }
 
@@ -339,7 +346,7 @@ public class HttpClientImpl implements HttpClient {
 
             byte[] bytes = ByteStreams.toByteArray(in);
 
-            String body = new String(bytes, StandardCharsets.UTF_8);
+            String body = new String(bytes, UTF_8);
 
             clientLog.trace("RECV : [{} {}] [{}]", code, message, body);
 

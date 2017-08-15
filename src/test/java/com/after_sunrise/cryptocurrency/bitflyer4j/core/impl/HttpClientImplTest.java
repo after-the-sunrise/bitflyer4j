@@ -393,11 +393,11 @@ public class HttpClientImplTest {
         params.put("foo", "bar");
         params.put("hoge", null);
         params.put(null, "hoge");
-        params.put("zoo", "zoo");
+        params.put("z?o", "z&o");
 
         URL url = target.createUrl("/foo/bar", params);
 
-        assertEquals(url.toString(), "http://localhost:8081/foo/bar?foo=bar&zoo=zoo");
+        assertEquals(url.toString(), "http://localhost:8081/foo/bar?foo=bar&z%3Fo=z%26o");
 
     }
 
