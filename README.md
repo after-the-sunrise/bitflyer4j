@@ -14,7 +14,7 @@ This library aims to capsulize the raw message formats and protocols, and provid
 
 ### Download
 
-Use Maven or Gradle to import the library and its dependencies from the central.
+Use Maven or Gradle to import the library jars and its dependencies from the [Maven Central][maven-page].
 
 #### Maven (`pom.xml`)
 ```xml
@@ -25,18 +25,14 @@ Use Maven or Gradle to import the library and its dependencies from the central.
 </dependency>
 ```
 
-#### Gradle (`build.gradle`)
-```gradle
-dependencies {
-    compile 'com.after_sunrise.cryptocurrency:bitflyer4j:${VERSION}'
-}
-```
+### Sample Codes
 
-### Sample Code
-
-Copy and paste the following code snippet in the ``main`` method, and run. 
+Copy and paste the following code snippets into the `main` and execute.
 
 #### Query Tick
+
+Query for the latest tick data (price/size for best-bid/ask/last, accumuated volume, etc.).
+
 ```java
 public class QueryTickSample {
 
@@ -46,12 +42,17 @@ public class QueryTickSample {
 
         System.out.println(api.getMarketService().getTick("BTC_JPY").get());
 
+        api.close();
+
     }
 
 }
 ```
 
 #### Send New Order
+
+Send a new order. Note that this is for the "Child Order" in bitFlyer's terminology. 
+
 ```java
 public class SendOrderSample {
 
@@ -65,12 +66,17 @@ public class SendOrderSample {
 
         System.out.println(api.getOrderService().sendOrder(request).get());
 
+        api.close();
+
     }
 
 }
 ```
 
 #### Cancel Existing Order
+
+Cancel an existing order. Specify either one of the order id or the acceptance id.
+
 ```java
 public class CancelOrderSample {
 
@@ -83,12 +89,17 @@ public class CancelOrderSample {
 
         System.out.println(api.getOrderService().cancelOrder(request).get());
 
+        api.close();
+
     }
 
 }
 ```
 
 #### Subscribe to Realtime Feed
+
+Initiate a subscrption for the steaming market data.
+
 ```java
 public class RealtimeSample {
 
@@ -107,15 +118,21 @@ public class RealtimeSample {
 
         TimeUnit.SECONDS.sleep(30L);
 
+        api.close();
+
     }
 
 }
 ```
 
-For the full list of supported features, please refer to the interface definitions, such as ``MarketService``, ``AccountService`` and/or ``OrderService``.
+For the full list of supported features, please refer to the service interface definitions 
+in the `com.after_sunrise.cryptocurrency.bitflyer4j.service` package.
 
 
-## Features
+## Features & Configurations
+
+Below are some of the features and configurations available, which may be useful 
+for specific use cases and executing environments.
 
 ### Private API Authentication
 
@@ -194,7 +211,7 @@ refer to the `KeyType` javadoc.
 |bitflyer4j.pubnub_secure              |true                                      |PubNub secure flag for enabling SSL.                                                  |
 
 
-### Endpoint Paths
+## Endpoint Paths
 
 Currently implemented API endpoint paths are as follows:
 
