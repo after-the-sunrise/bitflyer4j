@@ -23,10 +23,10 @@ public class TradeExecution extends Entity {
     private final String product;
 
     @SerializedName("child_order_id")
-    private final String child_order_id;
+    private final String childOrderId;
 
     @SerializedName("child_order_acceptance_id")
-    private final String child_order_acceptance_id;
+    private final String childOrderAcceptanceId;
 
     public interface Response {
 

@@ -489,7 +489,7 @@ public class OrderServiceImplTest {
         });
 
         TradeExecution v = TradeExecution.builder().product("BTC_JPY") //
-                .child_order_id("OI").child_order_acceptance_id("AI").build();
+                .childOrderId("OI").childOrderAcceptanceId("AI").build();
         Pagination p = Pagination.builder().count(123L).build();
         Iterator<TradeExecution.Response> values = target.listExecutions(v, p).get().iterator();
 
