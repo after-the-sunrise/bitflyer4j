@@ -6,7 +6,7 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.entity;
  */
 public interface Pagination {
 
-    Long getCount();
+    Integer getCount();
 
     Long getBefore();
 

@@ -62,7 +62,7 @@ public interface ParentList {
         private final StateType state;
 
         @SerializedName("count")
-        private final Long count;
+        private final Integer count;
 
         @SerializedName("before")
         private final Long before;

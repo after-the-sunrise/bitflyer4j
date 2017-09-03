@@ -287,7 +287,7 @@ public class OrderServiceImplTest {
         });
 
         OrderList.Request v = OrderList.Request.builder().product("P").state(StateType.ACTIVE) //
-                .orderId("OI").acceptanceId("AI").parentId("PI").count(123L).build();
+                .orderId("OI").acceptanceId("AI").parentId("PI").count(123).build();
         Iterator<OrderList> values = target.listOrders(v).get().iterator();
 
         OrderList value = values.next();
@@ -350,7 +350,7 @@ public class OrderServiceImplTest {
         });
 
         ParentList.Request v = ParentList.Request.builder().product("P").state(StateType.ACTIVE)
-                .count(123L).build();
+                .count(123).build();
         Iterator<ParentList> values = target.listParents(v).get().iterator();
 
         ParentList value = values.next();
@@ -488,7 +488,7 @@ public class OrderServiceImplTest {
         });
 
         TradeExecution.Request v = TradeExecution.Request.builder().product("BTC_JPY") //
-                .childOrderId("OI").childOrderAcceptanceId("AI").count(123L).build();
+                .childOrderId("OI").childOrderAcceptanceId("AI").count(123).build();
         Iterator<TradeExecution> values = target.listExecutions(v).get().iterator();
 
         TradeExecution value = values.next();
@@ -566,7 +566,7 @@ public class OrderServiceImplTest {
 
         });
 
-        TradeCollateral.Request v = TradeCollateral.Request.builder().count(123L).build();
+        TradeCollateral.Request v = TradeCollateral.Request.builder().count(123).build();
         Iterator<TradeCollateral> values = target.listCollaterals(v).get().iterator();
 
         TradeCollateral value = values.next();

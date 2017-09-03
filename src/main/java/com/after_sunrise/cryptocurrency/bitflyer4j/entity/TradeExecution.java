@@ -47,7 +47,7 @@ public interface TradeExecution {
         private final String childOrderAcceptanceId;
 
         @SerializedName("count")
-        private final Long count;
+        private final Integer count;
 
         @SerializedName("before")
         private final Long before;

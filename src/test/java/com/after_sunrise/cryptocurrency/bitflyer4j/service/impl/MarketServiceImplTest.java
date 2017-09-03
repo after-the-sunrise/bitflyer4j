@@ -206,7 +206,7 @@ public class MarketServiceImplTest extends Application {
 
         });
 
-        Execution.Request p = Execution.Request.builder().count(123L).before(456L).product("FX_BTC_JPY").build();
+        Execution.Request p = Execution.Request.builder().count(123).before(456L).product("FX_BTC_JPY").build();
         Iterator<Execution> values = target.getExecutions(p).get().iterator();
 
         Execution exec = values.next();

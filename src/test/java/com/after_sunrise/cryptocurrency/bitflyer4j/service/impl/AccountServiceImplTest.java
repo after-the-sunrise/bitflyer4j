@@ -244,7 +244,7 @@ public class AccountServiceImplTest {
 
         });
 
-        CoinIn.Request request = CoinIn.Request.builder().count(123L).before(456L).build();
+        CoinIn.Request request = CoinIn.Request.builder().count(123).before(456L).build();
         Iterator<CoinIn> values = target.getCoinIns(request).get().iterator();
 
         CoinIn value = values.next();
@@ -404,7 +404,7 @@ public class AccountServiceImplTest {
 
         });
 
-        Withdrawal.Request p = Withdrawal.Request.builder().count(123L).build();
+        Withdrawal.Request p = Withdrawal.Request.builder().count(123).build();
         Iterator<Withdrawal> values = target.getWithdrawals(p).get().iterator();
 
         Withdrawal value = values.next();
