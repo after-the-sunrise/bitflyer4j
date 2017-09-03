@@ -60,7 +60,7 @@ public class SendOrderSample {
 
         Bitflyer4j api = new Bitflyer4jFactory().createInstance();
 
-        OrderCreate request = OrderCreate.builder().product("BTC_JPY")
+        OrderCreate.Request request = OrderCreate.Request.builder().product("BTC_JPY")
                 .type(ConditionType.LIMIT).side(SideType.BUY)
                 .price(BigDecimal.TEN).size(BigDecimal.ONE).build();
 
@@ -84,7 +84,7 @@ public class CancelOrderSample {
 
         Bitflyer4j api = new Bitflyer4jFactory().createInstance();
 
-        OrderCancel request = OrderCancel.builder()
+        OrderCancel.Request request = OrderCancel.Request.builder()
                 .product("BTC_JPY").orderId("JOR20150707-055555-022222").build();
 
         System.out.println(api.getOrderService().cancelOrder(request).get());

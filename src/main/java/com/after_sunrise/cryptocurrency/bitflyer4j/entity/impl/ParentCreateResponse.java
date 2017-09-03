@@ -12,7 +12,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public class ParentCreateResponse extends Entity implements ParentCreate.Response {
+public class ParentCreateResponse extends Entity implements ParentCreate {
 
     @SerializedName("parent_order_acceptance_id")
     private final String acceptanceId;

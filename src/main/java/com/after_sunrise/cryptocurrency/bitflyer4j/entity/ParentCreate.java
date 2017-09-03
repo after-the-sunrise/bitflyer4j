@@ -17,54 +17,54 @@ import java.util.List;
  * @author takanori.takase
  * @version 0.0.1
  */
-@Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class ParentCreate extends Entity {
+public interface ParentCreate {
 
-    @SerializedName("order_method")
-    private final ParentType type;
-
-    @SerializedName("minute_to_expire")
-    private final Integer expiry;
-
-    @SerializedName("time_in_force")
-    private final TimeInForceType timeInForce;
-
-    @SerializedName("parameters")
-    private final List<Parameter> parameters;
+    String getAcceptanceId();
 
     @Getter
     @Builder
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Parameter extends Entity {
+    class Request extends Entity {
 
-        @SerializedName("product_code")
-        private final String product;
+        @SerializedName("order_method")
+        private final ParentType type;
 
-        @SerializedName("condition_type")
-        private final ConditionType condition;
+        @SerializedName("minute_to_expire")
+        private final Integer expiry;
 
-        @SerializedName("side")
-        private final SideType side;
+        @SerializedName("time_in_force")
+        private final TimeInForceType timeInForce;
 
-        @SerializedName("price")
-        private final BigDecimal price;
+        @SerializedName("parameters")
+        private final List<Parameter> parameters;
 
-        @SerializedName("size")
-        private final BigDecimal size;
+        @Getter
+        @Builder
+        @AllArgsConstructor(access = AccessLevel.PRIVATE)
+        public static class Parameter extends Entity {
 
-        @SerializedName("trigger_price")
-        private final BigDecimal triggerPrice;
+            @SerializedName("product_code")
+            private final String product;
 
-        @SerializedName("offset")
-        private final BigDecimal offset;
+            @SerializedName("condition_type")
+            private final ConditionType condition;
 
-    }
+            @SerializedName("side")
+            private final SideType side;
 
-    public interface Response {
+            @SerializedName("price")
+            private final BigDecimal price;
 
-        String getAcceptanceId();
+            @SerializedName("size")
+            private final BigDecimal size;
+
+            @SerializedName("trigger_price")
+            private final BigDecimal triggerPrice;
+
+            @SerializedName("offset")
+            private final BigDecimal offset;
+
+        }
 
     }
 

@@ -12,33 +12,35 @@ import java.math.BigDecimal;
  * @author takanori.takase
  * @version 0.0.1
  */
-@Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Withdraw extends Entity {
+public interface Withdraw {
 
-    @SerializedName("currency_code")
-    private final String currency;
+    String getId();
 
-    @SerializedName("bank_account_id")
-    private final Long bank;
+    Integer getStatus();
 
-    @SerializedName("amount")
-    private final BigDecimal amount;
+    String getMessage();
 
-    @SerializedName("code")
-    private final String pin;
+    String getData();
 
-    public interface Response {
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    class Request extends Entity {
 
-        String getId();
+        @SerializedName("currency_code")
+        private final String currency;
 
-        Integer getStatus();
+        @SerializedName("bank_account_id")
+        private final Long bank;
 
-        String getMessage();
+        @SerializedName("amount")
+        private final BigDecimal amount;
 
-        String getData();
+        @SerializedName("code")
+        private final String pin;
 
     }
 
 }
+
+

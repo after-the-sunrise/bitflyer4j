@@ -16,7 +16,7 @@ import java.time.ZonedDateTime;
  */
 @Getter
 @AllArgsConstructor
-public class TradeExecutionResponse extends Entity implements TradeExecution.Response {
+public class TradeExecutionResponse extends Entity implements TradeExecution {
 
     @SerializedName("id")
     private final Long id;

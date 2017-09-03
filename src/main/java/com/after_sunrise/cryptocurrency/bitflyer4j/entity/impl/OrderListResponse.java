@@ -18,7 +18,7 @@ import java.time.ZonedDateTime;
  */
 @Getter
 @AllArgsConstructor
-public class OrderListResponse extends Entity implements OrderList.Response {
+public class OrderListResponse extends Entity implements OrderList {
 
     @SerializedName("id")
     private final Long id;

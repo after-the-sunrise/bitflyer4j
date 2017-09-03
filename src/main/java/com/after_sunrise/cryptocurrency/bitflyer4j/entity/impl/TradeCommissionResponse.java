@@ -14,7 +14,7 @@ import java.math.BigDecimal;
  */
 @Getter
 @AllArgsConstructor
-public class TradeCommissionResponse extends Entity implements TradeCommission.Response {
+public class TradeCommissionResponse extends Entity implements TradeCommission {
 
     @SerializedName("commission_rate")
     private final BigDecimal rate;

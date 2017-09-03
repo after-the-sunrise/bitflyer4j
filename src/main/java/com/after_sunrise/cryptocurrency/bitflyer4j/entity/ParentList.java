@@ -16,50 +16,50 @@ import java.time.ZonedDateTime;
  * @author takanori.takase
  * @version 0.0.1
  */
-@Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class ParentList extends Entity {
+public interface ParentList {
 
-    @SerializedName("product_code")
-    private final String product;
+    Long getId();
 
-    @SerializedName("parent_order_state")
-    private final StateType state;
+    String getParentId();
 
-    public interface Response {
+    String getProduct();
 
-        Long getId();
+    SideType getSide();
 
-        String getParentId();
+    ParentType getType();
 
-        String getProduct();
+    BigDecimal getPrice();
 
-        SideType getSide();
+    BigDecimal getAveragePrice();
 
-        ParentType getType();
+    BigDecimal getSize();
 
-        BigDecimal getPrice();
+    StateType getState();
 
-        BigDecimal getAveragePrice();
+    ZonedDateTime getExpireDate();
 
-        BigDecimal getSize();
+    ZonedDateTime getParentDate();
 
-        StateType getState();
+    String getAcceptanceId();
 
-        ZonedDateTime getExpireDate();
+    BigDecimal getOutstandingSize();
 
-        ZonedDateTime getParentDate();
+    BigDecimal getCancelSize();
 
-        String getAcceptanceId();
+    BigDecimal getExecutedSize();
 
-        BigDecimal getOutstandingSize();
+    BigDecimal getTotalCommission();
 
-        BigDecimal getCancelSize();
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    class Request extends Entity {
 
-        BigDecimal getExecutedSize();
+        @SerializedName("product_code")
+        private final String product;
 
-        BigDecimal getTotalCommission();
+        @SerializedName("parent_order_state")
+        private final StateType state;
 
     }
 

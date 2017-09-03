@@ -134,11 +134,11 @@ public class OrderServiceImplTest {
 
         });
 
-        OrderCreate v = OrderCreate.builder().product("BTC_JPY").type(ConditionType.LIMIT) //
+        OrderCreate.Request v = OrderCreate.Request.builder().product("BTC_JPY").type(ConditionType.LIMIT) //
                 .side(SideType.BUY).price(new BigDecimal("30000")) //
                 .size(new BigDecimal("0.1")).expiry(10000) //
                 .timeInForce(TimeInForceType.GTC).build();
-        OrderCreate.Response value = target.sendOrder(v).get();
+        OrderCreate value = target.sendOrder(v).get();
 
         assertEquals(value.getAcceptanceId(), "JRF20150707-050237-639234");
 
@@ -163,11 +163,11 @@ public class OrderServiceImplTest {
 
         });
 
-        OrderCancel v = OrderCancel.builder().product("BTC_JPY") //
+        OrderCancel.Request v = OrderCancel.Request.builder().product("BTC_JPY") //
                 .orderId("JOR20150707-055555-022222") //
                 .acceptanceId("JRF20150707-033333-099999")
                 .build();
-        OrderCancel.Response value = target.cancelOrder(v).get();
+        OrderCancel value = target.cancelOrder(v).get();
 
         assertNotNull(value);
 
@@ -210,26 +210,26 @@ public class OrderServiceImplTest {
 
         });
 
-        ParentCreate.Parameter p1 = ParentCreate.Parameter.builder().product("BTC_JPY") //
+        ParentCreate.Request.Parameter p1 = ParentCreate.Request.Parameter.builder().product("BTC_JPY") //
                 .condition(ConditionType.LIMIT) //
                 .side(SideType.BUY).price(new BigDecimal("30000")) //
                 .size(new BigDecimal("0.1")).build();
 
-        ParentCreate.Parameter p2 = ParentCreate.Parameter.builder().product("BTC_JPY") //
+        ParentCreate.Request.Parameter p2 = ParentCreate.Request.Parameter.builder().product("BTC_JPY") //
                 .condition(ConditionType.LIMIT) //
                 .side(SideType.SELL).price(new BigDecimal("32000")) //
                 .size(new BigDecimal("0.1")).build();
 
-        ParentCreate.Parameter p3 = ParentCreate.Parameter.builder().product("BTC_JPY") //
+        ParentCreate.Request.Parameter p3 = ParentCreate.Request.Parameter.builder().product("BTC_JPY") //
                 .condition(ConditionType.STOP_LIMIT) //
                 .side(SideType.SELL).price(new BigDecimal("28800")) //
                 .triggerPrice(new BigDecimal("29000")) //
                 .size(new BigDecimal("0.1")).build();
 
-        ParentCreate v = ParentCreate.builder().type(ParentType.IFDOCO) //
+        ParentCreate.Request v = ParentCreate.Request.builder().type(ParentType.IFDOCO) //
                 .expiry(10000).timeInForce(TimeInForceType.GTC) //
                 .parameters(Arrays.asList(p1, p2, p3)).build();
-        ParentCreate.Response value = target.sendParent(v).get();
+        ParentCreate value = target.sendParent(v).get();
 
         assertEquals(value.getAcceptanceId(), "JRF20150707-050237-639234");
 
@@ -254,11 +254,11 @@ public class OrderServiceImplTest {
 
         });
 
-        ParentCancel v = ParentCancel.builder().product("BTC_JPY") //
+        ParentCancel.Request v = ParentCancel.Request.builder().product("BTC_JPY") //
                 .orderId("JCO20150925-055555-022222") //
                 .acceptanceId("JRF20150925-033333-099999")
                 .build();
-        ParentCancel.Response value = target.cancelParent(v).get();
+        ParentCancel value = target.cancelParent(v).get();
 
         assertNotNull(value);
 
@@ -286,12 +286,12 @@ public class OrderServiceImplTest {
 
         });
 
-        OrderList v = OrderList.builder().product("P").state(StateType.ACTIVE) //
+        OrderList.Request v = OrderList.Request.builder().product("P").state(StateType.ACTIVE) //
                 .orderId("OI").acceptanceId("AI").parentId("PI").build();
         Pagination p = Pagination.builder().count(123L).build();
-        Iterator<OrderList.Response> values = target.listOrders(v, p).get().iterator();
+        Iterator<OrderList> values = target.listOrders(v, p).get().iterator();
 
-        OrderList.Response value = values.next();
+        OrderList value = values.next();
         assertEquals(value.getId(), (Long) 138398L);
         assertEquals(value.getOrderId(), "JOR20150707-084555-022523");
         assertEquals(value.getProduct(), "BTC_JPY");
@@ -350,11 +350,11 @@ public class OrderServiceImplTest {
 
         });
 
-        ParentList v = ParentList.builder().product("P").state(StateType.ACTIVE).build();
+        ParentList.Request v = ParentList.Request.builder().product("P").state(StateType.ACTIVE).build();
         Pagination p = Pagination.builder().count(123L).build();
-        Iterator<ParentList.Response> values = target.listParents(v, p).get().iterator();
+        Iterator<ParentList> values = target.listParents(v, p).get().iterator();
 
-        ParentList.Response value = values.next();
+        ParentList value = values.next();
         assertEquals(value.getId(), (Long) 138398L);
         assertEquals(value.getParentId(), "JCO20150707-084555-022523");
         assertEquals(value.getProduct(), "BTC_JPY");
@@ -411,8 +411,8 @@ public class OrderServiceImplTest {
 
         });
 
-        ParentDetail v = ParentDetail.builder().parentId("PI").acceptanceId("AI").build();
-        ParentDetail.Response value = target.getParent(v).get();
+        ParentDetail.Request v = ParentDetail.Request.builder().parentId("PI").acceptanceId("AI").build();
+        ParentDetail value = target.getParent(v).get();
 
         assertEquals(value.getId(), (Long) 4242L);
         assertEquals(value.getParentId(), "JCO20150925-046876-036161");
@@ -461,9 +461,9 @@ public class OrderServiceImplTest {
 
         });
 
-        ProductCancel v = ProductCancel.builder().product("BTC_JPY").build();
+        ProductCancel.Request v = ProductCancel.Request.builder().product("BTC_JPY").build();
 
-        ProductCancel.Response value = target.cancelProduct(v).get();
+        ProductCancel value = target.cancelProduct(v).get();
 
         assertNotNull(value);
 
@@ -488,12 +488,12 @@ public class OrderServiceImplTest {
 
         });
 
-        TradeExecution v = TradeExecution.builder().product("BTC_JPY") //
+        TradeExecution.Request v = TradeExecution.Request.builder().product("BTC_JPY") //
                 .childOrderId("OI").childOrderAcceptanceId("AI").build();
         Pagination p = Pagination.builder().count(123L).build();
-        Iterator<TradeExecution.Response> values = target.listExecutions(v, p).get().iterator();
+        Iterator<TradeExecution> values = target.listExecutions(v, p).get().iterator();
 
-        TradeExecution.Response value = values.next();
+        TradeExecution value = values.next();
         assertEquals(value.getId(), (Long) 37233L);
         assertEquals(value.getOrderId(), "JOR20150707-060559-021935");
         assertEquals(value.getSide(), SideType.BUY);
@@ -533,10 +533,10 @@ public class OrderServiceImplTest {
 
         });
 
-        TradePosition v = TradePosition.builder().product("FX_BTC_JPY").build();
-        Iterator<TradePosition.Response> values = target.listPositions(v).get().iterator();
+        TradePosition.Request v = TradePosition.Request.builder().product("FX_BTC_JPY").build();
+        Iterator<TradePosition> values = target.listPositions(v).get().iterator();
 
-        TradePosition.Response value = values.next();
+        TradePosition value = values.next();
         assertEquals(value.getProduct(), "FX_BTC_JPY");
         assertEquals(value.getSide(), SideType.BUY);
         assertEquals(value.getPrice(), new BigDecimal("36000"));
@@ -568,11 +568,11 @@ public class OrderServiceImplTest {
 
         });
 
-        TradeCollateral v = TradeCollateral.builder().build();
+        TradeCollateral.Request v = TradeCollateral.Request.builder().build();
         Pagination p = Pagination.builder().count(123L).build();
-        Iterator<TradeCollateral.Response> values = target.listCollaterals(v, p).get().iterator();
+        Iterator<TradeCollateral> values = target.listCollaterals(v, p).get().iterator();
 
-        TradeCollateral.Response value = values.next();
+        TradeCollateral value = values.next();
         assertEquals(value.getId(), (Long) 4995L);
         assertEquals(value.getCurrency(), "JPY");
         assertEquals(value.getChange(), new BigDecimal("-6"));
@@ -616,8 +616,8 @@ public class OrderServiceImplTest {
 
         });
 
-        TradeCommission v = TradeCommission.builder().product("ETH_JPY").build();
-        TradeCommission.Response value = target.getCommission(v).get();
+        TradeCommission.Request v = TradeCommission.Request.builder().product("ETH_JPY").build();
+        TradeCommission value = target.getCommission(v).get();
 
         assertEquals(value.getRate(), new BigDecimal("0.001"));
 

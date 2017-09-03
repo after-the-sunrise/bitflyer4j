@@ -11,28 +11,28 @@ import java.util.concurrent.CompletableFuture;
  */
 public interface OrderService {
 
-    CompletableFuture<OrderCreate.Response> sendOrder(OrderCreate request);
+    CompletableFuture<OrderCreate> sendOrder(OrderCreate.Request request);
 
-    CompletableFuture<OrderCancel.Response> cancelOrder(OrderCancel request);
+    CompletableFuture<OrderCancel> cancelOrder(OrderCancel.Request request);
 
-    CompletableFuture<ParentCreate.Response> sendParent(ParentCreate request);
+    CompletableFuture<ParentCreate> sendParent(ParentCreate.Request request);
 
-    CompletableFuture<ParentCancel.Response> cancelParent(ParentCancel request);
+    CompletableFuture<ParentCancel> cancelParent(ParentCancel.Request request);
 
-    CompletableFuture<List<OrderList.Response>> listOrders(OrderList request, Pagination pagination);
+    CompletableFuture<List<OrderList>> listOrders(OrderList.Request request, Pagination pagination);
 
-    CompletableFuture<List<ParentList.Response>> listParents(ParentList request, Pagination pagination);
+    CompletableFuture<List<ParentList>> listParents(ParentList.Request request, Pagination pagination);
 
-    CompletableFuture<ParentDetail.Response> getParent(ParentDetail request);
+    CompletableFuture<ParentDetail> getParent(ParentDetail.Request request);
 
-    CompletableFuture<ProductCancel.Response> cancelProduct(ProductCancel request);
+    CompletableFuture<ProductCancel> cancelProduct(ProductCancel.Request request);
 
-    CompletableFuture<List<TradeExecution.Response>> listExecutions(TradeExecution request, Pagination pagination);
+    CompletableFuture<List<TradeExecution>> listExecutions(TradeExecution.Request request, Pagination pagination);
 
-    CompletableFuture<List<TradePosition.Response>> listPositions(TradePosition request);
+    CompletableFuture<List<TradePosition>> listPositions(TradePosition.Request request);
 
-    CompletableFuture<List<TradeCollateral.Response>> listCollaterals(TradeCollateral request, Pagination pagination);
+    CompletableFuture<List<TradeCollateral>> listCollaterals(TradeCollateral.Request request, Pagination pagination);
 
-    CompletableFuture<TradeCommission.Response> getCommission(TradeCommission request);
+    CompletableFuture<TradeCommission> getCommission(TradeCommission.Request request);
 
 }

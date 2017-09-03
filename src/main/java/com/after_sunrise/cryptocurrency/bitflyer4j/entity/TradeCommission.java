@@ -12,17 +12,17 @@ import java.math.BigDecimal;
  * @author takanori.takase
  * @version 0.0.1
  */
-@Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class TradeCommission extends Entity {
+public interface TradeCommission {
 
-    @SerializedName("product_code")
-    private final String product;
+    BigDecimal getRate();
 
-    public interface Response {
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    class Request extends Entity {
 
-        BigDecimal getRate();
+        @SerializedName("product_code")
+        private final String product;
 
     }
 

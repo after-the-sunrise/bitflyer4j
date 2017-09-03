@@ -21,11 +21,11 @@ import static java.util.Collections.unmodifiableList;
  */
 @Getter
 @AllArgsConstructor
-public class ParentDetailResponse extends Entity implements ParentDetail.Response {
+public class ParentDetailResponse extends Entity implements ParentDetail {
 
     @Getter
     @AllArgsConstructor
-    public static class ParentDetailParameter extends Entity implements ParentDetail.Response.Parameter {
+    public static class ParentDetailParameter extends Entity implements ParentDetail.Parameter {
 
         @SerializedName("product_code")
         private final String product;
@@ -69,7 +69,7 @@ public class ParentDetailResponse extends Entity implements ParentDetail.Respons
     private final List<ParentDetailParameter> parameters;
 
     @Override
-    public List<ParentDetail.Response.Parameter> getParameters() {
+    public List<ParentDetail.Parameter> getParameters() {
         return parameters == null ? emptyList() : unmodifiableList(parameters);
     }
 

@@ -14,35 +14,35 @@ import java.time.ZonedDateTime;
  * @author takanori.takase
  * @version 0.0.1
  */
-@Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class TradePosition extends Entity {
+public interface TradePosition {
 
-    @SerializedName("product_code")
-    private final String product;
+    String getProduct();
 
-    public interface Response {
+    SideType getSide();
 
-        String getProduct();
+    BigDecimal getPrice();
 
-        SideType getSide();
+    BigDecimal getSize();
 
-        BigDecimal getPrice();
+    BigDecimal getCommission();
 
-        BigDecimal getSize();
+    BigDecimal getSwapPoint();
 
-        BigDecimal getCommission();
+    BigDecimal getRequiredCollateral();
 
-        BigDecimal getSwapPoint();
+    ZonedDateTime getOpenDate();
 
-        BigDecimal getRequiredCollateral();
+    BigDecimal getLeverage();
 
-        ZonedDateTime getOpenDate();
+    BigDecimal getProfitAndLoss();
 
-        BigDecimal getLeverage();
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    class Request extends Entity {
 
-        BigDecimal getProfitAndLoss();
+        @SerializedName("product_code")
+        private final String product;
 
     }
 

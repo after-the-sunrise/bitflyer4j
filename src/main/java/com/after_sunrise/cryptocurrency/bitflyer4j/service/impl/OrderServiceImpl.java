@@ -41,7 +41,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
     }
 
     @Override
-    public CompletableFuture<OrderCreate.Response> sendOrder(OrderCreate request) {
+    public CompletableFuture<OrderCreate> sendOrder(OrderCreate.Request request) {
 
         String body = gson.toJson(request);
 
@@ -52,7 +52,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
     }
 
     @Override
-    public CompletableFuture<OrderCancel.Response> cancelOrder(OrderCancel request) {
+    public CompletableFuture<OrderCancel> cancelOrder(OrderCancel.Request request) {
 
         String body = gson.toJson(request);
 
@@ -63,7 +63,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
     }
 
     @Override
-    public CompletableFuture<ParentCreate.Response> sendParent(ParentCreate request) {
+    public CompletableFuture<ParentCreate> sendParent(ParentCreate.Request request) {
 
         String body = gson.toJson(request);
 
@@ -74,7 +74,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
     }
 
     @Override
-    public CompletableFuture<ParentCancel.Response> cancelParent(ParentCancel request) {
+    public CompletableFuture<ParentCancel> cancelParent(ParentCancel.Request request) {
 
         String body = gson.toJson(request);
 
@@ -85,7 +85,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
     }
 
     @Override
-    public CompletableFuture<List<OrderList.Response>> listOrders(OrderList request, Pagination pagination) {
+    public CompletableFuture<List<OrderList>> listOrders(OrderList.Request request, Pagination pagination) {
 
         Map<String, String> params = prepareParameter(pagination);
 
@@ -98,7 +98,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
     }
 
     @Override
-    public CompletableFuture<List<ParentList.Response>> listParents(ParentList request, Pagination pagination) {
+    public CompletableFuture<List<ParentList>> listParents(ParentList.Request request, Pagination pagination) {
 
         Map<String, String> params = prepareParameter(pagination);
 
@@ -111,7 +111,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
     }
 
     @Override
-    public CompletableFuture<ParentDetail.Response> getParent(ParentDetail request) {
+    public CompletableFuture<ParentDetail> getParent(ParentDetail.Request request) {
 
         Map<String, String> params = prepareParameter(request);
 
@@ -122,7 +122,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
     }
 
     @Override
-    public CompletableFuture<ProductCancel.Response> cancelProduct(ProductCancel request) {
+    public CompletableFuture<ProductCancel> cancelProduct(ProductCancel.Request request) {
 
         String body = gson.toJson(request);
 
@@ -133,7 +133,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
     }
 
     @Override
-    public CompletableFuture<List<TradeExecution.Response>> listExecutions(TradeExecution request, Pagination pagination) {
+    public CompletableFuture<List<TradeExecution>> listExecutions(TradeExecution.Request request, Pagination pagination) {
 
         Map<String, String> params = prepareParameter(pagination);
 
@@ -146,7 +146,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
     }
 
     @Override
-    public CompletableFuture<List<TradePosition.Response>> listPositions(TradePosition request) {
+    public CompletableFuture<List<TradePosition>> listPositions(TradePosition.Request request) {
 
         Map<String, String> params = prepareParameter(request);
 
@@ -157,7 +157,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
     }
 
     @Override
-    public CompletableFuture<List<TradeCollateral.Response>> listCollaterals(TradeCollateral request, Pagination pagination) {
+    public CompletableFuture<List<TradeCollateral>> listCollaterals(TradeCollateral.Request request, Pagination pagination) {
 
         Map<String, String> params = prepareParameter(pagination);
 
@@ -170,7 +170,7 @@ public class OrderServiceImpl extends HttpService implements OrderService {
     }
 
     @Override
-    public CompletableFuture<TradeCommission.Response> getCommission(TradeCommission request) {
+    public CompletableFuture<TradeCommission> getCommission(TradeCommission.Request request) {
 
         Map<String, String> params = prepareParameter(request);
 

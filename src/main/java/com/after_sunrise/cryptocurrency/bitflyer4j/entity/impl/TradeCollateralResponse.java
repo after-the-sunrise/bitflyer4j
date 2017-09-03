@@ -15,7 +15,7 @@ import java.time.ZonedDateTime;
  */
 @Getter
 @AllArgsConstructor
-public class TradeCollateralResponse extends Entity implements TradeCollateral.Response {
+public class TradeCollateralResponse extends Entity implements TradeCollateral {
 
     @SerializedName("id")
     private final Long id;

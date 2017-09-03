@@ -16,48 +16,48 @@ import java.util.List;
  * @author takanori.takase
  * @version 0.0.1
  */
-@Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class ParentDetail extends Entity {
+public interface ParentDetail {
 
-    @SerializedName("parent_order_id")
-    private final String parentId;
+    Long getId();
 
-    @SerializedName("parent_order_acceptance_id")
-    private final String acceptanceId;
+    String getParentId();
 
-    public interface Response {
+    String getAcceptanceId();
 
-        Long getId();
+    ParentType getType();
 
-        String getParentId();
+    Integer getExpiry();
 
-        String getAcceptanceId();
+    List<Parameter> getParameters();
 
-        ParentType getType();
+    interface Parameter {
 
-        Integer getExpiry();
+        String getProduct();
 
-        List<Parameter> getParameters();
+        ConditionType getCondition();
 
-        interface Parameter {
+        SideType getSide();
 
-            String getProduct();
+        BigDecimal getPrice();
 
-            ConditionType getCondition();
+        BigDecimal getSize();
 
-            SideType getSide();
+        BigDecimal getTriggerPrice();
 
-            BigDecimal getPrice();
+        BigDecimal getOffset();
 
-            BigDecimal getSize();
+    }
 
-            BigDecimal getTriggerPrice();
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    class Request extends Entity {
 
-            BigDecimal getOffset();
+        @SerializedName("parent_order_id")
+        private final String parentId;
 
-        }
+        @SerializedName("parent_order_acceptance_id")
+        private final String acceptanceId;
 
     }
 

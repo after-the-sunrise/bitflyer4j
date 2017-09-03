@@ -15,35 +15,35 @@ import java.math.BigDecimal;
  * @author takanori.takase
  * @version 0.0.1
  */
-@Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class OrderCreate extends Entity {
+public interface OrderCreate {
 
-    @SerializedName("product_code")
-    private final String product;
+    String getAcceptanceId();
 
-    @SerializedName("child_order_type")
-    private final ConditionType type;
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    class Request extends Entity {
 
-    @SerializedName("side")
-    private final SideType side;
+        @SerializedName("product_code")
+        private final String product;
 
-    @SerializedName("price")
-    private final BigDecimal price;
+        @SerializedName("child_order_type")
+        private final ConditionType type;
 
-    @SerializedName("size")
-    private final BigDecimal size;
+        @SerializedName("side")
+        private final SideType side;
 
-    @SerializedName("minute_to_expire")
-    private final Integer expiry;
+        @SerializedName("price")
+        private final BigDecimal price;
 
-    @SerializedName("time_in_force")
-    private final TimeInForceType timeInForce;
+        @SerializedName("size")
+        private final BigDecimal size;
 
-    public interface Response {
+        @SerializedName("minute_to_expire")
+        private final Integer expiry;
 
-        String getAcceptanceId();
+        @SerializedName("time_in_force")
+        private final TimeInForceType timeInForce;
 
     }
 

@@ -12,7 +12,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public class WithdrawResponse extends Entity implements Withdraw.Response {
+public class WithdrawResponse extends Entity implements Withdraw {
 
     @SerializedName("message_id")
     private final String id;

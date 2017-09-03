@@ -10,21 +10,22 @@ import lombok.Getter;
  * @author takanori.takase
  * @version 0.0.1
  */
-@Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class ParentCancel extends Entity {
+public interface ParentCancel {
 
-    @SerializedName("product_code")
-    private final String product;
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    class Request extends Entity {
 
-    @SerializedName("parent_order_id")
-    private final String orderId;
+        @SerializedName("product_code")
+        private final String product;
 
-    @SerializedName("parent_order_acceptance_id")
-    private final String acceptanceId;
+        @SerializedName("parent_order_id")
+        private final String orderId;
 
-    public interface Response {
+        @SerializedName("parent_order_acceptance_id")
+        private final String acceptanceId;
+
     }
 
 }

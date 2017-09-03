@@ -77,7 +77,7 @@ public class Bitflyer4jTest {
 
             if (POST) {
 
-                Withdraw request = Withdraw.builder().currency("JPY").bank(0L).amount(ONE).pin("000000").build();
+                Withdraw.Request request = Withdraw.Request.builder().currency("JPY").bank(0L).amount(ONE).pin("000000").build();
 
                 LOG.info("Withdraw : {}", accountService.withdraw(request).get());
 
@@ -93,7 +93,7 @@ public class Bitflyer4jTest {
 
                 LOG.info("Executions : {}", orderService.listExecutions(null, null).get());
 
-                TradeCommission tradeCommission = TradeCommission.builder().product(PRODUCT).build();
+                TradeCommission.Request tradeCommission = TradeCommission.Request.builder().product(PRODUCT).build();
                 LOG.info("Commission : {}", orderService.getCommission(tradeCommission).get());
 
                 // 404 Not Found

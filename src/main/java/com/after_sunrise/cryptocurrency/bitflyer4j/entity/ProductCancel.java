@@ -10,15 +10,16 @@ import lombok.Getter;
  * @author takanori.takase
  * @version 0.0.1
  */
-@Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class ProductCancel extends Entity {
+public interface ProductCancel {
 
-    @SerializedName("product_code")
-    private final String product;
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    class Request extends Entity {
 
-    public interface Response {
+        @SerializedName("product_code")
+        private final String product;
+
     }
 
 }

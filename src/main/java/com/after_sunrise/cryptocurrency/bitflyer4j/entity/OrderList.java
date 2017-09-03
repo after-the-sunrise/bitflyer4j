@@ -16,59 +16,59 @@ import java.time.ZonedDateTime;
  * @author takanori.takase
  * @version 0.0.1
  */
-@Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class OrderList extends Entity {
+public interface OrderList {
 
-    @SerializedName("product_code")
-    private final String product;
+    Long getId();
 
-    @SerializedName("child_order_state")
-    private final StateType state;
+    String getOrderId();
 
-    @SerializedName("child_order_id")
-    private final String orderId;
+    String getProduct();
 
-    @SerializedName("child_order_acceptance_id")
-    private final String acceptanceId;
+    SideType getSide();
 
-    @SerializedName("parent_order_id")
-    private final String parentId;
+    ConditionType getCondition();
 
-    public interface Response {
+    BigDecimal getPrice();
 
-        Long getId();
+    BigDecimal getAveragePrice();
 
-        String getOrderId();
+    BigDecimal getSize();
 
-        String getProduct();
+    StateType getState();
 
-        SideType getSide();
+    ZonedDateTime getExpireDate();
 
-        ConditionType getCondition();
+    ZonedDateTime getOrderDate();
 
-        BigDecimal getPrice();
+    String getAcceptanceId();
 
-        BigDecimal getAveragePrice();
+    BigDecimal getOutstandingSize();
 
-        BigDecimal getSize();
+    BigDecimal getCancelSize();
 
-        StateType getState();
+    BigDecimal getExecutedSize();
 
-        ZonedDateTime getExpireDate();
+    BigDecimal getTotalCommission();
 
-        ZonedDateTime getOrderDate();
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    class Request extends Entity {
 
-        String getAcceptanceId();
+        @SerializedName("product_code")
+        private final String product;
 
-        BigDecimal getOutstandingSize();
+        @SerializedName("child_order_state")
+        private final StateType state;
 
-        BigDecimal getCancelSize();
+        @SerializedName("child_order_id")
+        private final String orderId;
 
-        BigDecimal getExecutedSize();
+        @SerializedName("child_order_acceptance_id")
+        private final String acceptanceId;
 
-        BigDecimal getTotalCommission();
+        @SerializedName("parent_order_id")
+        private final String parentId;
 
     }
 

@@ -11,5 +11,5 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public class OrderCancelResponse extends Entity implements OrderCancel.Response {
+public class OrderCancelResponse extends Entity implements OrderCancel {
 }

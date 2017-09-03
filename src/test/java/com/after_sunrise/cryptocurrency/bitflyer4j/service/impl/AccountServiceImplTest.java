@@ -378,8 +378,8 @@ public class AccountServiceImplTest {
 
         });
 
-        Withdraw w = Withdraw.builder().currency("C").bank(1L).amount(TEN).pin("1234").build();
-        Withdraw.Response value = target.withdraw(w).get();
+        Withdraw.Request request = Withdraw.Request.builder().currency("C").bank(1L).amount(TEN).pin("1234").build();
+        Withdraw value = target.withdraw(request).get();
 
         assertEquals(value.getId(), "69476620-5056-4003-bcbe-42658a2b041b");
         assertEquals(value.getStatus(), (Integer) (-700));

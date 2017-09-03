@@ -141,7 +141,7 @@ public class AccountServiceImpl extends HttpService implements AccountService {
     }
 
     @Override
-    public CompletableFuture<Withdraw.Response> withdraw(Withdraw request) {
+    public CompletableFuture<Withdraw> withdraw(Withdraw.Request request) {
 
         String body = gson.toJson(request);
 

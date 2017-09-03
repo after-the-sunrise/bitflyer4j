@@ -12,25 +12,24 @@ import java.time.ZonedDateTime;
  * @author takanori.takase
  * @version 0.0.1
  */
-@Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class TradeCollateral extends Entity {
+public interface TradeCollateral {
 
-    public interface Response {
+    Long getId();
 
-        Long getId();
+    String getCurrency();
 
-        String getCurrency();
+    BigDecimal getChange();
 
-        BigDecimal getChange();
+    BigDecimal getAmount();
 
-        BigDecimal getAmount();
+    String getReasonCode();
 
-        String getReasonCode();
+    ZonedDateTime getDate();
 
-        ZonedDateTime getDate();
-
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    class Request extends Entity {
     }
 
 }

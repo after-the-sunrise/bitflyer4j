@@ -14,37 +14,37 @@ import java.time.ZonedDateTime;
  * @author takanori.takase
  * @version 0.0.1
  */
-@Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class TradeExecution extends Entity {
+public interface TradeExecution {
 
-    @SerializedName("product_code")
-    private final String product;
+    Long getId();
 
-    @SerializedName("child_order_id")
-    private final String childOrderId;
+    String getOrderId();
 
-    @SerializedName("child_order_acceptance_id")
-    private final String childOrderAcceptanceId;
+    SideType getSide();
 
-    public interface Response {
+    BigDecimal getPrice();
 
-        Long getId();
+    BigDecimal getSize();
 
-        String getOrderId();
+    BigDecimal getCommission();
 
-        SideType getSide();
+    ZonedDateTime getExecDate();
 
-        BigDecimal getPrice();
+    String getAcceptanceId();
 
-        BigDecimal getSize();
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    class Request extends Entity {
 
-        BigDecimal getCommission();
+        @SerializedName("product_code")
+        private final String product;
 
-        ZonedDateTime getExecDate();
+        @SerializedName("child_order_id")
+        private final String childOrderId;
 
-        String getAcceptanceId();
+        @SerializedName("child_order_acceptance_id")
+        private final String childOrderAcceptanceId;
 
     }
 
