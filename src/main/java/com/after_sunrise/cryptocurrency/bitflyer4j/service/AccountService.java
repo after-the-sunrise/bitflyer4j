@@ -21,16 +21,16 @@ public interface AccountService {
 
     CompletableFuture<List<Address>> getAddresses();
 
-    CompletableFuture<List<CoinIn>> getCoinIns(Pagination pagination);
+    CompletableFuture<List<CoinIn>> getCoinIns(CoinIn.Request request);
 
-    CompletableFuture<List<CoinOut>> getCoinOuts(Pagination pagination);
+    CompletableFuture<List<CoinOut>> getCoinOuts(CoinOut.Request request);
 
     CompletableFuture<List<Bank>> getBanks();
 
-    CompletableFuture<List<Deposit>> getDeposits(Pagination pagination);
+    CompletableFuture<List<Deposit>> getDeposits(Deposit.Request request);
 
     CompletableFuture<Withdraw> withdraw(Withdraw.Request request);
 
-    CompletableFuture<List<Withdrawal>> getWithdrawals(Pagination pagination);
+    CompletableFuture<List<Withdrawal>> getWithdrawals(Withdrawal.Request request);
 
 }

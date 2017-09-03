@@ -85,11 +85,9 @@ public class OrderServiceImpl extends HttpService implements OrderService {
     }
 
     @Override
-    public CompletableFuture<List<OrderList>> listOrders(OrderList.Request request, Pagination pagination) {
+    public CompletableFuture<List<OrderList>> listOrders(OrderList.Request request) {
 
-        Map<String, String> params = prepareParameter(pagination);
-
-        params = prepareParameter(params, request);
+        Map<String, String> params = prepareParameter(request);
 
         HttpRequest req = HttpRequest.builder().type(PathType.ORDER_LIST).parameters(params).build();
 
@@ -98,11 +96,9 @@ public class OrderServiceImpl extends HttpService implements OrderService {
     }
 
     @Override
-    public CompletableFuture<List<ParentList>> listParents(ParentList.Request request, Pagination pagination) {
+    public CompletableFuture<List<ParentList>> listParents(ParentList.Request request) {
 
-        Map<String, String> params = prepareParameter(pagination);
-
-        params = prepareParameter(params, request);
+        Map<String, String> params = prepareParameter(request);
 
         HttpRequest req = HttpRequest.builder().type(PathType.PARENT_LIST).parameters(params).build();
 
@@ -133,11 +129,9 @@ public class OrderServiceImpl extends HttpService implements OrderService {
     }
 
     @Override
-    public CompletableFuture<List<TradeExecution>> listExecutions(TradeExecution.Request request, Pagination pagination) {
+    public CompletableFuture<List<TradeExecution>> listExecutions(TradeExecution.Request request) {
 
-        Map<String, String> params = prepareParameter(pagination);
-
-        params = prepareParameter(params, request);
+        Map<String, String> params = prepareParameter(request);
 
         HttpRequest req = HttpRequest.builder().type(PathType.TRADE_EXECUTION).parameters(params).build();
 
@@ -157,11 +151,9 @@ public class OrderServiceImpl extends HttpService implements OrderService {
     }
 
     @Override
-    public CompletableFuture<List<TradeCollateral>> listCollaterals(TradeCollateral.Request request, Pagination pagination) {
+    public CompletableFuture<List<TradeCollateral>> listCollaterals(TradeCollateral.Request request) {
 
-        Map<String, String> params = prepareParameter(pagination);
-
-        params = prepareParameter(params, request);
+        Map<String, String> params = prepareParameter(request);
 
         HttpRequest req = HttpRequest.builder().type(PathType.TRADE_COLLATERAL).parameters(params).build();
 

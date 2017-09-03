@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
 import static org.testng.Assert.*;
@@ -50,6 +51,17 @@ public class GsonProviderTest {
         entity.bar = "b";
 
         assertEquals(gson.toJson(entity), "{\"hoge\":\"b\"}");
+
+    }
+
+    @Test
+    public void testGet_LocalDate() throws Exception {
+
+        String result = gson.toJson((LocalDate) null);
+        assertEquals(result, "null");
+
+        result = gson.toJson(LocalDate.of(2017, 4, 14));
+        assertEquals(result, "\"2017-04-14\"");
 
     }
 

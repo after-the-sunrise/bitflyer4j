@@ -59,21 +59,29 @@ public class EntityTest {
     @Test
     public void test() throws ReflectiveOperationException {
 
+        test(Bank.Request.class);
+        test(Board.Request.class);
+        test(Chat.Request.class);
+        test(CoinIn.Request.class);
+        test(CoinOut.Request.class);
+        test(Deposit.Request.class);
+        test(Execution.Request.class);
         test(OrderCancel.Request.class);
         test(OrderCreate.Request.class);
         test(OrderList.Request.class);
-        test(Pagination.class);
         test(ParentCancel.Request.class);
         test(ParentCreate.Request.class);
         test(ParentCreate.Request.Parameter.class);
         test(ParentDetail.Request.class);
         test(ParentList.Request.class);
         test(ProductCancel.Request.class);
+        test(Tick.Request.class);
         test(TradeCollateral.Request.class);
         test(TradeCommission.Request.class);
         test(TradeExecution.Request.class);
         test(TradePosition.Request.class);
         test(Withdraw.Request.class);
+        test(Withdrawal.Request.class);
 
         test(AddressImpl.class);
         test(BalanceImpl.class);

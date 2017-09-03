@@ -244,8 +244,8 @@ public class AccountServiceImplTest {
 
         });
 
-        Pagination p = Pagination.builder().count(123L).before(456L).build();
-        Iterator<CoinIn> values = target.getCoinIns(p).get().iterator();
+        CoinIn.Request request = CoinIn.Request.builder().count(123L).before(456L).build();
+        Iterator<CoinIn> values = target.getCoinIns(request).get().iterator();
 
         CoinIn value = values.next();
         assertEquals(value.getId(), (Long) 100L);
@@ -277,7 +277,7 @@ public class AccountServiceImplTest {
 
         });
 
-        Pagination p = Pagination.builder().after(123L).build();
+        CoinOut.Request p = CoinOut.Request.builder().after(123L).build();
         Iterator<CoinOut> values = target.getCoinOuts(p).get().iterator();
 
         CoinOut value = values.next();
@@ -404,7 +404,7 @@ public class AccountServiceImplTest {
 
         });
 
-        Pagination p = Pagination.builder().count(123L).build();
+        Withdrawal.Request p = Withdrawal.Request.builder().count(123L).build();
         Iterator<Withdrawal> values = target.getWithdrawals(p).get().iterator();
 
         Withdrawal value = values.next();

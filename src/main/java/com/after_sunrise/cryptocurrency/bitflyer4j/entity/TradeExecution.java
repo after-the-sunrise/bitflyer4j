@@ -35,7 +35,7 @@ public interface TradeExecution {
     @Getter
     @Builder
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    class Request extends Entity {
+    class Request extends Entity implements Pagination {
 
         @SerializedName("product_code")
         private final String product;
@@ -45,6 +45,15 @@ public interface TradeExecution {
 
         @SerializedName("child_order_acceptance_id")
         private final String childOrderAcceptanceId;
+
+        @SerializedName("count")
+        private final Long count;
+
+        @SerializedName("before")
+        private final Long before;
+
+        @SerializedName("after")
+        private final Long after;
 
     }
 

@@ -12,12 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-
-import static java.util.Collections.singletonMap;
 
 /**
  * @author takanori.takase
@@ -27,10 +23,6 @@ class HttpService {
 
     static final Type TYPE_MAP = new TypeToken<Map<String, String>>() {
     }.getType();
-
-    static final String PRODUCT_CODE = "product_code";
-
-    static final String FROM_DATE = "from_date";
 
     static final String EMPTY = "{}";
 
@@ -50,30 +42,10 @@ class HttpService {
 
     }
 
-    Map<String, String> prepareParameter(String key, Object value) {
-
-        if (StringUtils.isEmpty(key)) {
-            return null;
-        }
-
-        String v = Objects.toString(value, null);
-
-        if (StringUtils.isEmpty(v)) {
-            return null;
-        }
-
-        return singletonMap(key, v);
-
-    }
-
     Map<String, String> prepareParameter(Object o) {
-        return prepareParameter((Map<String, String>) null, o);
-    }
-
-    Map<String, String> prepareParameter(Map<String, String> base, Object o) {
 
         if (o == null) {
-            return base;
+            return null;
         }
 
         String json = gson.toJson(o);
@@ -81,20 +53,10 @@ class HttpService {
         Map<String, String> map = gson.fromJson(json, TYPE_MAP);
 
         if (MapUtils.isEmpty(map)) {
-            return base;
+            return null;
         }
 
-        if (MapUtils.isEmpty(base)) {
-            return map;
-        }
-
-        Map<String, String> merged = new HashMap<>();
-
-        merged.putAll(base);
-
-        merged.putAll(map);
-
-        return merged;
+        return map;
 
     }
 

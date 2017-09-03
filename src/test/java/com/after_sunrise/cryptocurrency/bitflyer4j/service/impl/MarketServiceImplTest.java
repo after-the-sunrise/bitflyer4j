@@ -21,13 +21,13 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import static java.time.LocalDate.of;
 import static java.time.ZonedDateTime.parse;
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 import static org.mockito.Matchers.any;
@@ -135,7 +135,7 @@ public class MarketServiceImplTest extends Application {
 
         });
 
-        Board value = target.getBoard("BTC_JPY").get();
+        Board value = target.getBoard(Board.Request.builder().product("BTC_JPY").build()).get();
 
         assertEquals(value.getMid(), new BigDecimal("33320"));
 
@@ -171,7 +171,7 @@ public class MarketServiceImplTest extends Application {
 
         });
 
-        Tick value = target.getTick("ETH_BTC").get();
+        Tick value = target.getTick(Tick.Request.builder().product("ETH_BTC").build()).get();
 
         assertEquals(value.getProduct(), "BTC_JPY");
         assertEquals(value.getTimestamp(), parse("2015-07-08T02:50:59.97", DTF));
@@ -206,8 +206,8 @@ public class MarketServiceImplTest extends Application {
 
         });
 
-        Pagination p = Pagination.builder().count(123L).before(456L).build();
-        Iterator<Execution> values = target.getExecutions("FX_BTC_JPY", p).get().iterator();
+        Execution.Request p = Execution.Request.builder().count(123L).before(456L).product("FX_BTC_JPY").build();
+        Iterator<Execution> values = target.getExecutions(p).get().iterator();
 
         Execution exec = values.next();
         assertEquals(exec.getId(), (Long) 39287L);
@@ -268,8 +268,8 @@ public class MarketServiceImplTest extends Application {
 
         });
 
-        LocalDate date = LocalDate.of(2016, 2, 16);
-        Iterator<Chat> values = target.getChats(date).get().iterator();
+        Chat.Request request = Chat.Request.builder().fromDate(of(2016, 2, 16)).build();
+        Iterator<Chat> values = target.getChats(request).get().iterator();
 
         Chat chat = values.next();
         assertEquals(chat.getName(), "User1234567");

@@ -57,29 +57,6 @@ public class HttpServiceTest {
     }
 
     @Test
-    public void testPrepareParameter_KeyValue() throws Exception {
-
-        Map<String, String> result = target.prepareParameter((String) null, (String) null);
-        assertNull(result);
-
-        result = target.prepareParameter("foo", (String) null);
-        assertNull(result);
-
-        result = target.prepareParameter((String) null, "bar");
-        assertNull(result);
-
-        result = target.prepareParameter("foo", "");
-        assertNull(result);
-
-        result = target.prepareParameter("", "bar");
-        assertNull(result);
-
-        result = target.prepareParameter("foo", "bar");
-        assertEquals(result.get("foo"), "bar");
-
-    }
-
-    @Test
     public void testPrepareParameter_Object() throws Exception {
 
         TestEntity entity = null;
@@ -120,46 +97,6 @@ public class HttpServiceTest {
         assertEquals(result.remove("foo"), "f");
         assertEquals(result.remove("bar"), "b");
         assertTrue(result.isEmpty());
-
-    }
-
-    @Test
-    public void testPrepareParameter_Map() throws Exception {
-
-        TestEntity entity = null;
-        Map<String, String> result = null;
-
-        result = target.prepareParameter(result, entity);
-        assertNull(result);
-
-        entity = new TestEntity();
-        result = target.prepareParameter(result, entity);
-        assertNull(result);
-
-        entity.foo = "hoge";
-        entity.bar = null;
-        result = target.prepareParameter(result, entity);
-        assertEquals(result.get("foo"), "hoge");
-        assertEquals(result.size(), 1);
-
-        entity.foo = null;
-        entity.bar = "test";
-        result = target.prepareParameter(result, entity);
-        assertEquals(result.get("foo"), "hoge");
-        assertEquals(result.get("bar"), "test");
-        assertEquals(result.size(), 2);
-
-        entity.foo = null;
-        entity.bar = null;
-        result = target.prepareParameter(result, entity);
-        assertEquals(result.get("foo"), "hoge");
-        assertEquals(result.get("bar"), "test");
-        assertEquals(result.size(), 2);
-
-        result = target.prepareParameter(result, null);
-        assertEquals(result.get("foo"), "hoge");
-        assertEquals(result.get("bar"), "test");
-        assertEquals(result.size(), 2);
 
     }
 

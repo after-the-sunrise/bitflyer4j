@@ -2,7 +2,6 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.service;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.*;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -14,14 +13,14 @@ public interface MarketService {
 
     CompletableFuture<List<Product>> getProducts();
 
-    CompletableFuture<Board> getBoard(String product);
+    CompletableFuture<Board> getBoard(Board.Request request);
 
-    CompletableFuture<Tick> getTick(String product);
+    CompletableFuture<Tick> getTick(Tick.Request request);
 
-    CompletableFuture<List<Execution>> getExecutions(String product, Pagination pagination);
+    CompletableFuture<List<Execution>> getExecutions(Execution.Request request);
 
     CompletableFuture<Status> getStatus();
 
-    CompletableFuture<List<Chat>> getChats(LocalDate date);
+    CompletableFuture<List<Chat>> getChats(Chat.Request request);
 
 }

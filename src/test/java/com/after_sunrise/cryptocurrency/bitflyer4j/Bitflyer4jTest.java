@@ -43,7 +43,7 @@ public class Bitflyer4jTest {
 
                 LOG.info("Tick : {}", marketService.getTick(null).get());
 
-                LOG.info("Execs : {}", marketService.getExecutions(null, null).get());
+                LOG.info("Execs : {}", marketService.getExecutions(null).get());
 
                 LOG.info("Chats : {}", marketService.getChats(null).get());
 
@@ -85,19 +85,19 @@ public class Bitflyer4jTest {
 
             OrderService orderService = api.getOrderService();
 
-            LOG.info("Orders : {}", orderService.listOrders(null, null).get());
+            LOG.info("Orders : {}", orderService.listOrders(null).get());
 
             if (GET) {
 
-                LOG.info("Parents : {}", orderService.listParents(null, null).get());
+                LOG.info("Parents : {}", orderService.listParents(null).get());
 
-                LOG.info("Executions : {}", orderService.listExecutions(null, null).get());
+                LOG.info("Executions : {}", orderService.listExecutions(null).get());
 
                 TradeCommission.Request tradeCommission = TradeCommission.Request.builder().product(PRODUCT).build();
                 LOG.info("Commission : {}", orderService.getCommission(tradeCommission).get());
 
                 // 404 Not Found
-                orderService.listCollaterals(null, null);
+                orderService.listCollaterals(null);
                 orderService.listPositions(null);
 
             }

@@ -99,9 +99,9 @@ public class AccountServiceImpl extends HttpService implements AccountService {
     }
 
     @Override
-    public CompletableFuture<List<CoinIn>> getCoinIns(Pagination pagination) {
+    public CompletableFuture<List<CoinIn>> getCoinIns(CoinIn.Request request) {
 
-        Map<String, String> params = prepareParameter(pagination);
+        Map<String, String> params = prepareParameter(request);
 
         HttpRequest req = HttpRequest.builder().type(PathType.COIN_IN).parameters(params).build();
 
@@ -110,9 +110,9 @@ public class AccountServiceImpl extends HttpService implements AccountService {
     }
 
     @Override
-    public CompletableFuture<List<CoinOut>> getCoinOuts(Pagination pagination) {
+    public CompletableFuture<List<CoinOut>> getCoinOuts(CoinOut.Request request) {
 
-        Map<String, String> params = prepareParameter(pagination);
+        Map<String, String> params = prepareParameter(request);
 
         HttpRequest req = HttpRequest.builder().type(PathType.COIN_OUT).parameters(params).build();
 
@@ -130,9 +130,9 @@ public class AccountServiceImpl extends HttpService implements AccountService {
     }
 
     @Override
-    public CompletableFuture<List<Deposit>> getDeposits(Pagination pagination) {
+    public CompletableFuture<List<Deposit>> getDeposits(Deposit.Request request) {
 
-        Map<String, String> params = prepareParameter(pagination);
+        Map<String, String> params = prepareParameter(request);
 
         HttpRequest req = HttpRequest.builder().type(PathType.DEPOSIT).parameters(params).build();
 
@@ -152,9 +152,9 @@ public class AccountServiceImpl extends HttpService implements AccountService {
     }
 
     @Override
-    public CompletableFuture<List<Withdrawal>> getWithdrawals(Pagination pagination) {
+    public CompletableFuture<List<Withdrawal>> getWithdrawals(Withdrawal.Request request) {
 
-        Map<String, String> params = prepareParameter(pagination);
+        Map<String, String> params = prepareParameter(request);
 
         HttpRequest req = HttpRequest.builder().type(PathType.WITHDRAWAL).parameters(params).build();
 

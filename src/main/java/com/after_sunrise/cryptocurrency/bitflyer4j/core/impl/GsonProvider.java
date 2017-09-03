@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Type;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,6 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
 /**
@@ -43,6 +45,14 @@ public class GsonProvider implements Provider<Gson> {
             public boolean shouldSkipClass(Class<?> clazz) {
                 return false;
             }
+        });
+
+        builder.registerTypeAdapter(LocalDate.class, (JsonSerializer<LocalDate>) (s, t, c) -> {
+
+            String value = s.format(ISO_LOCAL_DATE);
+
+            return new JsonPrimitive(value);
+
         });
 
         builder.registerTypeAdapter(ZonedDateTime.class, (JsonDeserializer<ZonedDateTime>) (j, t, c) -> {

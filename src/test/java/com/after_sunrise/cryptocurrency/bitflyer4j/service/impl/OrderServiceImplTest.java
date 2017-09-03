@@ -287,9 +287,8 @@ public class OrderServiceImplTest {
         });
 
         OrderList.Request v = OrderList.Request.builder().product("P").state(StateType.ACTIVE) //
-                .orderId("OI").acceptanceId("AI").parentId("PI").build();
-        Pagination p = Pagination.builder().count(123L).build();
-        Iterator<OrderList> values = target.listOrders(v, p).get().iterator();
+                .orderId("OI").acceptanceId("AI").parentId("PI").count(123L).build();
+        Iterator<OrderList> values = target.listOrders(v).get().iterator();
 
         OrderList value = values.next();
         assertEquals(value.getId(), (Long) 138398L);
@@ -350,9 +349,9 @@ public class OrderServiceImplTest {
 
         });
 
-        ParentList.Request v = ParentList.Request.builder().product("P").state(StateType.ACTIVE).build();
-        Pagination p = Pagination.builder().count(123L).build();
-        Iterator<ParentList> values = target.listParents(v, p).get().iterator();
+        ParentList.Request v = ParentList.Request.builder().product("P").state(StateType.ACTIVE)
+                .count(123L).build();
+        Iterator<ParentList> values = target.listParents(v).get().iterator();
 
         ParentList value = values.next();
         assertEquals(value.getId(), (Long) 138398L);
@@ -489,9 +488,8 @@ public class OrderServiceImplTest {
         });
 
         TradeExecution.Request v = TradeExecution.Request.builder().product("BTC_JPY") //
-                .childOrderId("OI").childOrderAcceptanceId("AI").build();
-        Pagination p = Pagination.builder().count(123L).build();
-        Iterator<TradeExecution> values = target.listExecutions(v, p).get().iterator();
+                .childOrderId("OI").childOrderAcceptanceId("AI").count(123L).build();
+        Iterator<TradeExecution> values = target.listExecutions(v).get().iterator();
 
         TradeExecution value = values.next();
         assertEquals(value.getId(), (Long) 37233L);
@@ -568,9 +566,8 @@ public class OrderServiceImplTest {
 
         });
 
-        TradeCollateral.Request v = TradeCollateral.Request.builder().build();
-        Pagination p = Pagination.builder().count(123L).build();
-        Iterator<TradeCollateral> values = target.listCollaterals(v, p).get().iterator();
+        TradeCollateral.Request v = TradeCollateral.Request.builder().count(123L).build();
+        Iterator<TradeCollateral> values = target.listCollaterals(v).get().iterator();
 
         TradeCollateral value = values.next();
         assertEquals(value.getId(), (Long) 4995L);

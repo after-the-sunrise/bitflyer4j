@@ -10,12 +10,9 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 import java.lang.reflect.Type;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-
-import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 
 /**
  * @author takanori.takase
@@ -47,9 +44,9 @@ public class MarketServiceImpl extends HttpService implements MarketService {
     }
 
     @Override
-    public CompletableFuture<Board> getBoard(String product) {
+    public CompletableFuture<Board> getBoard(Board.Request request) {
 
-        Map<String, String> parameters = prepareParameter(PRODUCT_CODE, product);
+        Map<String, String> parameters = prepareParameter(request);
 
         HttpRequest req = HttpRequest.builder().type(PathType.BOARD).parameters(parameters).build();
 
@@ -58,9 +55,9 @@ public class MarketServiceImpl extends HttpService implements MarketService {
     }
 
     @Override
-    public CompletableFuture<Tick> getTick(String product) {
+    public CompletableFuture<Tick> getTick(Tick.Request request) {
 
-        Map<String, String> parameters = prepareParameter(PRODUCT_CODE, product);
+        Map<String, String> parameters = prepareParameter(request);
 
         HttpRequest req = HttpRequest.builder().type(PathType.TICKER).parameters(parameters).build();
 
@@ -69,11 +66,9 @@ public class MarketServiceImpl extends HttpService implements MarketService {
     }
 
     @Override
-    public CompletableFuture<List<Execution>> getExecutions(String product, Pagination pagination) {
+    public CompletableFuture<List<Execution>> getExecutions(Execution.Request request) {
 
-        Map<String, String> params = prepareParameter(PRODUCT_CODE, product);
-
-        params = prepareParameter(params, pagination);
+        Map<String, String> params = prepareParameter(request);
 
         HttpRequest req = HttpRequest.builder().type(PathType.EXECUTION).parameters(params).build();
 
@@ -91,11 +86,9 @@ public class MarketServiceImpl extends HttpService implements MarketService {
     }
 
     @Override
-    public CompletableFuture<List<Chat>> getChats(LocalDate date) {
+    public CompletableFuture<List<Chat>> getChats(Chat.Request request) {
 
-        String d = date == null ? null : date.format(ISO_LOCAL_DATE);
-
-        Map<String, String> params = prepareParameter(FROM_DATE, d);
+        Map<String, String> params = prepareParameter(request);
 
         HttpRequest req = HttpRequest.builder().type(PathType.CHAT).parameters(params).build();
 

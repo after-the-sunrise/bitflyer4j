@@ -19,19 +19,19 @@ public interface OrderService {
 
     CompletableFuture<ParentCancel> cancelParent(ParentCancel.Request request);
 
-    CompletableFuture<List<OrderList>> listOrders(OrderList.Request request, Pagination pagination);
+    CompletableFuture<List<OrderList>> listOrders(OrderList.Request request);
 
-    CompletableFuture<List<ParentList>> listParents(ParentList.Request request, Pagination pagination);
+    CompletableFuture<List<ParentList>> listParents(ParentList.Request request);
 
     CompletableFuture<ParentDetail> getParent(ParentDetail.Request request);
 
     CompletableFuture<ProductCancel> cancelProduct(ProductCancel.Request request);
 
-    CompletableFuture<List<TradeExecution>> listExecutions(TradeExecution.Request request, Pagination pagination);
+    CompletableFuture<List<TradeExecution>> listExecutions(TradeExecution.Request request);
 
     CompletableFuture<List<TradePosition>> listPositions(TradePosition.Request request);
 
-    CompletableFuture<List<TradeCollateral>> listCollaterals(TradeCollateral.Request request, Pagination pagination);
+    CompletableFuture<List<TradeCollateral>> listCollaterals(TradeCollateral.Request request);
 
     CompletableFuture<TradeCommission> getCommission(TradeCommission.Request request);
 
