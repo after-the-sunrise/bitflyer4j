@@ -40,7 +40,9 @@ public class QueryTickSample {
 
         Bitflyer4j api = new Bitflyer4jFactory().createInstance();
 
-        System.out.println(api.getMarketService().getTick("BTC_JPY").get());
+        Tick.Request request = Tick.Request.builder().product("ETH_BTC").build();
+
+        System.out.println(api.getMarketService().getTick(request).get());
 
         api.close();
 
@@ -60,9 +62,9 @@ public class SendOrderSample {
 
         Bitflyer4j api = new Bitflyer4jFactory().createInstance();
 
-        OrderCreate.Request request = OrderCreate.Request.builder().product("BTC_JPY")
-                .type(ConditionType.LIMIT).side(SideType.BUY)
-                .price(BigDecimal.TEN).size(BigDecimal.ONE).build();
+        OrderCreate.Request request = OrderCreate.Request.builder()
+                .product("FX_BTC_JPY").type(ConditionType.LIMIT).side(SideType.BUY)
+                .price(new BigDecimal("12345.6789")).size(BigDecimal.ONE).build();
 
         System.out.println(api.getOrderService().sendOrder(request).get());
 
@@ -85,7 +87,7 @@ public class CancelOrderSample {
         Bitflyer4j api = new Bitflyer4jFactory().createInstance();
 
         OrderCancel.Request request = OrderCancel.Request.builder()
-                .product("BTC_JPY").orderId("JOR20150707-055555-022222").build();
+                .product("BTCJPY_MAT1WK").orderId("JOR20150707-055555-022222").build();
 
         System.out.println(api.getOrderService().cancelOrder(request).get());
 
