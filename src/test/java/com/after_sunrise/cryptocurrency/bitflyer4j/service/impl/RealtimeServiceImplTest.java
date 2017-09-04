@@ -369,6 +369,10 @@ public class RealtimeServiceImplTest {
 
         target.status(pubNub, PNStatus.builder().build());
 
+        module.getMock(ExecutorFactory.class).get(target.getClass()).shutdown();
+
+        target.status(pubNub, PNStatus.builder().build());
+
     }
 
     @Test
@@ -376,10 +380,18 @@ public class RealtimeServiceImplTest {
 
         target.presence(pubNub, PNPresenceEventResult.builder().build());
 
+        module.getMock(ExecutorFactory.class).get(target.getClass()).shutdown();
+
+        target.presence(pubNub, PNPresenceEventResult.builder().build());
+
     }
 
     @Test
     public void testMessage() throws Exception {
+
+        target.message(pubNub, PNMessageResult.builder().message(INSTANCE).build());
+
+        module.getMock(ExecutorFactory.class).get(target.getClass()).shutdown();
 
         target.message(pubNub, PNMessageResult.builder().message(INSTANCE).build());
 

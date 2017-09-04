@@ -30,6 +30,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -292,7 +293,15 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
         clientLog.trace("STS : [{}] [{}]", channels, code);
 
-        executor.submit(() -> log.debug("Status update : {} - {}", code, channels));
+        try {
+
+            executor.submit(() -> log.debug("Status update : {} - {}", code, channels));
+
+        } catch (RejectedExecutionException e) {
+
+            log.debug("Status update (skipped) : {} - {}", code, channels);
+
+        }
 
     }
 
@@ -305,7 +314,15 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
         clientLog.trace("PRC : [{}] [{}]", channel, event);
 
-        executor.submit(() -> log.debug("Presence update : {} - {}", channel, event));
+        try {
+
+            executor.submit(() -> log.debug("Presence update : {} - {}", channel, event));
+
+        } catch (RejectedExecutionException e) {
+
+            log.debug("Presence update (skipped) : {} - {}", channel, event);
+
+        }
 
     }
 
@@ -318,35 +335,43 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
         clientLog.trace("REC : [{}] [{}]", channel, je);
 
-        executor.submit(() -> {
+        try {
 
-            log.trace("Message update : {} - {}", channel, je);
+            executor.submit(() -> {
 
-            try {
+                log.trace("Message update : {} - {}", channel, je);
 
-                BiConsumer<String, JsonElement> c = subscriptions.get(channel);
+                try {
 
-                if (c == null) {
+                    BiConsumer<String, JsonElement> c = subscriptions.get(channel);
 
-                    log.trace("Skipping : {} - [{}]", channel, je);
+                    if (c == null) {
 
-                } else {
+                        log.trace("Skipping : {} - [{}]", channel, je);
 
-                    log.trace("Processing : {} - [{}]", channel, je);
+                    } else {
 
-                    c.accept(channel, je);
+                        log.trace("Processing : {} - [{}]", channel, je);
+
+                        c.accept(channel, je);
+
+                    }
+
+                } catch (RuntimeException e) {
+
+                    String msg = "Failed to process : {} - [{}] {}";
+
+                    log.warn(msg, channel, je, e);
 
                 }
 
-            } catch (RuntimeException e) {
+            });
 
-                String msg = "Failed to process : {} - [{}] {}";
+        } catch (RejectedExecutionException e) {
 
-                log.warn(msg, channel, je, e);
+            log.trace("Message update (skipped) : {} - {}", channel, je);
 
-            }
-
-        });
+        }
 
     }
 
