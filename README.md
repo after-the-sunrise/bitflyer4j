@@ -1,5 +1,5 @@
 # bitflyer4j 
-[![Build Status][travis-icon]][travis-page] [![Coverage Status][coverall-icon]][coverall-page] [![Maven Central][maven-icon]][maven-page]
+[![Build Status][travis-icon]][travis-page] [![Coverage Status][coverall-icon]][coverall-page] [![Maven Central][maven-icon]][maven-page] [![Javadocs][javadoc-icon]][javadoc-page]
 
 ## Overview
 
@@ -265,3 +265,6 @@ Currently implemented API endpoint paths are as follows:
 [coverall-icon]:https://coveralls.io/repos/github/after-the-sunrise/bitflyer4j/badge.svg?branch=master
 [maven-page]:https://maven-badges.herokuapp.com/maven-central/com.after_sunrise.cryptocurrency/bitflyer4j
 [maven-icon]:https://maven-badges.herokuapp.com/maven-central/com.after_sunrise.cryptocurrency/bitflyer4j/badge.svg
+[javadoc-page]:https://www.javadoc.io/doc/com.after_sunrise.cryptocurrency/bitflyer4j
+[javadoc-icon]:https://www.javadoc.io/badge/com.after_sunrise.cryptocurrency/bitflyer4j.svg
+
