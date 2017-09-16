@@ -46,9 +46,9 @@ public class PubNubProvider implements Provider<PubNub> {
 
         if (Objects.equals(Boolean.TRUE, secure)) {
 
-            pnc.setSecure(Boolean.valueOf(secure));
+            pnc.setSecure(secure);
 
-            log.debug("Configured secure : {}", Boolean.valueOf(secure));
+            log.debug("Configured secure : {}", secure);
 
         }
 

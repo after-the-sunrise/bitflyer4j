@@ -187,29 +187,25 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
             List<String> sources = new ArrayList<>();
 
-            Optional.ofNullable(products).ifPresent(ids -> {
+            Optional.ofNullable(products).ifPresent(ids -> ids.stream().filter(StringUtils::isNotEmpty).forEach(id -> {
 
-                ids.stream().filter(StringUtils::isNotEmpty).forEach(id -> {
+                String channel = prefix + id;
 
-                    String channel = prefix + id;
+                BiConsumer<String, JsonElement> previous = subscriptions.putIfAbsent(channel, c);
 
-                    BiConsumer<String, JsonElement> previous = subscriptions.putIfAbsent(channel, c);
+                if (previous != null) {
 
-                    if (previous != null) {
+                    log.trace("Already subscribed : {}", channel);
 
-                        log.trace("Already subscribed : {}", channel);
+                } else {
 
-                    } else {
+                    channels.add(channel);
 
-                        channels.add(channel);
+                    sources.add(id);
 
-                        sources.add(id);
+                }
 
-                    }
-
-                });
-
-            });
+            }));
 
             log.debug("Subscribing : {}", channels);
 
@@ -248,29 +244,25 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
             List<String> sources = new ArrayList<>();
 
-            Optional.ofNullable(products).ifPresent(ids -> {
+            Optional.ofNullable(products).ifPresent(ids -> ids.stream().filter(StringUtils::isNotEmpty).forEach(id -> {
 
-                ids.stream().filter(StringUtils::isNotEmpty).forEach(id -> {
+                String channel = prefix + id;
 
-                    String channel = prefix + id;
+                BiConsumer<String, JsonElement> previous = subscriptions.remove(channel);
 
-                    BiConsumer<String, JsonElement> previous = subscriptions.remove(channel);
+                if (previous == null) {
 
-                    if (previous == null) {
+                    log.trace("Already unsubscribed : {}", channel);
 
-                        log.trace("Already unsubscribed : {}", channel);
+                } else {
 
-                    } else {
+                    channels.add(channel);
 
-                        channels.add(channel);
+                    sources.add(id);
 
-                        sources.add(id);
+                }
 
-                    }
-
-                });
-
-            });
+            }));
 
             log.debug("Unsubscribing : {}", channels);
 
