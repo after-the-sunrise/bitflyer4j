@@ -1,5 +1,9 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j;
 
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.ConditionType;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.ParentType;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.SideType;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.TimeInForceType;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.*;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.*;
 import org.slf4j.Logger;
@@ -8,6 +12,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -114,9 +119,70 @@ public class Bitflyer4jTest {
     }
 
     @Test(enabled = false)
-    public void testRealtime() throws Exception {
+    public void testOrder_CreateOrder() throws Exception {
 
-        String product = "BTC_JPY";
+        OrderService service = target.getOrderService();
+
+        LOG.info("Order Create : {}", service.sendOrder(OrderCreate.Request.builder()
+                .product("BTC_JPY").type(ConditionType.LIMIT).side(SideType.BUY)
+                .price(new BigDecimal("12345")).size(new BigDecimal("0.01")).build()).get());
+
+    }
+
+    @Test(enabled = false)
+    public void testOrder_CancelOrder() throws Exception {
+
+        OrderService service = target.getOrderService();
+
+        LOG.info("Order Cancel : {}", service.cancelOrder(OrderCancel.Request.builder()
+                .product("BTC_JPY").orderId("JOR20150707-055555-022222").build()).get());
+
+    }
+
+    @Test(enabled = false)
+    public void testOrder_CreateParent() throws Exception {
+
+        OrderService service = target.getOrderService();
+
+        LOG.info("Parent Create : {}", service.sendParent(ParentCreate.Request.builder()
+                .type(ParentType.IFDOCO).expiry(10000).timeInForce(TimeInForceType.GTC)
+                .parameters(Arrays.asList(
+                        ParentCreate.Request.Parameter.builder()
+                                .product("BTC_JPY").condition(ConditionType.LIMIT).side(SideType.BUY)
+                                .price(new BigDecimal("30000")).size(new BigDecimal("0.1")).build(),
+                        ParentCreate.Request.Parameter.builder()
+                                .product("BTC_JPY").condition(ConditionType.LIMIT).side(SideType.SELL)
+                                .price(new BigDecimal("32000")).size(new BigDecimal("0.1")).build(),
+                        ParentCreate.Request.Parameter.builder()
+                                .product("BTC_JPY").condition(ConditionType.STOP_LIMIT).side(SideType.SELL)
+                                .price(new BigDecimal("28800")).triggerPrice(new BigDecimal("29000"))
+                                .size(new BigDecimal("0.1")).build()
+                )).build()).get());
+
+    }
+
+    @Test(enabled = false)
+    public void testOrder_CancelParent() throws Exception {
+
+        OrderService service = target.getOrderService();
+
+        LOG.info("Parent Cancel : {}", service.cancelParent(ParentCancel.Request.builder()
+                .product("BTC_JPY").orderId("JOR20150707-055555-022222").build()).get());
+
+    }
+
+    @Test(enabled = false)
+    public void testOrder_CancelProduct() throws Exception {
+
+        OrderService service = target.getOrderService();
+
+        LOG.info("Cancel Product : {}", service.cancelProduct(
+                ProductCancel.Request.builder().product("BTC_JPY").build()).get());
+
+    }
+
+    @Test(enabled = false)
+    public void testRealtime() throws Exception {
 
         RealtimeService service = target.getRealtimeService();
 
@@ -136,6 +202,8 @@ public class Bitflyer4jTest {
                 LOG.info("Realtime : ({}) {}", p, values);
             }
         });
+
+        String product = "BTC_JPY";
 
         LOG.info("Sub board : {}", service.subscribeBoard(Arrays.asList(product)).get());
         LOG.info("Sub exec : {}", service.subscribeExecution(Arrays.asList(product)).get());

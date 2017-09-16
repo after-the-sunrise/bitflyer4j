@@ -127,8 +127,8 @@ public class RealtimeSample {
 }
 ```
 
-For the full list of supported features, please refer to the service interface definitions 
-in the `com.after_sunrise.cryptocurrency.bitflyer4j.service` package.
+For the full list of supported features and sample codes, please refer to 
+[Bitflyer4jTest](https://github.com/after-the-sunrise/bitflyer4j/blob/master/src/test/java/com/after_sunrise/cryptocurrency/bitflyer4j/Bitflyer4jTest.java).
 
 
 ## Features & Configurations
@@ -160,6 +160,8 @@ file.  *DO NOT COMMIT, LOG, NOR DISSEMINATE THE CREDENTIALS.*
 bitflyer4j.auth_key=MY_KEY_HERE
 bitflyer4j.auth_secret=MY_SECRET_HERE
 ```
+A template of the `.bitflyer4j` file can be downloded from 
+[here](https://github.com/after-the-sunrise/bitflyer4j/blob/master/src/test/resources/.bitflyer4j).
 
 
 ### Network Proxy
