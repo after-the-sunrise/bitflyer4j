@@ -18,6 +18,12 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    testCompile {
+        extendsFrom compileOnly
+    }
+}
+
 dependencies {
     compileOnly "org.projectlombok:lombok:1.16.16"
     compile 'org.slf4j:slf4j-api:1.7.25'
