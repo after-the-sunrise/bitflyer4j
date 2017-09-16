@@ -250,8 +250,8 @@ Currently implemented API endpoint paths are as follows:
     - [x] Parent Order List `/v1/me/getparentorders`
     - [x] Parent Order Detail `/v1/me/getparentorder`
     - [x] Executions `/v1/me/getexecutions`
-    - [ ] Open Interest Summary `/v1/me/getpositions`
-    - [ ] Margin Change History `/v1/me/getmycollateralhistory`
+    - [x] Open Interest Summary `/v1/me/getpositions`
+    - [x] Margin Change History `/v1/me/getcollateralhistory`
     - [x] Trading Commission `/v1/me/gettradingcommission`
 - Realtime API
   - [x] Order Book Snapshot `lightning_board_snapshot_*`
