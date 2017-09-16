@@ -1,9 +1,6 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j;
 
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.ConditionType;
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.ParentType;
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.SideType;
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.TimeInForceType;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.*;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.*;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.*;
 import org.slf4j.Logger;
@@ -13,6 +10,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -48,13 +46,17 @@ public class Bitflyer4jTest {
 
         LOG.info("Markets : {}", marketService.getProducts().get());
 
-        LOG.info("Board : {}", marketService.getBoard(null).get());
+        LOG.info("Board : {}", marketService.getBoard(
+                Board.Request.builder().product("BTC_JPY").build()).get());
 
-        LOG.info("Tick : {}", marketService.getTick(null).get());
+        LOG.info("Tick : {}", marketService.getTick(
+                Tick.Request.builder().product("BTC_JPY").build()).get());
 
-        LOG.info("Execs : {}", marketService.getExecutions(null).get());
+        LOG.info("Execs : {}", marketService.getExecutions(
+                Execution.Request.builder().product("BTC_JPY").count(10).build()).get());
 
-        LOG.info("Chats : {}", marketService.getChats(null).get());
+        LOG.info("Chats : {}", marketService.getChats(
+                Chat.Request.builder().fromDate(LocalDate.of(2017, 4, 14)).build()).get());
 
     }
 
@@ -73,15 +75,19 @@ public class Bitflyer4jTest {
 
         LOG.info("Addresses : {}", accountService.getAddresses().get());
 
-        LOG.info("CoinIns : {}", accountService.getCoinIns(null).get());
+        LOG.info("CoinIns : {}", accountService.getCoinIns(
+                CoinIn.Request.builder().count(5).build()).get());
 
-        LOG.info("CoinOuts : {}", accountService.getCoinOuts(null).get());
+        LOG.info("CoinOuts : {}", accountService.getCoinOuts(
+                CoinOut.Request.builder().count(5).build()).get());
 
         LOG.info("Banks : {}", accountService.getBanks().get());
 
-        LOG.info("Deposits : {}", accountService.getDeposits(null).get());
+        LOG.info("Deposits : {}", accountService.getDeposits(
+                Deposit.Request.builder().count(5).build()).get());
 
-        LOG.info("Withdrawals : {}", accountService.getWithdrawals(null).get());
+        LOG.info("Withdrawals : {}", accountService.getWithdrawals(
+                Withdrawal.Request.builder().count(5).build()).get());
 
     }
 
@@ -90,9 +96,8 @@ public class Bitflyer4jTest {
 
         AccountService service = target.getAccountService();
 
-        Withdraw.Request request = Withdraw.Request.builder().currency("JPY").bank(0L).amount(ONE).pin("000000").build();
-
-        LOG.info("Withdraw : {}", service.withdraw(request).get());
+        LOG.info("Withdraw : {}", service.withdraw(Withdraw.Request.builder()
+                .currency("JPY").bank(0L).amount(ONE).pin("000000").build()).get());
 
     }
 
@@ -101,11 +106,14 @@ public class Bitflyer4jTest {
 
         OrderService service = target.getOrderService();
 
-        LOG.info("Orders : {}", service.listOrders(null).get());
+        LOG.info("Orders : {}", service.listOrders(OrderList.Request.builder()
+                .product("BTC_JPY").state(StateType.ACTIVE).build()).get());
 
-        LOG.info("Parents : {}", service.listParents(null).get());
+        LOG.info("Parents : {}", service.listParents(ParentList.Request.builder()
+                .product("BTC_JPY").state(StateType.ACTIVE).build()).get());
 
-        LOG.info("Executions : {}", service.listExecutions(null).get());
+        LOG.info("Executions : {}", service.listExecutions(TradeExecution.Request.builder()
+                .product("BTC_JPY").childOrderId("JOR20150707-055555-022222").build()).get());
 
         LOG.info("Commission : {}", service.getCommission(
                 TradeCommission.Request.builder().product("BTC_JPY").build()).get());
