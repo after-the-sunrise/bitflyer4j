@@ -65,7 +65,7 @@ public enum PathType {
 
     TRADE_POSITION("/v1/me/getpositions"),
 
-    TRADE_COLLATERAL("/v1/me/getmycollateralhistory"),
+    TRADE_COLLATERAL("/v1/me/getcollateralhistory"),
 
     TRADE_COMMISSION("/v1/me/gettradingcommission");
 
