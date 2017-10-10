@@ -6,7 +6,13 @@
 **bitflyer4j** (bitFlyer for Java) is a Java wrapper library for the [bitFlyer Lightning](https://lightning.bitflyer.jp/?bf=yolu1tm3&lang=en) API.
 
 [bitFlyer](https://bitflyer.jp?bf=yolu1tm3&lang=en) offers JSON+REST API just like many of the other bitcoin and altcoin exchanges. 
-This library aims to capsulize the raw message formats and protocols, and provide a strictly-typed API library.
+This library aims to capsulize the raw message formats and protocols, and provide a strictly-typed API library in addition to the handly features.
+
+* Strictly-typed method calls, parameters and return types.
+* Asynchronous method calls with `java.util.concurrent.CompletableFuture` for background message queueing/throttling and method chaining.
+* Out-of-the-box listener callbacks for realtime data subscriptions.
+* Private API tokens actually kept private.
+* Battle-tested by the author.
 
 
 ## Getting Started
