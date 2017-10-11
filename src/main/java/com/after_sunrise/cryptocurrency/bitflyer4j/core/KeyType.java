@@ -13,6 +13,7 @@ import java.util.function.Function;
 import static java.lang.Long.parseLong;
 import static java.time.Duration.ofMillis;
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.apache.commons.lang3.math.NumberUtils.INTEGER_ONE;
 
 /**
  * Enumeration of property keys.
@@ -95,6 +96,11 @@ public enum KeyType {
      * HTTP socket/read timeout in millis.
      */
     HTTP_TIMEOUT(null, v -> ofMillis(parseLong(v))),
+
+    /**
+     * HTTP threads for concurrent requests.
+     */
+    HTTP_THREADS(4, Integer::parseInt),
 
     /**
      * HTTP API access limit's interval in milliseconds.

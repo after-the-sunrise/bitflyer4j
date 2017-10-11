@@ -211,6 +211,7 @@ refer to the `KeyType` javadoc.
 |bitflyer4j.http_proxy_host            |                                          |Address of the proxy server. Proxy type must be specified for the proxy enablement.   |
 |bitflyer4j.http_proxy_port            |                                          |Port of the proxy server. Proxy type must be specified for the proxy enablement.      |
 |bitflyer4j.http_timeout               |                                          |HTTP socket/read timeout interval in millis. Leave empty for no timeout.              |
+|bitflyer4j.http_threads               |4                                         |HTTP threads to utilize for HTTP access.                                              |
 |bitflyer4j.http_limit_interval        |60000                                     |HTTP access throttling interval in millis.                                            |
 |bitflyer4j.http_limit_criteria_address|500                                       |Number of allowed HTTP access for a single source IP, within the throttling interval. |
 |bitflyer4j.http_limit_criteria_private|200                                       |Number of allowed HTTP access for private API calls, within the throttling interval.  |
@@ -274,4 +275,3 @@ Currently implemented API endpoint paths are as follows:
 [maven-icon]:https://maven-badges.herokuapp.com/maven-central/com.after_sunrise.cryptocurrency/bitflyer4j/badge.svg
 [javadoc-page]:https://www.javadoc.io/doc/com.after_sunrise.cryptocurrency/bitflyer4j
 [javadoc-icon]:https://www.javadoc.io/badge/com.after_sunrise.cryptocurrency/bitflyer4j.svg
-

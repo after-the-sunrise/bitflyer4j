@@ -176,7 +176,7 @@ public class HttpClientImplTest {
         when(module.getEnvironment().getUrl()).thenReturn("http://localhost:" + getPort());
         when(module.getEnvironment().getAuthKey()).thenReturn("testkey");
         when(module.getEnvironment().getAuthSecret()).thenReturn("testsecret");
-        when(module.getMock(ExecutorFactory.class).get(any(Class.class))).thenReturn(newDirectExecutorService());
+        when(module.getMock(ExecutorFactory.class).get(any(Class.class), anyInt())).thenReturn(newDirectExecutorService());
 
         target = new HttpClientImpl(module.createInjector());
 

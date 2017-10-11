@@ -101,6 +101,11 @@ public class EnvironmentImpl implements Environment, EventListener<Configuration
     }
 
     @Override
+    public Integer getHttpThreads() {
+        return Integer.class.cast(cache.get(HTTP_THREADS));
+    }
+
+    @Override
     public Duration getHttpLimitInterval() {
         return Duration.class.cast(cache.get(HTTP_LIMIT_INTERVAL));
     }

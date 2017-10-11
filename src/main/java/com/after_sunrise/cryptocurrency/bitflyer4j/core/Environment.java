@@ -28,6 +28,8 @@ public interface Environment {
 
     String getAuthSecret();
 
+    Integer getHttpThreads();
+
     Duration getHttpLimitInterval();
 
     Integer getHttpLimitAddress();

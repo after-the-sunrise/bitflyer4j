@@ -2,6 +2,7 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.core.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.ExecutorFactory;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.IdentityHashMap;
@@ -90,6 +91,11 @@ public class ExecutorFactoryImpl implements ExecutorFactory, UncaughtExceptionHa
 
     @Override
     public ExecutorService get(Class<?> clazz) {
+        return get(clazz, NumberUtils.INTEGER_ONE);
+    }
+
+    @Override
+    public ExecutorService get(Class<?> clazz, int size) {
 
         Class<?> cls = clazz == null ? getClass() : clazz;
 
@@ -99,11 +105,11 @@ public class ExecutorFactoryImpl implements ExecutorFactory, UncaughtExceptionHa
 
             executor = services.computeIfAbsent(cls, c -> {
 
-                log.debug("Creating executor : {}", c.getSimpleName());
+                log.debug("Creating executor : {} ({})", c.getSimpleName(), size);
 
                 ThreadFactory factory = new ThreadFactoryImpl(c, delegate, this);
 
-                return Executors.newSingleThreadExecutor(factory);
+                return Executors.newFixedThreadPool(size, factory);
 
             });
 

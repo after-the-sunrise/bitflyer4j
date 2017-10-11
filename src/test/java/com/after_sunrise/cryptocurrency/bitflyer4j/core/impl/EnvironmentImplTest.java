@@ -157,6 +157,20 @@ public class EnvironmentImplTest {
     }
 
     @Test
+    public void testGetHttpThreads() {
+
+        Integer threads = Integer.parseInt(HTTP_THREADS.getDefaultValue());
+        assertEquals(target.getHttpThreads(), threads);
+
+        conf.setProperty(HTTP_THREADS.getKey(), "");
+        assertNull(target.getHttpThreads());
+
+        conf.setProperty(HTTP_THREADS.getKey(), "123");
+        assertEquals(target.getHttpThreads(), Integer.valueOf(123));
+
+    }
+
+    @Test
     public void testGetHttpLimitInterval() {
 
         Duration duration = ofMillis(parseLong(HTTP_LIMIT_INTERVAL.getDefaultValue()));

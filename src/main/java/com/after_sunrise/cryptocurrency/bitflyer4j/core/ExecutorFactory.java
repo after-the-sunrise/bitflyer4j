@@ -10,6 +10,8 @@ public interface ExecutorFactory {
 
     ExecutorService get(Class<?> clazz);
 
+    ExecutorService get(Class<?> clazz, int threads);
+
     void shutdown();
 
 }

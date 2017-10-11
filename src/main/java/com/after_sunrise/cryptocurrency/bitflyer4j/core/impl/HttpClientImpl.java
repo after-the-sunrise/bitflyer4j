@@ -80,7 +80,7 @@ public class HttpClientImpl implements HttpClient {
 
         throttler = injector.getInstance(Throttler.class);
 
-        executor = injector.getInstance(ExecutorFactory.class).get(getClass());
+        executor = injector.getInstance(ExecutorFactory.class).get(getClass(), environment.getHttpThreads());
 
     }
 
