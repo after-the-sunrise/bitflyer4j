@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
+import java.util.zip.GZIPInputStream;
 
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.Loggers.HttpLogger;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -342,6 +343,10 @@ public class HttpClientImpl implements HttpClient {
 
             if (in == null) {
                 in = connection.getInputStream();
+            }
+
+            if ("gzip".equals(connection.getContentEncoding())) {
+                in = new GZIPInputStream(in);
             }
 
             byte[] bytes = ByteStreams.toByteArray(in);

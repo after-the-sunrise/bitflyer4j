@@ -35,6 +35,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.zip.GZIPOutputStream;
 
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.PathType.*;
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.impl.HttpClientImpl.*;
@@ -72,11 +73,12 @@ public class HttpClientImplTest {
         }
     }
 
-    @Path("/v1/gethealth")
+    @Path("/v1")
+    @Produces("application/json")
     public static class GetResource {
         @GET
-        @Produces("application/json")
-        public String get(@Context HttpServletRequest req) {
+        @Path("/gethealth")
+        public String getHealth(@Context HttpServletRequest req) {
 
             Map<String, String> result = new HashMap<>();
 
@@ -99,12 +101,28 @@ public class HttpClientImplTest {
             return gson.toJson(result);
 
         }
+
+        @GET
+        @Path("/markets")
+        public byte[] getMarkets(@Context HttpServletResponse res) throws IOException {
+
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+            GZIPOutputStream gzipOut = new GZIPOutputStream(out);
+            gzipOut.write(gson.toJson(singletonMap("product_code", "BTC_JPY")).getBytes());
+            gzipOut.close();
+
+            res.setHeader("Content-Encoding", "gzip");
+
+            return out.toByteArray();
+
+        }
     }
 
     @Path("/v1/me/{method}")
+    @Produces("application/json")
     public static class PostResource {
         @POST
-        @Produces("application/json")
         public Object post(@Context HttpServletRequest req, //
                            @Context HttpServletResponse res, //
                            @PathParam("method") String method) throws IOException {
@@ -203,6 +221,26 @@ public class HttpClientImplTest {
         assertEquals(result.remove("status"), "NORMAL");
         assertTrue(result.isEmpty(), result.toString());
     }
+
+    @Test
+    public void testRequest_Get_Gzip() throws Exception {
+
+        HttpRequest request = HttpRequest.builder() //
+                .type(MARKET) //
+                .parameters(null) //
+                .body(null) //
+                .build();
+
+        HttpResponse response = target.request(request).get();
+
+        assertEquals(response.getCode(), 200);
+        assertEquals(response.getMessage(), "OK");
+
+        Map<String, String> result = gson.fromJson(response.getBody(), TYPE_MAP);
+        assertEquals(result.remove("product_code"), "BTC_JPY");
+        assertTrue(result.isEmpty(), result.toString());
+    }
+
 
     @Test
     public void testRequest_Error() throws Exception {
