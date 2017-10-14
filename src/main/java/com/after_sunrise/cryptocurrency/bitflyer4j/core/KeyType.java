@@ -13,7 +13,6 @@ import java.util.function.Function;
 import static java.lang.Long.parseLong;
 import static java.time.Duration.ofMillis;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.apache.commons.lang3.math.NumberUtils.INTEGER_ONE;
 
 /**
  * Enumeration of property keys.
