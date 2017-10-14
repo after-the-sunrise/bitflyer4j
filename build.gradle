@@ -9,7 +9,7 @@ plugins {
 
 group = 'com.after_sunrise.cryptocurrency'
 archivesBaseName = 'bitflyer4j'
-version = '0.1.4'
+version = '0.1.5-SNAPSHOT'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
