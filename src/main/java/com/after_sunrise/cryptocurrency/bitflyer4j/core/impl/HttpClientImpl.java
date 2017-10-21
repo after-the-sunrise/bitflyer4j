@@ -344,11 +344,11 @@ public class HttpClientImpl implements HttpClient {
         try {
 
             if (in == null) {
-                in = connection.getInputStream();
+                in = new BufferedInputStream(connection.getInputStream());
             }
 
             if ("gzip".equals(connection.getContentEncoding())) {
-                in = new GZIPInputStream(in);
+                in = new BufferedInputStream(new GZIPInputStream(in));
             }
 
             byte[] bytes = ByteStreams.toByteArray(in);

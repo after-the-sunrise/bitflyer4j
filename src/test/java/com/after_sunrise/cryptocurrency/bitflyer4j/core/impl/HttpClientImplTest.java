@@ -589,7 +589,9 @@ public class HttpClientImplTest {
     public void testReceive_InputFailure() throws Exception {
 
         InputStream in = mock(InputStream.class);
-        when(in.read(any(byte[].class))).thenThrow(new IOException("test"));
+        when(in.read()).thenThrow(new IOException("testread1"));
+        when(in.read(any(byte[].class))).thenThrow(new IOException("testread2"));
+        when(in.read(any(byte[].class), anyInt(), anyInt())).thenThrow(new IOException("testread3"));
 
         HttpURLConnection conn = mock(HttpURLConnection.class);
         when(conn.getInputStream()).thenReturn(in);
@@ -602,7 +604,9 @@ public class HttpClientImplTest {
     public void testReceive_CloseFailure() throws Exception {
 
         InputStream in = mock(InputStream.class);
-        when(in.read(any(byte[].class))).thenThrow(new IOException("testread"));
+        when(in.read()).thenThrow(new IOException("testread1"));
+        when(in.read(any(byte[].class))).thenThrow(new IOException("testread2"));
+        when(in.read(any(byte[].class), anyInt(), anyInt())).thenThrow(new IOException("testread3"));
         doThrow(new IOException("testclose")).when(in).close();
 
         HttpURLConnection conn = mock(HttpURLConnection.class);
