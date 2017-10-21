@@ -12,6 +12,7 @@ import java.util.function.Function;
 
 import static java.lang.Long.parseLong;
 import static java.time.Duration.ofMillis;
+import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
@@ -94,7 +95,7 @@ public enum KeyType {
     /**
      * HTTP socket/read timeout in millis.
      */
-    HTTP_TIMEOUT(null, v -> ofMillis(parseLong(v))),
+    HTTP_TIMEOUT(MINUTES.toMillis(5), v -> ofMillis(parseLong(v))),
 
     /**
      * HTTP threads for concurrent requests.
