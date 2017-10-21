@@ -46,6 +46,8 @@ public class HttpClientImpl implements HttpClient {
 
     static final String AGENT_VAL = "bitflyer4j/";
 
+    static final String ENCODING_GZIP = "gzip";
+
     static final String ALGORITHM = "HmacSHA256";
 
     static final String ACCESS_KEY = "ACCESS-KEY";
@@ -62,6 +64,7 @@ public class HttpClientImpl implements HttpClient {
         Map<String, String> map = new LinkedHashMap<>();
         map.put("Accept", "application/json");
         map.put("Accept-Charset", UTF_8.name());
+        map.put("Accept-Encoding", ENCODING_GZIP);
         HEADERS = unmodifiableMap(map);
         HEADERS_BODY = singletonMap("Content-Type", "application/json");
     }
@@ -347,7 +350,7 @@ public class HttpClientImpl implements HttpClient {
                 in = new BufferedInputStream(connection.getInputStream());
             }
 
-            if ("gzip".equals(connection.getContentEncoding())) {
+            if (ENCODING_GZIP.equalsIgnoreCase(connection.getContentEncoding())) {
                 in = new BufferedInputStream(new GZIPInputStream(in));
             }
 

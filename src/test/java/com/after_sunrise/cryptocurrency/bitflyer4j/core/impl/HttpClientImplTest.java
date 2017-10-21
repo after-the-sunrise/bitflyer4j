@@ -218,6 +218,7 @@ public class HttpClientImplTest {
         assertEquals(result.remove("R:User-Agent").split("/")[0], "bitflyer4j");
         assertEquals(result.remove("R:Accept"), "application/json");
         assertEquals(result.remove("R:Accept-Charset"), "UTF-8");
+        assertEquals(result.remove("R:Accept-Encoding"), "gzip");
         assertEquals(result.remove("status"), "NORMAL");
         assertTrue(result.isEmpty(), result.toString());
     }
@@ -281,6 +282,7 @@ public class HttpClientImplTest {
         assertEquals(result.remove("R:User-Agent"), "bitflyer4j/0.0.0");
         assertEquals(result.remove("R:Accept"), "application/json");
         assertEquals(result.remove("R:Accept-Charset"), "UTF-8");
+        assertEquals(result.remove("R:Accept-Encoding"), "gzip");
         assertEquals(result.remove("R:Content-Type"), "application/json");
         assertEquals(result.remove("R:ACCESS-KEY"), "testkey");
         assertEquals(result.remove("R:ACCESS-TIMESTAMP"), "1234567890");
@@ -314,6 +316,7 @@ public class HttpClientImplTest {
         assertEquals(result.remove("R:User-Agent"), "bitflyer4j/0.0.0");
         assertEquals(result.remove("R:Accept"), "application/json");
         assertEquals(result.remove("R:Accept-Charset"), "UTF-8");
+        assertEquals(result.remove("R:Accept-Encoding"), "gzip");
         assertEquals(result.remove("R:ACCESS-KEY"), "testkey");
         assertEquals(result.remove("R:ACCESS-TIMESTAMP"), "1234567890");
         assertEquals(result.remove("R:ACCESS-SIGN"), "f9a2636bc8f948bf996c01f824964bb8f882246353486bf4cb55a1583e07360e");
@@ -340,6 +343,7 @@ public class HttpClientImplTest {
         assertEquals(result.remove("R:User-Agent"), "bitflyer4j/0.0.0");
         assertEquals(result.remove("R:Accept"), "application/json");
         assertEquals(result.remove("R:Accept-Charset"), "UTF-8");
+        assertEquals(result.remove("R:Accept-Encoding"), "gzip");
         assertEquals(result.remove("R:ACCESS-KEY"), "testkey");
         assertEquals(result.remove("R:ACCESS-TIMESTAMP"), "1234567890");
         assertEquals(result.remove("R:ACCESS-SIGN"), "75201cac930faeb2beec3928cef697504951e6b02323ea60ca8bf2b8e0806c85");
@@ -458,8 +462,9 @@ public class HttpClientImplTest {
         // Request Property
         verify(conn).setRequestProperty("Accept", "application/json");
         verify(conn).setRequestProperty("Accept-Charset", "UTF-8");
+        verify(conn).setRequestProperty("Accept-Encoding", "gzip");
         verify(conn).setRequestProperty("User-Agent", "bitflyer4j/0.0.0");
-        verify(conn, times(3)).setRequestProperty(anyString(), anyString());
+        verify(conn, times(4)).setRequestProperty(anyString(), anyString());
 
         // Body
         verify(conn, never()).getOutputStream();
@@ -493,12 +498,13 @@ public class HttpClientImplTest {
         // Request Property
         verify(conn).setRequestProperty("Accept", "application/json");
         verify(conn).setRequestProperty("Accept-Charset", "UTF-8");
+        verify(conn).setRequestProperty("Accept-Encoding", "gzip");
         verify(conn).setRequestProperty("User-Agent", "bitflyer4j/0.0.0");
         verify(conn).setRequestProperty("Content-Type", "application/json");
         verify(conn).setRequestProperty(ACCESS_KEY, "testkey");
         verify(conn).setRequestProperty(ACCESS_TIME, "1234567890");
         verify(conn).setRequestProperty(ACCESS_SIGN, "6e29ed1d31e7957c2f7277cc3d6dadab1f51e31759f392cb97e568fd42155f5f");
-        verify(conn, times(7)).setRequestProperty(anyString(), anyString());
+        verify(conn, times(8)).setRequestProperty(anyString(), anyString());
 
         // Body
         verify(conn, times(1)).getOutputStream();
@@ -530,11 +536,12 @@ public class HttpClientImplTest {
         // Request Property
         verify(conn).setRequestProperty("Accept", "application/json");
         verify(conn).setRequestProperty("Accept-Charset", "UTF-8");
+        verify(conn).setRequestProperty("Accept-Encoding", "gzip");
         verify(conn).setRequestProperty("User-Agent", "bitflyer4j/0.0.0");
         verify(conn).setRequestProperty(ACCESS_KEY, "testkey");
         verify(conn).setRequestProperty(ACCESS_TIME, "1234567890");
         verify(conn).setRequestProperty(ACCESS_SIGN, "3b6ad01b1d09a3e9430c931830961463df6ac3ca2cb47a842f4838e58ff83165");
-        verify(conn, times(6)).setRequestProperty(anyString(), anyString());
+        verify(conn, times(7)).setRequestProperty(anyString(), anyString());
 
         // Body
         verify(conn, times(1)).connect();
