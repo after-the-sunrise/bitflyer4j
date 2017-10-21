@@ -333,6 +333,8 @@ public class HttpClientImpl implements HttpClient {
     @VisibleForTesting
     HttpResponse receive(HttpURLConnection connection) throws IOException {
 
+        long start = System.nanoTime();
+
         int code = connection.getResponseCode();
 
         String message = connection.getResponseMessage();
@@ -351,9 +353,11 @@ public class HttpClientImpl implements HttpClient {
 
             byte[] bytes = ByteStreams.toByteArray(in);
 
+            Duration elapsed = Duration.ofNanos(System.nanoTime() - start);
+
             String body = new String(bytes, UTF_8);
 
-            clientLog.trace("RECV : [{} {}] [{}]", code, message, body);
+            clientLog.trace("RECV : [{} {}] [{} ms] [{}]", code, message, elapsed.toMillis(), body);
 
             log.trace("Received : Headers=[{}] Body=[{}]", connection.getHeaderFields(), body);
 
