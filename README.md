@@ -229,12 +229,13 @@ Currently implemented API endpoint paths are as follows:
   - [x] Market List : `/v1/markets`
   - [x] Market List USA : `/v1/markets/usa`
   - [x] Order Book : `/v1/board`
-  - [x] Order Book : `/v1/board`
   - [x] Ticker : `/v1/ticker`
   - [x] Execution History : `/v1/executions`
   - [x] Exchange Status : `/v1/gethealth`
   - [x] Chat : `/v1/getchats`
   - [x] Chat USA : `/v1/getchats/usa`
+  - [x] Health : `/v1/gethealth`
+  - [x] Board State : `/v1/getboardstate`
 - HTTP Private API
   - Account Detail
     - [x] Permissions : `/v1/me/getpermissions`

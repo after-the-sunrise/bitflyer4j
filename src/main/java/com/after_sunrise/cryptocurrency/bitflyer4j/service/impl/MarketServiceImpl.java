@@ -97,6 +97,17 @@ public class MarketServiceImpl extends HttpService implements MarketService {
     }
 
     @Override
+    public CompletableFuture<BoardStatus> getBoardStatus(BoardStatus.Request request) {
+
+        Map<String, String> params = prepareParameter(request);
+
+        HttpRequest req = HttpRequest.builder().type(PathType.BOARD_STATE).parameters(params).build();
+
+        return request(req, BoardStatusImpl.class);
+
+    }
+
+    @Override
     public CompletableFuture<List<Chat>> getChats(Chat.Request request) {
 
         Map<String, String> params = prepareParameter(request);

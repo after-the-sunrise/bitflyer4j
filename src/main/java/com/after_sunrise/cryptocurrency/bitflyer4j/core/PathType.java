@@ -23,6 +23,8 @@ public enum PathType {
 
     HEALTH("/v1/gethealth", false),
 
+    BOARD_STATE("/v1/getboardstate", false),
+
     CHAT("/v1/getchats", false),
 
     CHAT_USA("/v1/getchats/usa", false),

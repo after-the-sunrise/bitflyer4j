@@ -1,12 +1,9 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.service.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.TestModule;
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.*;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient.HttpRequest;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient.HttpResponse;
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.PathType;
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.SideType;
-import com.after_sunrise.cryptocurrency.bitflyer4j.core.StatusType;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.impl.GsonProvider;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.*;
 import com.google.common.io.Resources;
@@ -274,6 +271,31 @@ public class MarketServiceImplTest extends Application {
         Status value = target.getStatus(Status.Request.builder().product("BTC_JPY").build()).get();
 
         assertEquals(value.getStatus(), StatusType.NORMAL);
+
+    }
+
+    @Test
+    public void testGetBoardStatus() throws Exception {
+
+        when(client.request(any(HttpRequest.class))).thenAnswer(invocation -> {
+
+            HttpRequest request = invocation.getArgumentAt(0, HttpRequest.class);
+
+            assertTrue(StringUtils.isEmpty(request.getBody()));
+
+            assertEquals(request.getParameters().get("product_code"), "BTCJPY01DEC2017");
+
+            return loadResponse(request.getType());
+
+        });
+
+        BoardStatus value = target.getBoardStatus(BoardStatus.Request.builder().product("BTCJPY01DEC2017").build()).get();
+
+        assertEquals(value.getHealth(), StatusType.NORMAL);
+
+        assertEquals(value.getState(), BoardStatusType.MATURED);
+
+        assertEquals(value.getData().get("special_quotation"), "410897");
 
     }
 

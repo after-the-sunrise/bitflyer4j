@@ -32,6 +32,7 @@ public class PathTypeTest {
                 case TICKER:
                 case EXECUTION:
                 case HEALTH:
+                case BOARD_STATE:
                 case CHAT:
                 case CHAT_USA:
 

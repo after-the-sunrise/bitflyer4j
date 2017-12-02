@@ -61,6 +61,7 @@ public class EntityTest {
 
         test(Bank.Request.class);
         test(Board.Request.class);
+        test(BoardStatus.Request.class);
         test(Chat.Request.class);
         test(CoinIn.Request.class);
         test(CoinOut.Request.class);
@@ -88,6 +89,7 @@ public class EntityTest {
         test(BankImpl.class);
         test(BoardImpl.class);
         test(BoardImpl.QuoteImpl.class);
+        test(BoardStatusImpl.class);
         test(ChatImpl.class);
         test(CoinInImpl.class);
         test(CoinOutImpl.class);

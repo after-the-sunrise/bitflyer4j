@@ -23,6 +23,8 @@ public interface MarketService {
 
     CompletableFuture<Status> getStatus(Status.Request request);
 
+    CompletableFuture<BoardStatus> getBoardStatus(BoardStatus.Request request);
+
     CompletableFuture<List<Chat>> getChats(Chat.Request request);
 
     CompletableFuture<List<Chat>> getChatsUsa(Chat.Request request);
