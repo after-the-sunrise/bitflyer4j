@@ -95,12 +95,12 @@ public enum KeyType {
     /**
      * HTTP socket/read timeout in millis.
      */
-    HTTP_TIMEOUT(MINUTES.toMillis(5), v -> ofMillis(parseLong(v))),
+    HTTP_TIMEOUT(MINUTES.toMillis(3), v -> ofMillis(parseLong(v))),
 
     /**
      * HTTP threads for concurrent requests.
      */
-    HTTP_THREADS(4, Integer::parseInt),
+    HTTP_THREADS(8, Integer::parseInt),
 
     /**
      * HTTP API access limit's interval in milliseconds.

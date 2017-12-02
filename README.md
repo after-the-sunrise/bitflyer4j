@@ -210,8 +210,8 @@ refer to the `KeyType` javadoc.
 |bitflyer4j.http_proxy_type            |                                          |Proxy type (DIRECT/HTTP/SOCKS) used for HTTP calls. Leave empty to disable proxy.     |
 |bitflyer4j.http_proxy_host            |                                          |Address of the proxy server. Proxy type must be specified for the proxy enablement.   |
 |bitflyer4j.http_proxy_port            |                                          |Port of the proxy server. Proxy type must be specified for the proxy enablement.      |
-|bitflyer4j.http_timeout               |300000                                    |HTTP socket/read timeout interval in millis. Leave empty for no timeout.              |
-|bitflyer4j.http_threads               |4                                         |HTTP threads to utilize for HTTP access.                                              |
+|bitflyer4j.http_timeout               |180000                                    |HTTP socket/read timeout interval in millis. Leave empty for no timeout.              |
+|bitflyer4j.http_threads               |8                                         |HTTP threads to utilize for HTTP access.                                              |
 |bitflyer4j.http_limit_interval        |60000                                     |HTTP access throttling interval in millis.                                            |
 |bitflyer4j.http_limit_criteria_address|500                                       |Number of allowed HTTP access for a single source IP, within the throttling interval. |
 |bitflyer4j.http_limit_criteria_private|200                                       |Number of allowed HTTP access for private API calls, within the throttling interval.  |

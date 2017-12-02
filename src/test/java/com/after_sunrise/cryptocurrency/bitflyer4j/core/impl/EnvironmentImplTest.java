@@ -120,7 +120,8 @@ public class EnvironmentImplTest {
     @Test
     public void testGetTimeout() {
 
-        assertEquals(Duration.ofMinutes(5), target.getTimeout());
+        Duration timeout = ofMillis(parseLong(HTTP_TIMEOUT.getDefaultValue()));
+        assertEquals(target.getTimeout(), timeout);
 
         conf.setProperty(HTTP_TIMEOUT.getKey(), "");
         assertNull(target.getTimeout());
