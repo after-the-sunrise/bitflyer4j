@@ -265,13 +265,13 @@ public class MarketServiceImplTest extends Application {
 
             assertTrue(StringUtils.isEmpty(request.getBody()));
 
-            assertTrue(MapUtils.isEmpty(request.getParameters()));
+            assertEquals(request.getParameters().get("product_code"), "BTC_JPY");
 
             return loadResponse(request.getType());
 
         });
 
-        Status value = target.getStatus().get();
+        Status value = target.getStatus(Status.Request.builder().product("BTC_JPY").build()).get();
 
         assertEquals(value.getStatus(), StatusType.NORMAL);
 

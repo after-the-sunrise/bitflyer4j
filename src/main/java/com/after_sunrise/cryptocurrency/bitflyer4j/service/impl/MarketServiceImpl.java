@@ -86,9 +86,11 @@ public class MarketServiceImpl extends HttpService implements MarketService {
     }
 
     @Override
-    public CompletableFuture<Status> getStatus() {
+    public CompletableFuture<Status> getStatus(Status.Request request) {
 
-        HttpRequest req = HttpRequest.builder().type(PathType.HEALTH).build();
+        Map<String, String> params = prepareParameter(request);
+
+        HttpRequest req = HttpRequest.builder().type(PathType.HEALTH).parameters(params).build();
 
         return request(req, StatusImpl.class);
 

@@ -21,7 +21,7 @@ public interface MarketService {
 
     CompletableFuture<List<Execution>> getExecutions(Execution.Request request);
 
-    CompletableFuture<Status> getStatus();
+    CompletableFuture<Status> getStatus(Status.Request request);
 
     CompletableFuture<List<Chat>> getChats(Chat.Request request);
 
