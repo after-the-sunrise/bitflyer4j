@@ -120,6 +120,31 @@ public class MarketServiceImplTest extends Application {
     }
 
     @Test
+    public void testGetProductsUsa() throws Exception {
+
+        when(client.request(any(HttpRequest.class))).thenAnswer(invocation -> {
+
+            HttpRequest request = invocation.getArgumentAt(0, HttpRequest.class);
+
+            assertTrue(MapUtils.isEmpty(request.getParameters()));
+
+            assertTrue(StringUtils.isEmpty(request.getBody()));
+
+            return loadResponse(request.getType());
+
+        });
+
+        Iterator<Product> values = target.getProductsUsa().get().iterator();
+
+        Product p = values.next();
+        assertEquals(p.getProduct(), "BTC_USD");
+        assertEquals(p.getAlias(), null);
+
+        assertFalse(values.hasNext());
+
+    }
+
+    @Test
     public void testGetBoard() throws Exception {
 
         when(client.request(any(HttpRequest.class))).thenAnswer(invocation -> {
@@ -280,6 +305,39 @@ public class MarketServiceImplTest extends Application {
         assertEquals(chat.getName(), "ビット太郎");
         assertEquals(chat.getMessage(), "サンプルメッセージ");
         assertEquals(chat.getTimestamp(), parse("2016-02-15T10:18:06.67", DTF));
+
+        assertFalse(values.hasNext());
+
+    }
+
+    @Test
+    public void testGetChats_Usa() throws Exception {
+
+        when(client.request(any(HttpRequest.class))).thenAnswer(invocation -> {
+
+            HttpRequest request = invocation.getArgumentAt(0, HttpRequest.class);
+
+            assertEquals(request.getParameters().size(), 1);
+            assertEquals(request.getParameters().get("from_date"), "2017-11-27");
+
+            assertTrue(StringUtils.isEmpty(request.getBody()));
+
+            return loadResponse(request.getType());
+
+        });
+
+        Chat.Request request = Chat.Request.builder().fromDate(of(2017, 11, 27)).build();
+        Iterator<Chat> values = target.getChatsUsa(request).get().iterator();
+
+        Chat chat = values.next();
+        assertEquals(chat.getName(), "User49ADEAB");
+        assertEquals(chat.getMessage(), "hi");
+        assertEquals(chat.getTimestamp(), parse("2017-11-27T21:13:20.457", DTF));
+
+        chat = values.next();
+        assertEquals(chat.getName(), "77");
+        assertEquals(chat.getMessage(), "hello");
+        assertEquals(chat.getTimestamp(), parse("2017-11-27T23:43:59.68", DTF));
 
         assertFalse(values.hasNext());
 

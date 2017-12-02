@@ -13,6 +13,8 @@ public interface MarketService {
 
     CompletableFuture<List<Product>> getProducts();
 
+    CompletableFuture<List<Product>> getProductsUsa();
+
     CompletableFuture<Board> getBoard(Board.Request request);
 
     CompletableFuture<Tick> getTick(Tick.Request request);
@@ -22,5 +24,7 @@ public interface MarketService {
     CompletableFuture<Status> getStatus();
 
     CompletableFuture<List<Chat>> getChats(Chat.Request request);
+
+    CompletableFuture<List<Chat>> getChatsUsa(Chat.Request request);
 
 }

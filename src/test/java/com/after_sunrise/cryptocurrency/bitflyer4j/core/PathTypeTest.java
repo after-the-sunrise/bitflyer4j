@@ -27,11 +27,13 @@ public class PathTypeTest {
 
             switch (type) {
                 case MARKET:
+                case MARKET_USA:
                 case BOARD:
                 case TICKER:
                 case EXECUTION:
                 case HEALTH:
                 case CHAT:
+                case CHAT_USA:
 
                     // Public API - GET
 
