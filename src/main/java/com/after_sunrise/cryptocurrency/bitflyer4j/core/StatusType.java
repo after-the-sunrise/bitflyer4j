@@ -6,6 +6,6 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.core;
  */
 public enum StatusType {
 
-    NORMAL, VERY_BUSY, BUSY, STOP
+    NORMAL, BUSY, VERY_BUSY, SUPER_BUSY, NO_ORDER, STOP
 
 }
