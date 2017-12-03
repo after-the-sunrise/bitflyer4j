@@ -15,6 +15,7 @@ public class TestTypes {
     @Test
     public void test() throws ReflectiveOperationException {
 
+        test(BoardStatusType.class);
         test(ConditionType.class);
         test(ConfigurationType.class);
         test(DepositStatusType.class);

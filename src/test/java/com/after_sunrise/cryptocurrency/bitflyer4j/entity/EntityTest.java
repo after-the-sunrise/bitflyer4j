@@ -76,6 +76,7 @@ public class EntityTest {
         test(ParentDetail.Request.class);
         test(ParentList.Request.class);
         test(ProductCancel.Request.class);
+        test(Status.Request.class);
         test(Tick.Request.class);
         test(TradeCollateral.Request.class);
         test(TradeCommission.Request.class);
