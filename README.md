@@ -5,7 +5,7 @@
 
 **bitflyer4j** (bitFlyer for Java) is a Java wrapper library for the [bitFlyer Lightning](https://lightning.bitflyer.jp/?bf=yolu1tm3&lang=en) API.
 
-[bitFlyer](https://bitflyer.jp?bf=yolu1tm3&lang=en) offers JSON+REST API just like many of the other bitcoin and altcoin exchanges. 
+[bitFlyer](https://bitflyer.jp?bf=yolu1tm3&lang=en) is a crytocurrency exchange based in Japan, offering JSON+REST API just like many of the other bitcoin and altcoin exchanges. 
 This library aims to capsulize the raw message formats and protocols, and provide a strictly-typed API library in addition to the handly features.
 
 * Strictly-typed method calls, parameters and return types.
@@ -36,7 +36,7 @@ Copy and paste the following code snippets into the `main` and execute.
 
 #### Query Tick
 
-Query for the latest tick data (price/size for best-bid/ask/last, accumuated volume, etc.).
+Query for the latest tick data (price/size for best-bid/ask/last, accumuated volume, etc).
 
 ```java
 public class QueryTickSample {
@@ -144,12 +144,12 @@ for specific use cases and executing environments.
 ### Private API Authentication
 
 In order to use the [Private API](https://lightning.bitflyer.jp/docs?lang=en#http-private-api), 
-specify the following authentication variables:
+specify the following properties in the environment variables and/or the configuration files:
   * `bitflyer4j.auth_key`
   * `bitflyer4j.auth_secret`
 
-By default, the library will try to retrieve the environment variables in the following priority:
-  1. Runtime properties. (`-Dbitflyer4j.auth_key=... -Dbitflyer4j.auth_secret=...`)
+When the API library is initialized, it will try to search these properties in the following priority:
+  1. Java runtime properties. (`java -Dbitflyer4j.auth_key=... -Dbitflyer4j.auth_secret=...`)
   2. `${HOME}/.bitflyer4j` properties file.
   3. `bitflyer4j-site.properties` file in the classpath.
 
@@ -198,7 +198,7 @@ To make these asynchronous HTTP calls synchronous, simply call the `CompletableF
 
 Although there should be no need to overwrite the defaut configurations, the following parameters are externalized 
 and can be overwritten by the environment variables.  For the complete list of configurable parameters and details, 
-refer to the `KeyType` javadoc.
+refer to the [KeyType](https://github.com/after-the-sunrise/bitflyer4j/blob/master/src/main/java/com/after_sunrise/cryptocurrency/bitflyer4j/core/KeyType.java) javadoc.
 
 
 |Property Key                          |Default Value                             |Description                                                                           |
