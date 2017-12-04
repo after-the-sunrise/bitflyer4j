@@ -205,6 +205,11 @@ public class Bitflyer4jTest {
             }
 
             @Override
+            public void onBoardsSnapshot(String p, Board value) {
+                LOG.info("Realtime : ({}) {}", p, value);
+            }
+
+            @Override
             public void onTicks(String p, List<Tick> values) {
                 LOG.info("Realtime : ({}) {}", p, values);
             }
@@ -218,12 +223,14 @@ public class Bitflyer4jTest {
         String product = "BTC_JPY";
 
         LOG.info("Sub board : {}", service.subscribeBoard(Arrays.asList(product)).get());
+        LOG.info("Sub boards : {}", service.subscribeBoardSnapshot(Arrays.asList(product)).get());
         LOG.info("Sub exec : {}", service.subscribeExecution(Arrays.asList(product)).get());
         LOG.info("Sub tick : {}", service.subscribeTick(Arrays.asList(product)).get());
 
         Thread.sleep(SECONDS.toMillis(10));
 
         LOG.info("Unsub board : {}", service.unsubscribeBoard(Arrays.asList(product)).get());
+        LOG.info("Unsub boards : {}", service.unsubscribeBoardSnapshot(Arrays.asList(product)).get());
         LOG.info("Unsub exec : {}", service.unsubscribeExecution(Arrays.asList(product)).get());
         LOG.info("Unsub tick : {}", service.unsubscribeTick(Arrays.asList(product)).get());
 

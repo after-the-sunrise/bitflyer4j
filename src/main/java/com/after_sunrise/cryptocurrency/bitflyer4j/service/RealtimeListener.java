@@ -14,6 +14,8 @@ public interface RealtimeListener {
 
     void onBoards(String product, Board value);
 
+    void onBoardsSnapshot(String product, Board value);
+
     void onTicks(String product, List<Tick> values);
 
     void onExecutions(String product, List<Execution> values);
@@ -25,6 +27,10 @@ public interface RealtimeListener {
     class RealtimeListenerAdapter implements RealtimeListener {
         @Override
         public void onBoards(String product, Board value) {
+        }
+
+        @Override
+        public void onBoardsSnapshot(String product, Board value) {
         }
 
         @Override

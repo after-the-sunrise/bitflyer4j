@@ -265,8 +265,8 @@ Currently implemented API endpoint paths are as follows:
     - [x] Margin Change History `/v1/me/getcollateralhistory`
     - [x] Trading Commission `/v1/me/gettradingcommission`
 - Realtime API
+  - [x] Order Book Update `lightning_board_*`
   - [x] Order Book Snapshot `lightning_board_snapshot_*`
-  - [ ] Order Book Update `lightning_board_*`
   - [x] Ticker `lightning_ticker_*`
   - [x] Execution `lightning_executions_*`
 

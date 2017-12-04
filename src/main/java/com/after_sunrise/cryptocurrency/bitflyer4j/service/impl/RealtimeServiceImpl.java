@@ -47,9 +47,9 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
     private static final Type TYPE_EXECUTIONS = new TypeToken<List<ExecutionImpl>>() {
     }.getType();
 
-    static final String CHANNEL_BOARD_SNAPSHOT = "lightning_board_snapshot_";
-
     static final String CHANNEL_BOARD = "lightning_board_";
+
+    static final String CHANNEL_BOARD_SNAPSHOT = "lightning_board_snapshot_";
 
     static final String CHANNEL_TICK = "lightning_ticker_";
 
@@ -136,13 +136,28 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
     @Override
     public CompletableFuture<List<String>> subscribeBoard(List<String> products) {
 
+        return subscribe(CHANNEL_BOARD, products, (channel, json) -> {
+
+            String product = StringUtils.removeStart(channel, CHANNEL_BOARD);
+
+            Board value = gson.fromJson(json, BoardImpl.class);
+
+            forEach(l -> l.onBoards(product, value));
+
+        });
+
+    }
+
+    @Override
+    public CompletableFuture<List<String>> subscribeBoardSnapshot(List<String> products) {
+
         return subscribe(CHANNEL_BOARD_SNAPSHOT, products, (channel, json) -> {
 
             String product = StringUtils.removeStart(channel, CHANNEL_BOARD_SNAPSHOT);
 
             Board value = gson.fromJson(json, BoardImpl.class);
 
-            forEach(l -> l.onBoards(product, value));
+            forEach(l -> l.onBoardsSnapshot(product, value));
 
         });
 
@@ -222,6 +237,11 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
 
     @Override
     public CompletableFuture<List<String>> unsubscribeBoard(List<String> products) {
+        return unsubscribe(CHANNEL_BOARD, products);
+    }
+
+    @Override
+    public CompletableFuture<List<String>> unsubscribeBoardSnapshot(List<String> products) {
         return unsubscribe(CHANNEL_BOARD_SNAPSHOT, products);
     }
 

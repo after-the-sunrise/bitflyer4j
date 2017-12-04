@@ -23,6 +23,11 @@ public class RealtimeListenerTest {
     }
 
     @Test
+    public void testOnBoardsSnapshot() throws Exception {
+        target.onBoardsSnapshot(null, null);
+    }
+
+    @Test
     public void testOnTicks() throws Exception {
         target.onTicks(null, null);
     }

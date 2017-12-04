@@ -196,7 +196,7 @@ public class RealtimeServiceImplTest {
         assertTrue(ids.contains("A"));
 
         target.message(pubNub, PNMessageResult.builder() //
-                .channel("lightning_board_snapshot_A") //
+                .channel("lightning_board_A") //
                 .message(load("BOARD", JsonObject.class)).build());
 
         verify(l1).onBoards(anyString(), any(Board.class));
@@ -204,12 +204,71 @@ public class RealtimeServiceImplTest {
         verify(l3).onBoards(anyString(), any(Board.class));
 
         target.message(pubNub, PNMessageResult.builder() //
-                .channel("lightning_board_snapshot_A") //
+                .channel("lightning_board_A") //
                 .message(new JsonArray()).build());
 
         verifyNoMoreInteractions(l1, l2, l3);
 
         ids = target.unsubscribeBoard(Arrays.asList("A")).get();
+        assertEquals(ids.size(), 1);
+        assertTrue(ids.contains("A"));
+
+    }
+
+    @Test
+    public void testSubscribeBoardSnapshot() throws Exception {
+
+        assertTrue(target.addListener(l1).get());
+        assertTrue(target.addListener(l2).get());
+        assertTrue(target.addListener(l3).get());
+
+        doAnswer(invocation -> {
+
+            List<?> values = invocation.getArgumentAt(1, List.class);
+            assertEquals(values.size(), 1);
+
+            Board value = (Board) values.get(0);
+            assertEquals(value.getMid(), new BigDecimal("359702.0"));
+
+            List<Board.Quote> bids = value.getBid();
+            assertEquals(bids.size(), 2);
+            assertEquals(bids.get(0).getPrice(), new BigDecimal("359624.0"));
+            assertEquals(bids.get(0).getSize(), new BigDecimal("0.01100081"));
+            assertEquals(bids.get(1).getPrice(), new BigDecimal("339000.0"));
+            assertEquals(bids.get(1).getSize(), new BigDecimal("4.03"));
+
+            List<Board.Quote> asks = value.getBid();
+            assertEquals(asks.size(), 2);
+            assertEquals(asks.get(0).getPrice(), new BigDecimal("359781.0"));
+            assertEquals(asks.get(0).getSize(), new BigDecimal("1.0"));
+            assertEquals(asks.get(1).getPrice(), new BigDecimal("360077.0"));
+            assertEquals(asks.get(1).getSize(), new BigDecimal("0.02"));
+
+            return null;
+
+        }).when(l1).onBoardsSnapshot(anyString(), any(Board.class));
+        doThrow(new RuntimeException("test")).when(l2).onBoardsSnapshot(anyString(), any(Board.class));
+        doNothing().when(l3).onBoardsSnapshot(anyString(), any(Board.class));
+
+        List<String> ids = target.subscribeBoardSnapshot(Arrays.asList("A")).get();
+        assertEquals(ids.size(), 1);
+        assertTrue(ids.contains("A"));
+
+        target.message(pubNub, PNMessageResult.builder() //
+                .channel("lightning_board_snapshot_A") //
+                .message(load("BOARD", JsonObject.class)).build());
+
+        verify(l1).onBoardsSnapshot(anyString(), any(Board.class));
+        verify(l2).onBoardsSnapshot(anyString(), any(Board.class));
+        verify(l3).onBoardsSnapshot(anyString(), any(Board.class));
+
+        target.message(pubNub, PNMessageResult.builder() //
+                .channel("lightning_board_snapshot_A") //
+                .message(new JsonArray()).build());
+
+        verifyNoMoreInteractions(l1, l2, l3);
+
+        ids = target.unsubscribeBoardSnapshot(Arrays.asList("A")).get();
         assertEquals(ids.size(), 1);
         assertTrue(ids.contains("A"));
 
