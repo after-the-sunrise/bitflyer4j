@@ -16,9 +16,11 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.*;
-import static java.util.Collections.synchronizedMap;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.unmodifiableMap;
 import static org.apache.commons.configuration2.event.ConfigurationEvent.ANY;
 
 /**
@@ -28,7 +30,7 @@ import static org.apache.commons.configuration2.event.ConfigurationEvent.ANY;
 @Slf4j
 public class EnvironmentImpl implements Environment, EventListener<ConfigurationEvent> {
 
-    private final Map<KeyType, Object> cache = synchronizedMap(new HashMap<>());
+    private final AtomicReference<Map<KeyType, Object>> cache;
 
     private final Configuration conf;
 
@@ -36,6 +38,8 @@ public class EnvironmentImpl implements Environment, EventListener<Configuration
 
     @Inject
     public EnvironmentImpl(Configuration conf, EventSource source) {
+
+        this.cache = new AtomicReference<>(emptyMap());
 
         this.conf = conf;
 
@@ -56,7 +60,7 @@ public class EnvironmentImpl implements Environment, EventListener<Configuration
 
         Arrays.stream(KeyType.values()).forEach(t -> map.put(t, t.fetch(conf)));
 
-        cache.putAll(map);
+        cache.set(unmodifiableMap(map));
 
     }
 
@@ -67,77 +71,77 @@ public class EnvironmentImpl implements Environment, EventListener<Configuration
 
     @Override
     public String getVersion() {
-        return String.class.cast(cache.get(VERSION));
+        return String.class.cast(cache.get().get(VERSION));
     }
 
     @Override
     public String getSite() {
-        return String.class.cast(cache.get(SITE));
+        return String.class.cast(cache.get().get(SITE));
     }
 
     @Override
     public String getUrl() {
-        return String.class.cast(cache.get(HTTP_URL));
+        return String.class.cast(cache.get().get(HTTP_URL));
     }
 
     @Override
     public Proxy getProxy() {
-        return Proxy.class.cast(cache.get(HTTP_PROXY_TYPE));
+        return Proxy.class.cast(cache.get().get(HTTP_PROXY_TYPE));
     }
 
     @Override
     public Duration getTimeout() {
-        return Duration.class.cast(cache.get(HTTP_TIMEOUT));
+        return Duration.class.cast(cache.get().get(HTTP_TIMEOUT));
     }
 
     @Override
     public String getAuthKey() {
-        return String.class.cast(cache.get(AUTH_KEY));
+        return String.class.cast(cache.get().get(AUTH_KEY));
     }
 
     @Override
     public String getAuthSecret() {
-        return String.class.cast(cache.get(AUTH_SECRET));
+        return String.class.cast(cache.get().get(AUTH_SECRET));
     }
 
     @Override
     public Integer getHttpThreads() {
-        return Integer.class.cast(cache.get(HTTP_THREADS));
+        return Integer.class.cast(cache.get().get(HTTP_THREADS));
     }
 
     @Override
     public Duration getHttpLimitInterval() {
-        return Duration.class.cast(cache.get(HTTP_LIMIT_INTERVAL));
+        return Duration.class.cast(cache.get().get(HTTP_LIMIT_INTERVAL));
     }
 
     @Override
     public Integer getHttpLimitAddress() {
-        return Integer.class.cast(cache.get(HTTP_LIMIT_CRITERIA_ADDRESS));
+        return Integer.class.cast(cache.get().get(HTTP_LIMIT_CRITERIA_ADDRESS));
     }
 
     @Override
     public Integer getHttpLimitPrivate() {
-        return Integer.class.cast(cache.get(HTTP_LIMIT_CRITERIA_PRIVATE));
+        return Integer.class.cast(cache.get().get(HTTP_LIMIT_CRITERIA_PRIVATE));
     }
 
     @Override
     public Integer getHttpLimitDormant() {
-        return Integer.class.cast(cache.get(HTTP_LIMIT_CRITERIA_DORMANT));
+        return Integer.class.cast(cache.get().get(HTTP_LIMIT_CRITERIA_DORMANT));
     }
 
     @Override
     public String getPubNubKey() {
-        return String.class.cast(cache.get(PUBNUB_KEY));
+        return String.class.cast(cache.get().get(PUBNUB_KEY));
     }
 
     @Override
     public PNReconnectionPolicy getPubNubReconnect() {
-        return PNReconnectionPolicy.class.cast(cache.get(PUBNUB_RECONNECT));
+        return PNReconnectionPolicy.class.cast(cache.get().get(PUBNUB_RECONNECT));
     }
 
     @Override
     public Boolean getPubNubSecure() {
-        return Boolean.class.cast(cache.get(PUBNUB_SECURE));
+        return Boolean.class.cast(cache.get().get(PUBNUB_SECURE));
     }
 
 }
