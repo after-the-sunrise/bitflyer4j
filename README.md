@@ -19,7 +19,8 @@ This library aims to capsulize the raw message formats and protocols, and provid
 
 ### Download
 
-Use Maven or Gradle to import the library jars and its dependencies from the [Maven Central][maven-page].
+Use [Maven](https://maven.apache.org/) or [Gradle](https://gradle.org/) to automatically fetch 
+the library jars and its dependencies from [The Central Repository][maven-page].
 
 #### Maven (`pom.xml`)
 ```xml
