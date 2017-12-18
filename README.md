@@ -1,11 +1,15 @@
 # bitflyer4j 
 [![Build Status][travis-icon]][travis-page] [![Coverage Status][coverall-icon]][coverall-page] [![Maven Central][maven-icon]][maven-page] [![Javadocs][javadoc-icon]][javadoc-page]
 
+* English version is [here](https://github.com/after-the-sunrise/bitflyer4j/blob/master/README.md).
+* 日本語版は[こちら](https://github.com/after-the-sunrise/bitflyer4j/blob/master/README_jp.md).
+
+
 ## Overview
 
-**bitflyer4j** (bitFlyer for Java) is a Java wrapper library for the [bitFlyer Lightning](https://lightning.bitflyer.jp/?bf=yolu1tm3&lang=en) API.
+**bitflyer4j** (bitFlyer for Java) is a Java wrapper library for the [bitFlyer Lightning][bf-ltng] API.
 
-[bitFlyer](https://bitflyer.jp?bf=yolu1tm3&lang=en) is a crytocurrency exchange based in Japan, offering JSON+REST API just like many of the other bitcoin and altcoin exchanges. 
+[bitFlyer][bf-site] is a crytocurrency exchange based in Japan, offering JSON+REST API just like many of the other bitcoin and altcoin exchanges. 
 This library aims to capsulize the raw message formats and protocols, and provide a strictly-typed API library in addition to the handy features.
 
 * Strictly-typed method calls, parameters and return types.
@@ -270,6 +274,9 @@ Currently implemented API endpoint paths are as follows:
   - [x] Ticker `lightning_ticker_*`
   - [x] Execution `lightning_executions_*`
 
+
+[bf-site]:https://bitflyer.jp?bf=yolu1tm3&lang=en
+[bf-ltng]:https://lightning.bitflyer.jp/?bf=yolu1tm3&lang=en
 [travis-page]:https://travis-ci.org/after-the-sunrise/bitflyer4j
 [travis-icon]:https://travis-ci.org/after-the-sunrise/bitflyer4j.svg?branch=master
 [coverall-page]:https://coveralls.io/github/after-the-sunrise/bitflyer4j?branch=master
