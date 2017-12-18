@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static java.math.BigDecimal.ONE;
@@ -48,6 +49,9 @@ public class Bitflyer4jTest {
 
         LOG.info("Status : {}", marketService.getStatus(Status.Request.builder().build()).get());
 
+        LOG.info("Board Status : {}", marketService.getBoardStatus(
+                BoardStatus.Request.builder().product("BTC_JPY").build()).get());
+
         LOG.info("Board : {}", marketService.getBoard(
                 Board.Request.builder().product("BTC_JPY").build()).get());
 
@@ -62,6 +66,7 @@ public class Bitflyer4jTest {
 
         LOG.info("Chats USA : {}", marketService.getChatsUsa(
                 Chat.Request.builder().fromDate(LocalDate.of(2017, 4, 14)).build()).get());
+
     }
 
     @Test(enabled = false)
@@ -137,7 +142,7 @@ public class Bitflyer4jTest {
 
         LOG.info("Order Create : {}", service.sendOrder(OrderCreate.Request.builder()
                 .product("BTC_JPY").type(ConditionType.LIMIT).side(SideType.BUY)
-                .price(new BigDecimal("12345")).size(new BigDecimal("0.01")).build()).get());
+                .price(new BigDecimal("1000000")).size(new BigDecimal("0.001")).build()).get());
 
     }
 
@@ -152,7 +157,55 @@ public class Bitflyer4jTest {
     }
 
     @Test(enabled = false)
-    public void testOrder_CreateParent() throws Exception {
+    public void testOrder_CreateParent_STOP() throws Exception {
+
+        OrderService service = target.getOrderService();
+
+        LOG.info("Parent Create : {}", service.sendParent(ParentCreate.Request.builder()
+                .type(ParentType.SIMPLE).expiry(10000).timeInForce(TimeInForceType.GTC)
+                .parameters(Collections.singletonList(ParentCreate.Request.Parameter.builder()
+                        .product("BTC_JPY").condition(ConditionType.STOP)
+                        .side(SideType.SELL).triggerPrice(new BigDecimal("1000000"))
+                        .size(new BigDecimal("0.001")).build()
+                )).build()).get());
+
+    }
+
+    @Test(enabled = false)
+    public void testOrder_CreateParent_STOP_LIMIT() throws Exception {
+
+        OrderService service = target.getOrderService();
+
+        LOG.info("Parent Create : {}", service.sendParent(ParentCreate.Request.builder()
+                .type(ParentType.SIMPLE).expiry(10000).timeInForce(TimeInForceType.GTC)
+                .parameters(Collections.singletonList(ParentCreate.Request.Parameter.builder()
+                        .product("BTC_JPY").condition(ConditionType.STOP_LIMIT)
+                        .side(SideType.SELL).triggerPrice(new BigDecimal("1000000"))
+                        .price(new BigDecimal("1000000")).size(new BigDecimal("0.001")).build()
+                )).build()).get());
+
+    }
+
+    @Test(enabled = false)
+    public void testOrder_CreateParent_IFD() throws Exception {
+
+        OrderService service = target.getOrderService();
+
+        LOG.info("Parent Create : {}", service.sendParent(ParentCreate.Request.builder()
+                .type(ParentType.IFD).expiry(10000).timeInForce(TimeInForceType.GTC)
+                .parameters(Arrays.asList(
+                        ParentCreate.Request.Parameter.builder()
+                                .product("BTC_JPY").condition(ConditionType.LIMIT).side(SideType.BUY)
+                                .price(new BigDecimal("1000000")).size(new BigDecimal("0.001")).build(),
+                        ParentCreate.Request.Parameter.builder()
+                                .product("BTC_JPY").condition(ConditionType.LIMIT).side(SideType.SELL)
+                                .price(new BigDecimal("1000000")).size(new BigDecimal("0.001")).build()
+                )).build()).get());
+
+    }
+
+    @Test(enabled = false)
+    public void testOrder_CreateParent_IFDOCO() throws Exception {
 
         OrderService service = target.getOrderService();
 
@@ -161,14 +214,14 @@ public class Bitflyer4jTest {
                 .parameters(Arrays.asList(
                         ParentCreate.Request.Parameter.builder()
                                 .product("BTC_JPY").condition(ConditionType.LIMIT).side(SideType.BUY)
-                                .price(new BigDecimal("30000")).size(new BigDecimal("0.1")).build(),
+                                .price(new BigDecimal("1000000")).size(new BigDecimal("0.001")).build(),
                         ParentCreate.Request.Parameter.builder()
                                 .product("BTC_JPY").condition(ConditionType.LIMIT).side(SideType.SELL)
-                                .price(new BigDecimal("32000")).size(new BigDecimal("0.1")).build(),
+                                .price(new BigDecimal("1000000")).size(new BigDecimal("0.001")).build(),
                         ParentCreate.Request.Parameter.builder()
                                 .product("BTC_JPY").condition(ConditionType.STOP_LIMIT).side(SideType.SELL)
-                                .price(new BigDecimal("28800")).triggerPrice(new BigDecimal("29000"))
-                                .size(new BigDecimal("0.1")).build()
+                                .price(new BigDecimal("1000000")).triggerPrice(new BigDecimal("1000000"))
+                                .size(new BigDecimal("0.001")).build()
                 )).build()).get());
 
     }
