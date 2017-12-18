@@ -6,7 +6,7 @@
 **bitflyer4j** (bitFlyer for Java) is a Java wrapper library for the [bitFlyer Lightning](https://lightning.bitflyer.jp/?bf=yolu1tm3&lang=en) API.
 
 [bitFlyer](https://bitflyer.jp?bf=yolu1tm3&lang=en) is a crytocurrency exchange based in Japan, offering JSON+REST API just like many of the other bitcoin and altcoin exchanges. 
-This library aims to capsulize the raw message formats and protocols, and provide a strictly-typed API library in addition to the handly features.
+This library aims to capsulize the raw message formats and protocols, and provide a strictly-typed API library in addition to the handy features.
 
 * Strictly-typed method calls, parameters and return types.
 * Asynchronous method calls with `java.util.concurrent.CompletableFuture` for background message queueing/throttling and method chaining.
@@ -37,7 +37,7 @@ Copy and paste the following code snippets into the `main` and execute.
 
 #### Query Tick
 
-Query for the latest tick data (price/size for best-bid/ask/last, accumuated volume, etc).
+Query for the latest tick data (price/size for best-bid/ask/last, accumulated volume, etc).
 
 ```java
 public class QueryTickSample {
@@ -106,7 +106,7 @@ public class CancelOrderSample {
 
 #### Subscribe to Realtime Feed
 
-Initiate a subscrption for the steaming market data from [PubNub](https://www.pubnub.com/).
+Initiate a subscription for the steaming market data from [PubNub](https://www.pubnub.com/).
 
 ```java
 public class RealtimeSample {
@@ -166,7 +166,7 @@ file.  *DO NOT COMMIT, LOG, NOR DISSEMINATE THE CREDENTIALS.*
 bitflyer4j.auth_key=MY_KEY_HERE
 bitflyer4j.auth_secret=MY_SECRET_HERE
 ```
-A template of the `.bitflyer4j` file can be downloded from 
+A template of the `.bitflyer4j` file can be downloaded from 
 [here](https://github.com/after-the-sunrise/bitflyer4j/blob/master/src/test/resources/.bitflyer4j).
 
 
@@ -197,7 +197,7 @@ To make these asynchronous HTTP calls synchronous, simply call the `CompletableF
 
 ### Other Configurations
 
-Although there should be no need to overwrite the defaut configurations, the following parameters are externalized 
+Although there should be no need to overwrite the default configurations, the following parameters are externalized 
 and can be overwritten by the environment variables.  For the complete list of configurable parameters and details, 
 refer to the [KeyType](https://github.com/after-the-sunrise/bitflyer4j/blob/master/src/main/java/com/after_sunrise/cryptocurrency/bitflyer4j/core/KeyType.java) javadoc.
 
@@ -232,10 +232,9 @@ Currently implemented API endpoint paths are as follows:
   - [x] Order Book : `/v1/board`
   - [x] Ticker : `/v1/ticker`
   - [x] Execution History : `/v1/executions`
-  - [x] Exchange Status : `/v1/gethealth`
   - [x] Chat : `/v1/getchats`
   - [x] Chat USA : `/v1/getchats/usa`
-  - [x] Health : `/v1/gethealth`
+  - [x] Exchange Status : `/v1/gethealth`
   - [x] Board State : `/v1/getboardstate`
 - HTTP Private API
   - Account Detail
