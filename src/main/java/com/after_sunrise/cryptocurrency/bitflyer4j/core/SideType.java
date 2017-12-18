@@ -6,6 +6,6 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.core;
  */
 public enum SideType {
 
-    BUY, SELL
+    BUY, SELL, BUYSELL
 
 }
