@@ -24,6 +24,7 @@ import java.time.Duration;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.zip.GZIPInputStream;
@@ -95,6 +96,8 @@ public class HttpClientImpl implements HttpClient {
 
             throttle(req.getType());
 
+            String uid = UUID.randomUUID().toString();
+
             CompletableFuture<HttpResponse> f = new CompletableFuture<>();
 
             try {
@@ -103,9 +106,9 @@ public class HttpClientImpl implements HttpClient {
 
                 try {
 
-                    connection = configure(connection, req);
+                    connection = configure(uid, connection, req);
 
-                    HttpResponse response = receive(connection);
+                    HttpResponse response = receive(uid, connection);
 
                     f.complete(response);
 
@@ -115,7 +118,7 @@ public class HttpClientImpl implements HttpClient {
 
             } catch (IOException e) {
 
-                clientLog.trace("FAIL : {}", e.getMessage());
+                clientLog.trace("FAIL [{}] {}", uid, e.getMessage());
 
                 f.completeExceptionally(e);
 
@@ -200,7 +203,7 @@ public class HttpClientImpl implements HttpClient {
     }
 
     @VisibleForTesting
-    HttpURLConnection configure(HttpURLConnection conn, HttpRequest request) throws IOException {
+    HttpURLConnection configure(String uid, HttpURLConnection conn, HttpRequest request) throws IOException {
 
         {
 
@@ -275,7 +278,7 @@ public class HttpClientImpl implements HttpClient {
 
             log.trace("Configured body : [{}]", body);
 
-            clientLog.trace("SEND : [{}] [{}] [{}]", conn.getURL(), properties, body);
+            clientLog.trace("SEND [{}][{}] [{}] [{}]", uid, conn.getURL(), properties, body);
 
         } else {
 
@@ -283,7 +286,7 @@ public class HttpClientImpl implements HttpClient {
 
             log.trace("Configured connect.");
 
-            clientLog.trace("SEND : [{}] [{}]", conn.getURL(), properties);
+            clientLog.trace("SEND [{}][{}] [{}]", uid, conn.getURL(), properties);
 
         }
 
@@ -334,7 +337,7 @@ public class HttpClientImpl implements HttpClient {
     }
 
     @VisibleForTesting
-    HttpResponse receive(HttpURLConnection connection) throws IOException {
+    HttpResponse receive(String uid, HttpURLConnection connection) throws IOException {
 
         long start = System.nanoTime();
 
@@ -360,7 +363,7 @@ public class HttpClientImpl implements HttpClient {
 
             String body = new String(bytes, UTF_8);
 
-            clientLog.trace("RECV : [{} {}] [{} ms] [{}]", code, message, elapsed.toMillis(), body);
+            clientLog.trace("RECV [{}][{} {}] [{} ms] [{}]", uid, code, message, elapsed.toMillis(), body);
 
             log.trace("Received : Headers=[{}] Body=[{}]", connection.getHeaderFields(), body);
 

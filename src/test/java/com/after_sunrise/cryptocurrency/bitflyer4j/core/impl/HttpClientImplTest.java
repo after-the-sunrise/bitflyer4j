@@ -450,7 +450,7 @@ public class HttpClientImplTest {
         when(module.getEnvironment().getTimeout()).thenReturn(null);
 
         HttpRequest request = HttpRequest.builder().type(HEALTH).build();
-        conn = target.configure(conn, request);
+        conn = target.configure(null, conn, request);
 
         // Method
         verify(conn).setRequestMethod(request.getType().getMethod().name());
@@ -486,7 +486,7 @@ public class HttpClientImplTest {
         when(module.getEnvironment().getAuthSecret()).thenReturn("testsecret");
 
         HttpRequest request = HttpRequest.builder().type(BALANCE).body("test").build();
-        conn = target.configure(conn, request);
+        conn = target.configure(null, conn, request);
 
         // Method
         verify(conn).setRequestMethod(request.getType().getMethod().name());
@@ -524,7 +524,7 @@ public class HttpClientImplTest {
         when(module.getEnvironment().getAuthSecret()).thenReturn("testsecret");
 
         HttpRequest request = HttpRequest.builder().type(BALANCE).body(null).build();
-        conn = target.configure(conn, request);
+        conn = target.configure(null, conn, request);
 
         // Method
         verify(conn).setRequestMethod(request.getType().getMethod().name());
@@ -573,7 +573,7 @@ public class HttpClientImplTest {
         when(conn.getResponseCode()).thenReturn(HTTP_ACCEPTED);
         when(conn.getResponseMessage()).thenReturn("ACCEPTED");
 
-        HttpResponse response = target.receive(conn);
+        HttpResponse response = target.receive(null, conn);
 
         assertEquals(response.getCode(), HTTP_ACCEPTED);
         assertEquals(response.getMessage(), "ACCEPTED");
@@ -588,7 +588,7 @@ public class HttpClientImplTest {
 
         when(conn.getInputStream()).thenThrow(new IOException("test"));
 
-        target.receive(conn);
+        target.receive(null, conn);
 
     }
 
@@ -603,7 +603,7 @@ public class HttpClientImplTest {
         HttpURLConnection conn = mock(HttpURLConnection.class);
         when(conn.getInputStream()).thenReturn(in);
 
-        target.receive(conn);
+        target.receive(null, conn);
 
     }
 
@@ -619,7 +619,7 @@ public class HttpClientImplTest {
         HttpURLConnection conn = mock(HttpURLConnection.class);
         when(conn.getInputStream()).thenReturn(in);
 
-        target.receive(conn);
+        target.receive(null, conn);
 
     }
 
