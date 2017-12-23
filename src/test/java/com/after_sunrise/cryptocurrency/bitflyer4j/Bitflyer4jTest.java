@@ -19,6 +19,8 @@ import static java.math.BigDecimal.ONE;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
+ * Miscellaneous code snippets demonstrating the API usage.
+ *
  * @author takanori.takase
  * @version 0.0.1
  */
