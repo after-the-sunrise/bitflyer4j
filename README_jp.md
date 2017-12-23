@@ -1,8 +1,8 @@
 # bitflyer4j 
 [![Build Status][travis-icon]][travis-page] [![Coverage Status][coverall-icon]][coverall-page] [![Maven Central][maven-icon]][maven-page] [![Javadocs][javadoc-icon]][javadoc-page]
 
-* English version is [here](https://github.com/after-the-sunrise/bitflyer4j/blob/master/README.md).
-* 日本語版は[こちら](https://github.com/after-the-sunrise/bitflyer4j/blob/master/README_jp.md).
+* [English Version](https://github.com/after-the-sunrise/bitflyer4j/blob/master/README.md).
+* [日本語版](https://github.com/after-the-sunrise/bitflyer4j/blob/master/README_jp.md).
 
 
 ## 概要
