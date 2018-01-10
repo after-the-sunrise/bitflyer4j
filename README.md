@@ -126,7 +126,7 @@ public class RealtimeSample {
             }
         });
 
-        api.getRealtimeService().subscribeTick(Arrays.asList("BTC_JPY")).get();
+        System.out.println(api.getRealtimeService().subscribeTick(Arrays.asList("BTC_JPY")).get());
 
         TimeUnit.SECONDS.sleep(30L);
 
