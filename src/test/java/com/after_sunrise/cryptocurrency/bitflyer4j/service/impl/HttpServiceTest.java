@@ -5,6 +5,7 @@ import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient.HttpRequest;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient.HttpResponse;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.impl.GsonProvider;
+import com.after_sunrise.cryptocurrency.bitflyer4j.entity.DataException;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.RejectException;
 import com.google.common.io.Resources;
 import com.google.gson.Gson;
@@ -118,7 +119,7 @@ public class HttpServiceTest {
     }
 
     @Test
-    public void testRequest_Reject() throws Exception {
+    public void testRequest_Reject_Json() throws Exception {
 
         HttpClient client = module.getMock(HttpClient.class);
 
@@ -143,10 +144,43 @@ public class HttpServiceTest {
             assertEquals(re.getMessage(), "400 Bad Request");
             assertEquals(re.getCode(), HTTP_BAD_REQUEST);
             assertEquals(re.getText(), "Bad Request");
+            assertEquals(re.getDetails().size(), 3, re.getDetails().toString());
             assertEquals(re.getDetails().get("status"), "-500");
             assertEquals(re.getDetails().get("error_message"), "Permission denied");
             assertEquals(re.getDetails().get("data"), null);
-            assertEquals(re.getDetails().size(), 3);
+            assertEquals(re.getCause(), null);
+
+        }
+
+    }
+
+    @Test
+    public void testRequest_Reject_Html() throws Exception {
+
+        HttpClient client = module.getMock(HttpClient.class);
+
+        when(client.request(any(HttpRequest.class))).thenAnswer(i -> {
+            HttpResponse response = mock(HttpResponse.class);
+            when(response.getCode()).thenReturn(HTTP_BAD_REQUEST);
+            when(response.getMessage()).thenReturn("Bad Request");
+            when(response.getBody()).thenReturn("<html>some html message</html>");
+            return CompletableFuture.completedFuture(response);
+        });
+
+        try {
+
+            target.request(HttpRequest.builder().build(), TestEntity.class).get();
+
+            fail();
+
+        } catch (Exception e) {
+
+            DataException re = (DataException) e.getCause();
+            assertEquals(re.getMessage(), "400 Bad Request");
+            assertEquals(re.getCode(), HTTP_BAD_REQUEST);
+            assertEquals(re.getText(), "Bad Request");
+            assertEquals(re.getData(), "<html>some html message</html>");
+            assertEquals(re.getCause().getMessage(), "java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $");
 
         }
 

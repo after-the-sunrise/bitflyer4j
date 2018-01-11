@@ -1,6 +1,7 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.service.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.HttpClient;
+import com.after_sunrise.cryptocurrency.bitflyer4j.entity.DataException;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.RejectException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -70,17 +71,33 @@ class HttpService {
 
         return future.thenApply(response -> {
 
+            int code = response.getCode();
+
+            String text = response.getMessage();
+
             String body = StringUtils.defaultIfEmpty(response.getBody(), EMPTY);
 
-            if (response.getCode() != HttpURLConnection.HTTP_OK) {
+            try {
 
-                Map<String, String> details = gson.fromJson(body, TYPE_MAP);
+                if (code != HttpURLConnection.HTTP_OK) {
 
-                throw new RejectException(response.getCode(), response.getMessage(), details);
+                    Map<String, String> details = gson.fromJson(body, TYPE_MAP);
+
+                    throw new RejectException(code, text, details);
+
+                }
+
+                return gson.fromJson(body, type);
+
+            } catch (RejectException e) {
+
+                throw e;
+
+            } catch (RuntimeException e) {
+
+                throw new DataException(code, text, body, e);
 
             }
-
-            return gson.fromJson(body, type);
 
         });
 
