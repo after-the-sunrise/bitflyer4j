@@ -9,7 +9,7 @@ plugins {
 
 group = 'com.after_sunrise.cryptocurrency'
 archivesBaseName = 'bitflyer4j'
-version = '0.3.3-SNAPSHOT'
+version = '0.4.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -99,8 +99,8 @@ uploadArchives {
                 url project.ext.url
                 licenses {
                     license {
-                        name 'GNU Affero General Public License'
-                        url 'https://www.gnu.org/licenses/agpl.txt'
+                        name 'GNU LESSER GENERAL PUBLIC LICENSE'
+                        url 'http://www.gnu.org/licenses/lgpl-3.0.txt'
                     }
                 }
                 developers {
