@@ -49,6 +49,8 @@ public class Bitflyer4jTest {
 
         LOG.info("Markets USA : {}", marketService.getProductsUsa().get());
 
+        LOG.info("Markets EU : {}", marketService.getProductsEu().get());
+
         LOG.info("Status : {}", marketService.getStatus(Status.Request.builder().build()).get());
 
         LOG.info("Board Status : {}", marketService.getBoardStatus(
@@ -67,6 +69,9 @@ public class Bitflyer4jTest {
                 Chat.Request.builder().fromDate(LocalDate.of(2017, 4, 14)).build()).get());
 
         LOG.info("Chats USA : {}", marketService.getChatsUsa(
+                Chat.Request.builder().fromDate(LocalDate.of(2017, 4, 14)).build()).get());
+
+        LOG.info("Chats EU : {}", marketService.getChatsEu(
                 Chat.Request.builder().fromDate(LocalDate.of(2017, 4, 14)).build()).get());
 
     }

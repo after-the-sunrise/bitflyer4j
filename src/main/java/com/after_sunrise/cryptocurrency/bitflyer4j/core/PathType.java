@@ -15,6 +15,8 @@ public enum PathType {
 
     MARKET_USA("/v1/markets/usa", false),
 
+    MARKET_EU("/v1/markets/eu", false),
+
     BOARD("/v1/board", false),
 
     TICKER("/v1/ticker", false),
@@ -28,6 +30,8 @@ public enum PathType {
     CHAT("/v1/getchats", false),
 
     CHAT_USA("/v1/getchats/usa", false),
+
+    CHAT_EU("/v1/getchats/eu", false),
 
     PERMISSION("/v1/me/getpermissions"),
 

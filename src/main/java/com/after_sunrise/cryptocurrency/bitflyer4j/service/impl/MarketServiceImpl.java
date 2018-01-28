@@ -53,6 +53,15 @@ public class MarketServiceImpl extends HttpService implements MarketService {
     }
 
     @Override
+    public CompletableFuture<List<Product>> getProductsEu() {
+
+        HttpRequest req = HttpRequest.builder().type(PathType.MARKET_EU).build();
+
+        return request(req, TYPE_PRODUCTS);
+
+    }
+
+    @Override
     public CompletableFuture<Board> getBoard(Board.Request request) {
 
         Map<String, String> parameters = prepareParameter(request);
@@ -124,6 +133,17 @@ public class MarketServiceImpl extends HttpService implements MarketService {
         Map<String, String> params = prepareParameter(request);
 
         HttpRequest req = HttpRequest.builder().type(PathType.CHAT_USA).parameters(params).build();
+
+        return request(req, TYPE_CHATS);
+
+    }
+
+    @Override
+    public CompletableFuture<List<Chat>> getChatsEu(Chat.Request request) {
+
+        Map<String, String> params = prepareParameter(request);
+
+        HttpRequest req = HttpRequest.builder().type(PathType.CHAT_EU).parameters(params).build();
 
         return request(req, TYPE_CHATS);
 
