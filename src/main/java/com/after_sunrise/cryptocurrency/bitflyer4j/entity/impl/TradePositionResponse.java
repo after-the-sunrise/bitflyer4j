@@ -12,7 +12,7 @@ import java.time.ZonedDateTime;
 
 /**
  * @author takanori.takase
- * @version 0.0.0
+ * @version 0.0.1
  */
 @Getter
 @AllArgsConstructor
@@ -47,5 +47,8 @@ public class TradePositionResponse extends Entity implements TradePosition {
 
     @SerializedName("pnl")
     private final BigDecimal profitAndLoss;
+
+    @SerializedName("sfd")
+    private final BigDecimal sfd;
 
 }

@@ -36,6 +36,8 @@ public interface TradePosition {
 
     BigDecimal getProfitAndLoss();
 
+    BigDecimal getSfd();
+
     @Getter
     @Builder
     @AllArgsConstructor(access = AccessLevel.PRIVATE)

@@ -545,6 +545,7 @@ public class OrderServiceImplTest {
         assertEquals(value.getOpenDate(), parse("2015-11-03T10:04:45.011", DTF));
         assertEquals(value.getLeverage(), new BigDecimal("3"));
         assertEquals(value.getProfitAndLoss(), new BigDecimal("965"));
+        assertEquals(value.getSfd(), new BigDecimal("123"));
 
         assertFalse(values.hasNext());
 

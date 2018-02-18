@@ -9,6 +9,7 @@
     "require_collateral": 120000,
     "open_date": "2015-11-03T10:04:45.011",
     "leverage": 3,
-    "pnl": 965
+    "pnl": 965,
+    "sfd": 123
   }
 ]
