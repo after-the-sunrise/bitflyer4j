@@ -47,9 +47,10 @@ public class Bitflyer4jFactory {
     }
 
     /**
-     * Create a new instance of the {@link Bitflyer4j} with specific properties.
+     * Create a new instance of the {@link Bitflyer4j} with instance specific properties.
      * A new instance is created for each invocation.
      *
+     * @param properties Instance specific properties.
      * @return New instance.
      */
     public Bitflyer4j createInstance(Properties properties) {
