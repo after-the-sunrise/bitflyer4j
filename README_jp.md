@@ -232,11 +232,13 @@ HTTPリクエストがバックグランドで実際に処理されたタイミ�
 - HTTP Public API
   - [x] マーケットの一覧 : `/v1/markets`
   - [x] マーケットの一覧 USA : `/v1/markets/usa`
+  - [x] マーケットの一覧 EUR : `/v1/markets/eu`
   - [x] 板情報 : `/v1/board`
   - [x] ティッカー : `/v1/ticker`
   - [x] 約定履歴 : `/v1/executions`
   - [x] チャット : `/v1/getchats`
   - [x] チャット USA : `/v1/getchats/usa`
+  - [x] チャット EUR : `/v1/getchats/eu`
   - [x] 取引所の状態 : `/v1/gethealth`
   - [x] 板の状態 : `/v1/getboardstate`
 - HTTP Private API
