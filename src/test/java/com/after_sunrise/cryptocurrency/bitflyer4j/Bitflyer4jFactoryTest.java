@@ -72,6 +72,10 @@ public class Bitflyer4jFactoryTest {
         // Last should be default.
         assertEquals(HTTP_URL.fetch(conf), HTTP_URL.getDefaultValue());
 
+        // Specific
+        properties.setProperty(HTTP_URL.getKey(), "test");
+        assertEquals(HTTP_URL.fetch(conf), "test");
+
     }
 
 }
