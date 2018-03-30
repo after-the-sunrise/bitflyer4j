@@ -20,9 +20,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.configuration2.AbstractConfiguration;
 import org.apache.commons.configuration2.CompositeConfiguration;
 import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.MapConfiguration;
 import org.apache.commons.configuration2.event.EventSource;
 
 import java.util.Arrays;
+import java.util.Optional;
+import java.util.Properties;
 
 /**
  * Factory for creating a new {@link Bitflyer4j} instance.
@@ -40,10 +43,20 @@ public class Bitflyer4jFactory {
      * @return New instance.
      */
     public Bitflyer4j createInstance() {
+        return createInstance(null);
+    }
+
+    /**
+     * Create a new instance of the {@link Bitflyer4j} with specific properties.
+     * A new instance is created for each invocation.
+     *
+     * @return New instance.
+     */
+    public Bitflyer4j createInstance(Properties properties) {
 
         log.info("Creating instance.");
 
-        final AbstractConfiguration conf = createConfiguration();
+        final AbstractConfiguration conf = createConfiguration(properties);
 
         Module module = new AbstractModule() {
             @Override
@@ -89,13 +102,15 @@ public class Bitflyer4jFactory {
      * @return Composite configuration instance.
      */
     @VisibleForTesting
-    AbstractConfiguration createConfiguration() {
+    AbstractConfiguration createConfiguration(Properties properties) {
 
         CompositeConfiguration composite = new CompositeConfiguration();
 
         ConfigurationType[] types = ConfigurationType.values();
 
         Arrays.stream(types).forEach(s -> s.get().ifPresent(composite::addConfiguration));
+
+        Optional.ofNullable(properties).ifPresent(p -> composite.addConfiguration(new MapConfiguration(p)));
 
         return composite;
 

@@ -7,6 +7,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.Collections;
+import java.util.Properties;
 
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.*;
 import static com.google.common.io.Resources.getResource;
@@ -39,7 +40,9 @@ public class Bitflyer4jFactoryTest {
     @Test
     public void testCreateConfiguration() throws Exception {
 
-        Configuration conf = target.createConfiguration();
+        Properties properties = new Properties();
+
+        Configuration conf = target.createConfiguration(properties);
 
         for (Object name : Collections.list(System.getProperties().propertyNames())) {
 
