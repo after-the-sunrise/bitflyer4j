@@ -1,8 +1,8 @@
 # bitflyer4j 
 [![Build Status][travis-icon]][travis-page] [![Coverage Status][coverall-icon]][coverall-page] [![Maven Central][maven-icon]][maven-page] [![Javadocs][javadoc-icon]][javadoc-page]
 
-* [English Version](https://github.com/after-the-sunrise/bitflyer4j/blob/master/README.md).
-* [日本語版](https://github.com/after-the-sunrise/bitflyer4j/blob/master/README_jp.md).
+* :us: [English](./README.md).
+* :jp: [日本語](./README_jp.md).
 
 
 ## Overview
@@ -138,7 +138,7 @@ public class RealtimeSample {
 ```
 
 For the full list of supported features and sample codes, please refer to 
-[Bitflyer4jTest](https://github.com/after-the-sunrise/bitflyer4j/blob/master/src/test/java/com/after_sunrise/cryptocurrency/bitflyer4j/Bitflyer4jTest.java).
+[Bitflyer4jTest](./src/test/java/com/after_sunrise/cryptocurrency/bitflyer4j/Bitflyer4jTest.java).
 
 
 ## Features & Configurations
@@ -171,7 +171,7 @@ bitflyer4j.auth_key=MY_KEY_HERE
 bitflyer4j.auth_secret=MY_SECRET_HERE
 ```
 A template of the `.bitflyer4j` file can be downloaded from 
-[here](https://github.com/after-the-sunrise/bitflyer4j/blob/master/src/test/resources/.bitflyer4j).
+[here](./src/test/resources/.bitflyer4j).
 
 
 ### Network Proxy
@@ -203,7 +203,7 @@ To make these asynchronous HTTP calls synchronous, simply call the `CompletableF
 
 Although there should be no need to overwrite the default configurations, the following parameters are externalized 
 and can be overwritten by the environment variables.  For the complete list of configurable parameters and details, 
-refer to the [KeyType](https://github.com/after-the-sunrise/bitflyer4j/blob/master/src/main/java/com/after_sunrise/cryptocurrency/bitflyer4j/core/KeyType.java) javadoc.
+refer to the [KeyType](./src/main/java/com/after_sunrise/cryptocurrency/bitflyer4j/core/KeyType.java) javadoc.
 
 
 |Property Key                          |Default Value                             |Description                                                                           |

@@ -1,8 +1,8 @@
 # bitflyer4j 
 [![Build Status][travis-icon]][travis-page] [![Coverage Status][coverall-icon]][coverall-page] [![Maven Central][maven-icon]][maven-page] [![Javadocs][javadoc-icon]][javadoc-page]
 
-* [English Version](https://github.com/after-the-sunrise/bitflyer4j/blob/master/README.md).
-* [日本語版](https://github.com/after-the-sunrise/bitflyer4j/blob/master/README_jp.md).
+* :us: [English](./README.md).
+* :jp: [日本語](./README_jp.md).
 
 
 ## 概要
@@ -138,7 +138,7 @@ public class RealtimeSample {
 ```
 
 その他の機能やサンプルコードについては 
-[Bitflyer4jTest](https://github.com/after-the-sunrise/bitflyer4j/blob/master/src/test/java/com/after_sunrise/cryptocurrency/bitflyer4j/Bitflyer4jTest.java)
+[Bitflyer4jTest](./src/test/java/com/after_sunrise/cryptocurrency/bitflyer4j/Bitflyer4jTest.java)
 を参照してください。
 
 
@@ -169,7 +169,7 @@ bitflyer4j.auth_key=MY_KEY_HERE
 bitflyer4j.auth_secret=MY_SECRET_HERE
 ```
 `.bitflyer4j`の雛形ファイルは 
-[こちら](https://github.com/after-the-sunrise/bitflyer4j/blob/master/src/test/resources/.bitflyer4j)
+[こちら](./src/test/resources/.bitflyer4j)
 からダウンロードできます。
 
 
@@ -201,7 +201,7 @@ HTTPリクエストがバックグランドで実際に処理されたタイミ�
 ### その他の設定値
 
 原則、以下の設定は変更する必要はありませんが、それぞれ外部化されているため、必要に応じて環境変数で上書きできます。それぞれの詳細は
-[KeyType](https://github.com/after-the-sunrise/bitflyer4j/blob/master/src/main/java/com/after_sunrise/cryptocurrency/bitflyer4j/core/KeyType.java)
+[KeyType](./src/main/java/com/after_sunrise/cryptocurrency/bitflyer4j/core/KeyType.java)
 を参照してください。
 
 
