@@ -1,8 +1,8 @@
 # bitflyer4j 
 [![Build Status][travis-icon]][travis-page] [![Coverage Status][coverall-icon]][coverall-page] [![Maven Central][maven-icon]][maven-page] [![Javadocs][javadoc-icon]][javadoc-page]
 
-* :us: [English](./README.md).
-* :jp: [日本語](./README_jp.md).
+* :us: [English](./README.md)
+* :jp: [日本語](./README_jp.md)
 
 
 ## 概要
