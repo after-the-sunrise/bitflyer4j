@@ -49,11 +49,11 @@ import static org.testng.Assert.*;
  * @author takanori.takase
  * @version 0.0.4
  */
-public class RealtimeServiceImplTest {
+public class PubNubServiceImplTest {
 
     private static final DateTimeFormatter DTF = ISO_LOCAL_DATE_TIME.withZone(ZoneId.of("GMT"));
 
-    private RealtimeServiceImpl target;
+    private PubNubServiceImpl target;
 
     private TestModule module;
 
@@ -89,7 +89,7 @@ public class RealtimeServiceImplTest {
         l2 = mock(RealtimeListener.class);
         l3 = mock(RealtimeListener.class);
 
-        target = new RealtimeServiceImpl(module.createInjector());
+        target = new PubNubServiceImpl(module.createInjector());
 
     }
 

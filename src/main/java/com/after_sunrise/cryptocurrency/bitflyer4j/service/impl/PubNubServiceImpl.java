@@ -42,7 +42,7 @@ import static java.util.Collections.*;
  * @version 0.0.1
  **/
 @Slf4j
-public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeService {
+public class PubNubServiceImpl extends SubscribeCallback implements RealtimeService {
 
     private static final Type TYPE_EXECUTIONS = new TypeToken<List<ExecutionImpl>>() {
     }.getType();
@@ -68,7 +68,7 @@ public class RealtimeServiceImpl extends SubscribeCallback implements RealtimeSe
     private final PubNub pubNub;
 
     @Inject
-    public RealtimeServiceImpl(Injector injector) {
+    public PubNubServiceImpl(Injector injector) {
 
         this.executor = injector.getInstance(ExecutorFactory.class).get(getClass());
 

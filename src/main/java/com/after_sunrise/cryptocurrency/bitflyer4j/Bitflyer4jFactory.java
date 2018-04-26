@@ -9,7 +9,7 @@ import com.after_sunrise.cryptocurrency.bitflyer4j.service.RealtimeService;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.impl.AccountServiceImpl;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.impl.MarketServiceImpl;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.impl.OrderServiceImpl;
-import com.after_sunrise.cryptocurrency.bitflyer4j.service.impl.RealtimeServiceImpl;
+import com.after_sunrise.cryptocurrency.bitflyer4j.service.impl.PubNubServiceImpl;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.Gson;
 import com.google.inject.AbstractModule;
@@ -87,7 +87,7 @@ public class Bitflyer4jFactory {
 
                 bind(OrderService.class).to(OrderServiceImpl.class).asEagerSingleton();
 
-                bind(RealtimeService.class).to(RealtimeServiceImpl.class).asEagerSingleton();
+                bind(RealtimeService.class).to(PubNubServiceImpl.class).asEagerSingleton();
 
             }
         };
