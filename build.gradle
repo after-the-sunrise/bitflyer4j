@@ -30,6 +30,7 @@ dependencies {
     compile 'com.google.inject:guice:4.1.0'
     compile 'com.google.code.gson:gson:2.8.1'
     compile 'com.pubnub:pubnub-gson:4.7.0'
+    compile 'io.socket:socket.io-client:1.0.0'
     compile 'org.apache.commons:commons-configuration2:2.1.1'
     compile 'org.apache.commons:commons-collections4:4.1'
     compile 'org.apache.commons:commons-lang3:3.6'

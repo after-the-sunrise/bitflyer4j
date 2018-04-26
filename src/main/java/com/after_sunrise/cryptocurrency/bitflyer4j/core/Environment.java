@@ -44,4 +44,6 @@ public interface Environment {
 
     Boolean getPubNubSecure();
 
+    String getSocketEndpoint();
+
 }

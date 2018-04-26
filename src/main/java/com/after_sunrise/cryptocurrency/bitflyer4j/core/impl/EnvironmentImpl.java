@@ -144,4 +144,9 @@ public class EnvironmentImpl implements Environment, EventListener<Configuration
         return Boolean.class.cast(cache.get().get(PUBNUB_SECURE));
     }
 
+    @Override
+    public String getSocketEndpoint() {
+        return String.class.cast(cache.get().get(SOCKET_ENDPOINT));
+    }
+
 }

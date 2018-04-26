@@ -267,4 +267,17 @@ public class EnvironmentImplTest {
 
     }
 
+    @Test
+    public void testGetSocketEndpoint() {
+
+        assertEquals(target.getSocketEndpoint(), SOCKET_ENDPOINT.getDefaultValue());
+
+        conf.setProperty(SOCKET_ENDPOINT.getKey(), "");
+        assertNull(target.getSocketEndpoint());
+
+        conf.setProperty(SOCKET_ENDPOINT.getKey(), "testkey");
+        assertEquals(target.getSocketEndpoint(), "testkey");
+
+    }
+
 }

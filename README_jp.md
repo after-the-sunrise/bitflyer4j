@@ -223,6 +223,7 @@ HTTPリクエストがバックグランドで実際に処理されたタイミ�
 |bitflyer4j.pubnub_key                 |sub-c-52a9ab50-291b-11e5-baaa-0619f8945a4f|PubNub購読キー。|
 |bitflyer4j.pubnub_reconnect           |LINEAR                                    |PubNub再接続方式。|
 |bitflyer4j.pubnub_secure              |true                                      |PubNubのSSLフラグ。|
+|bitflyer4j.socket_endpoint            |https://io.lightstream.bitflyer.com       |Socket.IOのエンドポイントURL。|
 
 
 ## エンドポイント
@@ -270,10 +271,16 @@ HTTPリクエストがバックグランドで実際に処理されたタイミ�
     - [x] 証拠金の変動履歴を取得 : `/v1/me/getcollateralhistory`
     - [x] 取引手数料を取得 : `/v1/me/gettradingcommission`
 - リアルタイムAPI
-  - [x] 板情報の差分 : `lightning_board_*`
-  - [x] 板情報 : `lightning_board_snapshot_*`
-  - [x] ティッカー : `lightning_ticker_*`
-  - [x] 約定 : `lightning_executions_*`
+  - PubNub
+    - [x] 板情報の差分 : `lightning_board_*`
+    - [x] 板情報 : `lightning_board_snapshot_*`
+    - [x] ティッカー : `lightning_ticker_*`
+    - [x] 約定 : `lightning_executions_*`
+  - Socket.IO
+    - [ ] 板情報の差分 : `lightning_board_*`
+    - [ ] 板情報 : `lightning_board_snapshot_*`
+    - [ ] ティッカー : `lightning_ticker_*`
+    - [ ] 約定 : `lightning_executions_*`
 
 
 [bf-site]:https://bitflyer.jp?bf=yolu1tm3

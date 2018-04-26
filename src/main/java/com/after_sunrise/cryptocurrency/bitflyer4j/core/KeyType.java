@@ -153,7 +153,14 @@ public enum KeyType {
      *
      * @see <a href="https://www.pubnub.com/docs/java-se-java/api-reference-misc#reconnect">PubNub Reference</a>
      */
-    PUBNUB_SECURE(true, Boolean::valueOf);
+    PUBNUB_SECURE(true, Boolean::valueOf),
+
+    /**
+     * Socket.IO 2.0 WebSocket Endpoint.
+     *
+     * @see <a href="https://lightning.bitflyer.jp/docs#realtime-api">Socket.IO 2.0 (WebSocket)</a>
+     */
+    SOCKET_ENDPOINT("https://io.lightstream.bitflyer.com");
 
     private static final String PREFIX = "bitflyer4j.";
 
