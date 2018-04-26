@@ -1,8 +1,11 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.core;
 
+import com.google.common.io.Resources;
 import org.apache.commons.configuration2.Configuration;
 import org.testng.annotations.Test;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.SITE;
@@ -70,7 +73,8 @@ public class ConfigurationTypeTest {
         assertFalse(ConfigurationType.get("build.gradle", null).isPresent());
 
         // File exists.
-        conf = ConfigurationType.get(site, "src/test/resources").get();
+        Path path = Paths.get(Resources.getResource(site).toURI()).getParent();
+        conf = ConfigurationType.get(site, path.toAbsolutePath().toString()).get();
         assertEquals(conf.getString(VERSION.getKey()), "test");
 
         // File does not exist. (And should not load from classpath.)
