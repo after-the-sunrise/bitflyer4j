@@ -110,7 +110,7 @@ public class CancelOrderSample {
 
 #### Subscribe to Realtime Feed
 
-Initiate a subscription for the steaming market data from [PubNub](https://www.pubnub.com/).
+Initiate a subscription for the steaming market data.
 
 ```java
 public class RealtimeSample {

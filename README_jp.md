@@ -110,7 +110,7 @@ public class CancelOrderSample {
 
 #### リアルタイムデータ購読
 
-[PubNub](https://www.pubnub.com/)ストリーミング時価データの購読を開始。
+ストリーミング時価データの購読を開始。
 
 ```java
 public class RealtimeSample {
