@@ -37,7 +37,7 @@ public class SocketProviderTest {
     @Test(expectedExceptions = RuntimeException.class)
     public void testGet_Exception() {
 
-        when(environment.getSocketEndpoint()).thenReturn("foo");
+        when(environment.getSocketEndpoint()).thenReturn("https://local host/");
 
         Socket socket = target.get();
 
