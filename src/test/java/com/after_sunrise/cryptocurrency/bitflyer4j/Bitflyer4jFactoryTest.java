@@ -1,12 +1,18 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.ConfigurationType;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType;
+import com.after_sunrise.cryptocurrency.bitflyer4j.service.impl.PubNubServiceImpl;
+import com.after_sunrise.cryptocurrency.bitflyer4j.service.impl.SocketServiceImpl;
 import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.MapConfiguration;
 import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import static com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType.*;
@@ -75,6 +81,26 @@ public class Bitflyer4jFactoryTest {
         // Specific
         properties.setProperty(HTTP_URL.getKey(), "test");
         assertEquals(HTTP_URL.fetch(conf), "test");
+
+    }
+
+    @Test
+    public void testGetRealtimeType() {
+
+        Map<String, String> map = new HashMap<>();
+        MapConfiguration conf = new MapConfiguration(map);
+
+        // Default
+        assertSame(SocketServiceImpl.class, target.getRealtimeType(conf));
+
+        // Custom
+        map.put(KeyType.REALTIME_TYPE.getKey(), PubNubServiceImpl.class.getName());
+        assertSame(PubNubServiceImpl.class, target.getRealtimeType(conf));
+
+        // Invalid
+        map.put(KeyType.REALTIME_TYPE.getKey(), "foo");
+        assertSame(SocketServiceImpl.class, target.getRealtimeType(conf));
+
 
     }
 

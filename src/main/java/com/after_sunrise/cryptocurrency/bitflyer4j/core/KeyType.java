@@ -134,6 +134,15 @@ public enum KeyType {
      */
     HTTP_LIMIT_CRITERIA_DORMANT(10, Integer::parseInt),
 
+
+    /**
+     * Implementaion type to utilize for realtime subcription.
+     *
+     * @see #PUBNUB_KEY
+     * @see #SOCKET_ENDPOINT
+     */
+    REALTIME_TYPE(null),
+
     /**
      * <a href="https://www.pubnub.com/">PubNub</a> subscribe key for the Realtime API.
      *

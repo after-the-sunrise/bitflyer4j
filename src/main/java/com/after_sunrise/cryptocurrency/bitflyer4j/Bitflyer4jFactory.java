@@ -9,7 +9,7 @@ import com.after_sunrise.cryptocurrency.bitflyer4j.service.RealtimeService;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.impl.AccountServiceImpl;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.impl.MarketServiceImpl;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.impl.OrderServiceImpl;
-import com.after_sunrise.cryptocurrency.bitflyer4j.service.impl.PubNubServiceImpl;
+import com.after_sunrise.cryptocurrency.bitflyer4j.service.impl.SocketServiceImpl;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.Gson;
 import com.google.inject.AbstractModule;
@@ -23,6 +23,7 @@ import org.apache.commons.configuration2.CompositeConfiguration;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.MapConfiguration;
 import org.apache.commons.configuration2.event.EventSource;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -60,6 +61,8 @@ public class Bitflyer4jFactory {
 
         final AbstractConfiguration conf = createConfiguration(properties);
 
+        final Class<? extends RealtimeService> realtimeClass = getRealtimeType(conf);
+
         Module module = new AbstractModule() {
             @Override
             protected void configure() {
@@ -90,7 +93,7 @@ public class Bitflyer4jFactory {
 
                 bind(OrderService.class).to(OrderServiceImpl.class).asEagerSingleton();
 
-                bind(RealtimeService.class).to(PubNubServiceImpl.class).asEagerSingleton();
+                bind(RealtimeService.class).to(realtimeClass).asEagerSingleton();
 
             }
         };
@@ -98,6 +101,7 @@ public class Bitflyer4jFactory {
         return Guice.createInjector(module).getInstance(Bitflyer4j.class);
 
     }
+
 
     /**
      * Create a {@link Configuration} instance,
@@ -117,6 +121,38 @@ public class Bitflyer4jFactory {
         Optional.ofNullable(properties).ifPresent(p -> composite.addConfiguration(new MapConfiguration(p)));
 
         return composite;
+
+    }
+
+    @VisibleForTesting
+    Class<? extends RealtimeService> getRealtimeType(Configuration conf) {
+
+        Class<? extends RealtimeService> result = SocketServiceImpl.class;
+
+        Object value = KeyType.REALTIME_TYPE.fetch(conf);
+
+        if (value != null) {
+
+            try {
+
+                Class<?> clz = Class.forName(value.toString());
+
+                @SuppressWarnings("unchecked")
+                Class<? extends RealtimeService> cls = (Class<? extends RealtimeService>) clz;
+
+                result = cls;
+
+            } catch (Exception e) {
+
+                String msg = "Failed to load class : {}";
+
+                LoggerFactory.getLogger(getClass()).warn(msg, value);
+
+            }
+
+        }
+
+        return result;
 
     }
 
