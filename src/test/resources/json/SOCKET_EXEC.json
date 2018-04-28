@@ -1,0 +1,38 @@
+[
+  {
+    "buy_child_order_acceptance_id": "JRF20180428-113336-142111",
+    "side": "BUY",
+    "sell_child_order_acceptance_id": "JRF20180428-113335-195797",
+    "size": 0.31,
+    "price": 1010416,
+    "exec_date": "2018-04-28T11:33:36.1779974Z",
+    "id": 216406952
+  },
+  {
+    "buy_child_order_acceptance_id": "JRF20180428-113336-142111",
+    "side": "BUY",
+    "sell_child_order_acceptance_id": "JRF20180428-113335-041146",
+    "size": 0.29997,
+    "price": 1010418,
+    "exec_date": "2018-04-28T11:33:36.1779974Z",
+    "id": 216406953
+  },
+  {
+    "buy_child_order_acceptance_id": "JRF20180428-113336-142111",
+    "side": "BUY",
+    "sell_child_order_acceptance_id": "JRF20180428-113330-539033",
+    "size": 0.00534197,
+    "price": 1010697,
+    "exec_date": "2018-04-28T11:33:36.1779974Z",
+    "id": 216406954
+  },
+  {
+    "buy_child_order_acceptance_id": "JRF20180428-113336-142111",
+    "side": "BUY",
+    "sell_child_order_acceptance_id": "JRF20180428-203334-538024",
+    "size": 0.54468803,
+    "price": 1010697,
+    "exec_date": "2018-04-28T11:33:36.1779974Z",
+    "id": 216406955
+  }
+]
