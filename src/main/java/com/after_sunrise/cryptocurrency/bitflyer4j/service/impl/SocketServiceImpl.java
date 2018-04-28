@@ -10,10 +10,12 @@ import com.after_sunrise.cryptocurrency.bitflyer4j.entity.impl.TickImpl;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.RealtimeListener;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.RealtimeService;
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Injector;
 import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 import io.socket.emitter.Emitter.Listener;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
@@ -40,7 +42,7 @@ import static java.util.Collections.*;
  * @version 0.0.1
  **/
 @Slf4j
-public class SocketServiceImpl implements RealtimeService {
+public class SocketServiceImpl implements RealtimeService, Emitter.Listener {
 
     private static final Type TYPE_EXECUTIONS = new TypeToken<List<ExecutionImpl>>() {
     }.getType();
@@ -52,6 +54,10 @@ public class SocketServiceImpl implements RealtimeService {
     static final String CHANNEL_TICK = "lightning_ticker_";
 
     static final String CHANNEL_EXEC = "lightning_executions_";
+
+    static final String EMIT_SUBSCRIBE = "subscribe";
+
+    static final String EMIT_UNSUBSCRIBE = "unsubscribe";
 
     static final Logger CLIENT_LOG = LoggerFactory.getLogger(PubNubLogger.class);
 
@@ -73,6 +79,28 @@ public class SocketServiceImpl implements RealtimeService {
         this.gson = injector.getInstance(Gson.class);
 
         this.socket = injector.getInstance(Socket.class);
+
+        Sets.newHashSet(
+                Socket.EVENT_CONNECT,
+                Socket.EVENT_CONNECT_ERROR,
+                Socket.EVENT_CONNECT_TIMEOUT,
+                Socket.EVENT_CONNECTING,
+                Socket.EVENT_DISCONNECT,
+                Socket.EVENT_ERROR,
+                Socket.EVENT_MESSAGE,
+                Socket.EVENT_RECONNECT,
+                Socket.EVENT_RECONNECT_ATTEMPT,
+                Socket.EVENT_RECONNECT_ERROR,
+                Socket.EVENT_RECONNECT_FAILED,
+                Socket.EVENT_RECONNECTING
+        ).forEach(event -> socket.on(event, args -> log.debug("Socket : {}", event)));
+
+        Sets.newHashSet(
+                Socket.EVENT_PING,
+                Socket.EVENT_PONG
+        ).forEach(event -> socket.on(event, args -> log.trace("Socket : {}", event)));
+
+        this.socket.on(Socket.EVENT_CONNECT, this);
 
         this.socket.connect();
 
@@ -228,7 +256,7 @@ public class SocketServiceImpl implements RealtimeService {
 
                 socket.on(pair.getLeft(), pair.getRight());
 
-                socket.emit("subscribe", pair.getLeft());
+                socket.emit(EMIT_SUBSCRIBE, pair.getLeft());
 
 
             });
@@ -295,7 +323,7 @@ public class SocketServiceImpl implements RealtimeService {
 
                 socket.off(pair.getLeft(), pair.getRight());
 
-                socket.emit("unsubscribe", pair.getLeft());
+                socket.emit(EMIT_UNSUBSCRIBE, pair.getLeft());
 
 
             });
@@ -305,6 +333,7 @@ public class SocketServiceImpl implements RealtimeService {
         }, executor);
 
     }
+
 
     static class ChannelListener implements Listener {
 
@@ -350,6 +379,19 @@ public class SocketServiceImpl implements RealtimeService {
             }
 
         }
+
+    }
+
+    @Override
+    public void call(Object... args) {
+
+        executor.submit(() -> subscriptions.keySet().forEach(channel -> {
+
+            log.debug("Resubscribe : {}", channel);
+
+            socket.emit(EMIT_SUBSCRIBE, channel);
+
+        }));
 
     }
 
