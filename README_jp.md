@@ -110,7 +110,7 @@ public class CancelOrderSample {
 
 #### リアルタイムデータ購読
 
-ストリーミング時価データの購読を開始。
+ストリーミング時価データの購読を開始。（異常切断時は自動再接続後に購読状態を復元）
 
 ```java
 public class RealtimeSample {

@@ -110,7 +110,8 @@ public class CancelOrderSample {
 
 #### Subscribe to Realtime Feed
 
-Initiate a subscription for the steaming market data.
+Initiate a subscription for the steaming market data. 
+(Automatic reconnect with subscription recovery upon unsolicited disconnect.)
 
 ```java
 public class RealtimeSample {
