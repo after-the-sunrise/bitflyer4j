@@ -37,6 +37,8 @@ public class SocketProvider implements Provider<Socket> {
 
             options.transports = new String[]{WebSocket.NAME};
 
+            options.reconnection = true;
+
             socket = IO.socket(endpoint, options);
 
         } catch (URISyntaxException e) {
