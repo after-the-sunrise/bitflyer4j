@@ -1,6 +1,5 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.core;
 
-import com.pubnub.api.enums.PNReconnectionPolicy;
 import lombok.Getter;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.StringUtils;
@@ -138,31 +137,9 @@ public enum KeyType {
     /**
      * Implementaion type to utilize for realtime subcription.
      *
-     * @see #PUBNUB_KEY
      * @see #SOCKET_ENDPOINT
      */
     REALTIME_TYPE(null),
-
-    /**
-     * <a href="https://www.pubnub.com/">PubNub</a> subscribe key for the Realtime API.
-     *
-     * @see <a href="https://lightning.bitflyer.jp/docs?lang=en#realtime-api">API Documentation</a>
-     */
-    PUBNUB_KEY("sub-c-52a9ab50-291b-11e5-baaa-0619f8945a4f"),
-
-    /**
-     * PubNub reconnect policy.
-     *
-     * @see <a href="https://www.pubnub.com/docs/java-se-java/api-reference-publish-and-subscribe#subscribe">PubNub Reference</a>
-     */
-    PUBNUB_RECONNECT(PNReconnectionPolicy.LINEAR.name(), PNReconnectionPolicy::valueOf),
-
-    /**
-     * PubNub SSL flag ("https://").
-     *
-     * @see <a href="https://www.pubnub.com/docs/java-se-java/api-reference-misc#reconnect">PubNub Reference</a>
-     */
-    PUBNUB_SECURE(true, Boolean::valueOf),
 
     /**
      * Socket.IO 2.0 WebSocket Endpoint.

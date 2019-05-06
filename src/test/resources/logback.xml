@@ -30,13 +30,13 @@
         </rollingPolicy>
     </appender>
 
-    <appender name="PUBNUB" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="REALTIME" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
             <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] %msg%n</pattern>
         </encoder>
-        <file>logs/bitflyer4j-pubnub.log</file>
+        <file>logs/bitflyer4j-realtime.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/bitflyer4j-pubnub_%d{yyyy-MM-dd}.tar.gz</fileNamePattern>
+            <fileNamePattern>logs/bitflyer4j-realtime_%d{yyyy-MM-dd}.tar.gz</fileNamePattern>
             <maxHistory>7</maxHistory>
         </rollingPolicy>
     </appender>
@@ -53,8 +53,8 @@
     </logger>
 
     <logger level="TRACE" additivity="false"
-            name="com.after_sunrise.cryptocurrency.bitflyer4j.core.Loggers$PubNubLogger">
-        <appender-ref ref="PUBNUB"/>
+            name="com.after_sunrise.cryptocurrency.bitflyer4j.core.Loggers$RealtimeLogger">
+        <appender-ref ref="REALTIME"/>
     </logger>
 
 </configuration>

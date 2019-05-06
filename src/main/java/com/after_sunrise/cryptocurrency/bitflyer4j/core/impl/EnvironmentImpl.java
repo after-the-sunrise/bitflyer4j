@@ -2,7 +2,6 @@ package com.after_sunrise.cryptocurrency.bitflyer4j.core.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.Environment;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType;
-import com.pubnub.api.enums.PNReconnectionPolicy;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.event.ConfigurationEvent;
@@ -127,21 +126,6 @@ public class EnvironmentImpl implements Environment, EventListener<Configuration
     @Override
     public Integer getHttpLimitDormant() {
         return Integer.class.cast(cache.get().get(HTTP_LIMIT_CRITERIA_DORMANT));
-    }
-
-    @Override
-    public String getPubNubKey() {
-        return String.class.cast(cache.get().get(PUBNUB_KEY));
-    }
-
-    @Override
-    public PNReconnectionPolicy getPubNubReconnect() {
-        return PNReconnectionPolicy.class.cast(cache.get().get(PUBNUB_RECONNECT));
-    }
-
-    @Override
-    public Boolean getPubNubSecure() {
-        return Boolean.class.cast(cache.get().get(PUBNUB_SECURE));
     }
 
     @Override

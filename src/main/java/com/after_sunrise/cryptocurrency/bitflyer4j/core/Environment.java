@@ -1,7 +1,5 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.core;
 
-import com.pubnub.api.enums.PNReconnectionPolicy;
-
 import java.net.Proxy;
 import java.time.Duration;
 import java.time.Instant;
@@ -37,12 +35,6 @@ public interface Environment {
     Integer getHttpLimitPrivate();
 
     Integer getHttpLimitDormant();
-
-    String getPubNubKey();
-
-    PNReconnectionPolicy getPubNubReconnect();
-
-    Boolean getPubNubSecure();
 
     String getSocketEndpoint();
 

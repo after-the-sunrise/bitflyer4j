@@ -8,7 +8,6 @@ import com.after_sunrise.cryptocurrency.bitflyer4j.service.MarketService;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.OrderService;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.RealtimeService;
 import com.google.inject.Injector;
-import com.pubnub.api.PubNub;
 import io.socket.engineio.client.Socket;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -63,8 +62,6 @@ public class Bitflyer4jImpl implements Bitflyer4j {
     public void close() throws Exception {
 
         injector.getInstance(Socket.class).close();
-
-        injector.getInstance(PubNub.class).destroy();
 
         injector.getInstance(ExecutorFactory.class).shutdown();
 

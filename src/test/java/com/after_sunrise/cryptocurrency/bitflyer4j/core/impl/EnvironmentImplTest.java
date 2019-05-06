@@ -1,6 +1,5 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.core.impl;
 
-import com.pubnub.api.enums.PNReconnectionPolicy;
 import org.apache.commons.configuration2.AbstractConfiguration;
 import org.apache.commons.configuration2.MapConfiguration;
 import org.testng.Assert;
@@ -224,46 +223,6 @@ public class EnvironmentImplTest {
 
         conf.setProperty(HTTP_LIMIT_CRITERIA_DORMANT.getKey(), "123");
         assertEquals(target.getHttpLimitDormant(), Integer.valueOf(123));
-
-    }
-
-    @Test
-    public void testGetPubNubKey() {
-
-        assertEquals(target.getPubNubKey(), PUBNUB_KEY.getDefaultValue());
-
-        conf.setProperty(PUBNUB_KEY.getKey(), "");
-        assertNull(target.getPubNubKey());
-
-        conf.setProperty(PUBNUB_KEY.getKey(), "testkey");
-        assertEquals(target.getPubNubKey(), "testkey");
-
-    }
-
-    @Test
-    public void testGetPubNubReconnect() {
-
-        String value = PUBNUB_RECONNECT.getDefaultValue();
-        assertEquals(target.getPubNubReconnect(), PNReconnectionPolicy.valueOf(value));
-
-        conf.setProperty(PUBNUB_RECONNECT.getKey(), "");
-        assertNull(target.getPubNubReconnect());
-
-        conf.setProperty(PUBNUB_RECONNECT.getKey(), PNReconnectionPolicy.NONE.name());
-        assertEquals(target.getPubNubReconnect(), PNReconnectionPolicy.NONE);
-
-    }
-
-    @Test
-    public void testGetPubNubSecure() {
-
-        assertEquals(target.getPubNubSecure(), Boolean.valueOf(PUBNUB_SECURE.getDefaultValue()));
-
-        conf.setProperty(PUBNUB_SECURE.getKey(), "");
-        assertNull(target.getPubNubSecure());
-
-        conf.setProperty(PUBNUB_SECURE.getKey(), "false");
-        assertEquals(target.getPubNubSecure(), Boolean.FALSE);
 
     }
 

@@ -6,7 +6,6 @@ import com.after_sunrise.cryptocurrency.bitflyer4j.service.AccountService;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.MarketService;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.OrderService;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.RealtimeService;
-import com.pubnub.api.PubNub;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -45,8 +44,6 @@ public class Bitflyer4jImplTest {
         target.close();
 
         verify(module.getMock(ExecutorFactory.class)).shutdown();
-
-        verify(module.getMock(PubNub.class)).destroy();
 
     }
 

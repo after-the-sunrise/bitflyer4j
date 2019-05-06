@@ -15,7 +15,6 @@ import com.google.gson.Gson;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Module;
-import com.pubnub.api.PubNub;
 import io.socket.client.Socket;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.configuration2.AbstractConfiguration;
@@ -72,8 +71,6 @@ public class Bitflyer4jFactory {
                 bind(EventSource.class).toInstance(conf);
 
                 bind(Gson.class).toProvider(GsonProvider.class).asEagerSingleton();
-
-                bind(PubNub.class).toProvider(PubNubProvider.class).asEagerSingleton();
 
                 bind(Socket.class).toProvider(SocketProvider.class).asEagerSingleton();
 

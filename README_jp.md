@@ -221,9 +221,6 @@ HTTPリクエストがバックグランドで実際に処理されたタイミ�
 |bitflyer4j.http_limit_criteria_private|200                                       |プライベートAPIの制限時間内アクセス可能回数。|
 |bitflyer4j.http_limit_criteria_dormant|10                                        |休眠口座の制限時間内アクセス可能回数。|
 |bitflyer4j.realtime_type              |                                          |リアルタイムデータの購読に使用する実装の種別|
-|bitflyer4j.pubnub_key                 |sub-c-52a9ab50-291b-11e5-baaa-0619f8945a4f|PubNub購読キー。|
-|bitflyer4j.pubnub_reconnect           |LINEAR                                    |PubNub再接続方式。|
-|bitflyer4j.pubnub_secure              |true                                      |PubNubのSSLフラグ。|
 |bitflyer4j.socket_endpoint            |https://io.lightstream.bitflyer.com       |Socket.IOのエンドポイントURL。|
 
 
@@ -272,11 +269,6 @@ HTTPリクエストがバックグランドで実際に処理されたタイミ�
     - [x] 証拠金の変動履歴を取得 : `/v1/me/getcollateralhistory`
     - [x] 取引手数料を取得 : `/v1/me/gettradingcommission`
 - リアルタイムAPI
-  - PubNub
-    - [x] 板情報の差分 : `lightning_board_*`
-    - [x] 板情報 : `lightning_board_snapshot_*`
-    - [x] ティッカー : `lightning_ticker_*`
-    - [x] 約定 : `lightning_executions_*`
   - Socket.IO
     - [x] 板情報の差分 : `lightning_board_*`
     - [x] 板情報 : `lightning_board_snapshot_*`

@@ -1,6 +1,7 @@
 package com.after_sunrise.cryptocurrency.bitflyer4j.service.impl;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.ExecutorFactory;
+import com.after_sunrise.cryptocurrency.bitflyer4j.core.Loggers.RealtimeLogger;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Board;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Execution;
 import com.after_sunrise.cryptocurrency.bitflyer4j.entity.Tick;
@@ -34,7 +35,6 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import static com.after_sunrise.cryptocurrency.bitflyer4j.core.Loggers.PubNubLogger;
 import static java.util.Collections.*;
 
 /**
@@ -59,7 +59,7 @@ public class SocketServiceImpl implements RealtimeService, Emitter.Listener {
 
     static final String EMIT_UNSUBSCRIBE = "unsubscribe";
 
-    static final Logger CLIENT_LOG = LoggerFactory.getLogger(PubNubLogger.class);
+    static final Logger CLIENT_LOG = LoggerFactory.getLogger(RealtimeLogger.class);
 
     private final Set<RealtimeListener> listeners = synchronizedSet(new HashSet<>());
 

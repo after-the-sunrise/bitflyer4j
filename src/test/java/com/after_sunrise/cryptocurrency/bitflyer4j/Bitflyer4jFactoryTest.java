@@ -2,7 +2,6 @@ package com.after_sunrise.cryptocurrency.bitflyer4j;
 
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.ConfigurationType;
 import com.after_sunrise.cryptocurrency.bitflyer4j.core.KeyType;
-import com.after_sunrise.cryptocurrency.bitflyer4j.service.impl.PubNubServiceImpl;
 import com.after_sunrise.cryptocurrency.bitflyer4j.service.impl.SocketServiceImpl;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.MapConfiguration;
@@ -93,15 +92,10 @@ public class Bitflyer4jFactoryTest {
         // Default
         assertSame(SocketServiceImpl.class, target.getRealtimeType(conf));
 
-        // Custom
-        map.put(KeyType.REALTIME_TYPE.getKey(), PubNubServiceImpl.class.getName());
-        assertSame(PubNubServiceImpl.class, target.getRealtimeType(conf));
-
         // Invalid
         map.put(KeyType.REALTIME_TYPE.getKey(), "foo");
         assertSame(SocketServiceImpl.class, target.getRealtimeType(conf));
-
-
+        
     }
 
 }

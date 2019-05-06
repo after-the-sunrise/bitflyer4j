@@ -223,9 +223,6 @@ refer to the [KeyType](./src/main/java/com/after_sunrise/cryptocurrency/bitflyer
 |bitflyer4j.http_limit_criteria_private|200                                       |Number of allowed HTTP access for private API calls, within the throttling interval.  |
 |bitflyer4j.http_limit_criteria_dormant|10                                        |Number of allowed HTTP access for dormant accounts, within the throttling interval.   |
 |bitflyer4j.realtime_type              |                                          |Implementaion type to utilize for realtime subcription.                               |
-|bitflyer4j.pubnub_key                 |sub-c-52a9ab50-291b-11e5-baaa-0619f8945a4f|PubNub subscription key for realtime subscription.                                    |
-|bitflyer4j.pubnub_reconnect           |LINEAR                                    |PubNub reconnect policy.                                                              |
-|bitflyer4j.pubnub_secure              |true                                      |PubNub secure flag for enabling SSL.                                                  |
 |bitflyer4j.socket_endpoint            |https://io.lightstream.bitflyer.com       |Endpoint URL of the Socket.IO.                                                        |
 
 
@@ -274,11 +271,6 @@ Currently implemented API endpoint paths are as follows:
     - [x] Margin Change History `/v1/me/getcollateralhistory`
     - [x] Trading Commission `/v1/me/gettradingcommission`
 - Realtime API
-  - PubNub
-    - [x] Order Book Update `lightning_board_*`
-    - [x] Order Book Snapshot `lightning_board_snapshot_*`
-    - [x] Ticker `lightning_ticker_*`
-    - [x] Execution `lightning_executions_*`
   - Socket.IO
     - [x] Order Book Update `lightning_board_*`
     - [x] Order Book Snapshot `lightning_board_snapshot_*`

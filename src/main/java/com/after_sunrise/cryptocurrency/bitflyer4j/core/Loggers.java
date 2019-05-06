@@ -9,7 +9,7 @@ public interface Loggers {
     interface HttpLogger {
     }
 
-    interface PubNubLogger {
+    interface RealtimeLogger {
     }
 
 }
