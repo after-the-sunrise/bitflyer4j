@@ -213,20 +213,6 @@ public class EnvironmentImplTest {
     }
 
     @Test
-    public void testGetHttpLimitDormant() {
-
-        Integer limit = Integer.parseInt(HTTP_LIMIT_CRITERIA_DORMANT.getDefaultValue());
-        assertEquals(target.getHttpLimitDormant(), limit);
-
-        conf.setProperty(HTTP_LIMIT_CRITERIA_DORMANT.getKey(), "");
-        assertNull(target.getHttpLimitDormant());
-
-        conf.setProperty(HTTP_LIMIT_CRITERIA_DORMANT.getKey(), "123");
-        assertEquals(target.getHttpLimitDormant(), Integer.valueOf(123));
-
-    }
-
-    @Test
     public void testGetSocketEndpoint() {
 
         assertEquals(target.getSocketEndpoint(), SOCKET_ENDPOINT.getDefaultValue());

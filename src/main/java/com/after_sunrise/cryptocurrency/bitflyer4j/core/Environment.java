@@ -34,8 +34,6 @@ public interface Environment {
 
     Integer getHttpLimitPrivate();
 
-    Integer getHttpLimitDormant();
-
     String getSocketEndpoint();
 
 }

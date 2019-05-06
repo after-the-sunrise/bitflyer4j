@@ -10,6 +10,4 @@ public interface Throttler {
 
     void throttlePrivate();
 
-    void throttleDormant();
-
 }

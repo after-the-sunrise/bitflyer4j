@@ -118,11 +118,6 @@ public class ThrottlerImpl implements Throttler, Runnable {
         throttle("Private", environment::getHttpLimitPrivate);
     }
 
-    @Override
-    public void throttleDormant() {
-        throttle("Dormant", environment::getHttpLimitDormant);
-    }
-
     @VisibleForTesting
     void throttle(String key, Supplier<Integer> limitSupplier) {
 

@@ -216,10 +216,9 @@ HTTPリクエストがバックグランドで実際に処理されたタイミ�
 |bitflyer4j.http_proxy_port            |                                          |HTTPのプロキシサーバーのポート番号。プロキシ種別の指定が必須。|
 |bitflyer4j.http_timeout               |180000                                    |HTTPのソケット通信タイムアウト（ミリ秒）。無制限とする場合は空欄。|
 |bitflyer4j.http_threads               |8                                         |HTTPリクエストの並列スレッド数。|
-|bitflyer4j.http_limit_interval        |60000                                     |HTTPリクエストの回数制限時間（ミリ秒）。|
+|bitflyer4j.http_limit_interval        |300000                                    |HTTPリクエストの回数制限時間（ミリ秒）。|
 |bitflyer4j.http_limit_criteria_address|500                                       |単一IPアドレスからの制限時間内アクセス可能回数。|
-|bitflyer4j.http_limit_criteria_private|200                                       |プライベートAPIの制限時間内アクセス可能回数。|
-|bitflyer4j.http_limit_criteria_dormant|10                                        |休眠口座の制限時間内アクセス可能回数。|
+|bitflyer4j.http_limit_criteria_private|500                                       |プライベートAPIの制限時間内アクセス可能回数。|
 |bitflyer4j.realtime_type              |                                          |リアルタイムデータの購読に使用する実装の種別|
 |bitflyer4j.socket_endpoint            |https://io.lightstream.bitflyer.com       |Socket.IOのエンドポイントURL。|
 

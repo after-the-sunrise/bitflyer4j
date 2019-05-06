@@ -12,7 +12,6 @@ import java.util.function.Function;
 import static java.lang.Long.parseLong;
 import static java.time.Duration.ofMillis;
 import static java.util.concurrent.TimeUnit.MINUTES;
-import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * Enumeration of property keys.
@@ -107,9 +106,8 @@ public enum KeyType {
      * @see <a href="https://lightning.bitflyer.jp/docs?lang=en#api-limits">API Documentation</a>
      * @see #HTTP_LIMIT_CRITERIA_ADDRESS
      * @see #HTTP_LIMIT_CRITERIA_PRIVATE
-     * @see #HTTP_LIMIT_CRITERIA_DORMANT
      */
-    HTTP_LIMIT_INTERVAL(SECONDS.toMillis(60), v -> ofMillis(parseLong(v))),
+    HTTP_LIMIT_INTERVAL(MINUTES.toMillis(5), v -> ofMillis(parseLong(v))),
 
     /**
      * HTTP API access limit per IP address.
@@ -123,16 +121,7 @@ public enum KeyType {
      *
      * @see #HTTP_LIMIT_INTERVAL
      */
-    HTTP_LIMIT_CRITERIA_PRIVATE(200, Integer::parseInt),
-
-    /**
-     * HTTP API access limit for users with an average of less than 0.01 BTC per day.
-     * The limit is imposed on the following day.
-     *
-     * @see #HTTP_LIMIT_INTERVAL
-     */
-    HTTP_LIMIT_CRITERIA_DORMANT(10, Integer::parseInt),
-
+    HTTP_LIMIT_CRITERIA_PRIVATE(500, Integer::parseInt),
 
     /**
      * Implementaion type to utilize for realtime subcription.

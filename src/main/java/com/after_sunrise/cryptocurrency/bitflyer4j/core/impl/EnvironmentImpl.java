@@ -124,11 +124,6 @@ public class EnvironmentImpl implements Environment, EventListener<Configuration
     }
 
     @Override
-    public Integer getHttpLimitDormant() {
-        return Integer.class.cast(cache.get().get(HTTP_LIMIT_CRITERIA_DORMANT));
-    }
-
-    @Override
     public String getSocketEndpoint() {
         return String.class.cast(cache.get().get(SOCKET_ENDPOINT));
     }

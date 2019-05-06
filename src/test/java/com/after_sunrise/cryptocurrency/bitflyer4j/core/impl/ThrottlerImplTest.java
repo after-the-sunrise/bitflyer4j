@@ -44,7 +44,6 @@ public class ThrottlerImplTest {
         when(module.getEnvironment().getHttpLimitInterval()).thenReturn(ofMillis(400));
         when(module.getEnvironment().getHttpLimitAddress()).thenReturn(8);
         when(module.getEnvironment().getHttpLimitPrivate()).thenReturn(4);
-        when(module.getEnvironment().getHttpLimitDormant()).thenReturn(2);
 
         when(module.getMock(ExecutorFactory.class).get(ThrottlerImpl.class)).thenReturn(executor);
 
@@ -87,14 +86,6 @@ public class ThrottlerImplTest {
 
         // 3 batches (4 + 4 + 2) = 2 clean ups
         invoke(target::throttlePrivate, 10, ofMillis(800));
-
-    }
-
-    @Test(timeOut = 10 * 1000L)
-    public void testThrottleDormant() throws Exception {
-
-        // 3 batches (2 + 2 + 1) = 2 clean ups
-        invoke(target::throttleDormant, 5, ofMillis(800));
 
     }
 

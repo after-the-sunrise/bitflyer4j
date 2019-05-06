@@ -218,10 +218,9 @@ refer to the [KeyType](./src/main/java/com/after_sunrise/cryptocurrency/bitflyer
 |bitflyer4j.http_proxy_port            |                                          |Port of the proxy server. Proxy type must be specified for the proxy enablement.      |
 |bitflyer4j.http_timeout               |180000                                    |HTTP socket/read timeout interval in millis. Leave empty for no timeout.              |
 |bitflyer4j.http_threads               |8                                         |HTTP threads to utilize for HTTP access.                                              |
-|bitflyer4j.http_limit_interval        |60000                                     |HTTP access throttling interval in millis.                                            |
+|bitflyer4j.http_limit_interval        |300000                                    |HTTP access throttling interval in millis.                                            |
 |bitflyer4j.http_limit_criteria_address|500                                       |Number of allowed HTTP access for a single source IP, within the throttling interval. |
-|bitflyer4j.http_limit_criteria_private|200                                       |Number of allowed HTTP access for private API calls, within the throttling interval.  |
-|bitflyer4j.http_limit_criteria_dormant|10                                        |Number of allowed HTTP access for dormant accounts, within the throttling interval.   |
+|bitflyer4j.http_limit_criteria_private|500                                       |Number of allowed HTTP access for private API calls, within the throttling interval.  |
 |bitflyer4j.realtime_type              |                                          |Implementaion type to utilize for realtime subcription.                               |
 |bitflyer4j.socket_endpoint            |https://io.lightstream.bitflyer.com       |Endpoint URL of the Socket.IO.                                                        |
 
