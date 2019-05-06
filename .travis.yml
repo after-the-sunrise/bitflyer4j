@@ -8,7 +8,7 @@ notifications:
         - scm@after-sunrise.com
 
 install:
-  - gradlew assemble -x signArchives
+  - ./gradlew assemble -x signArchives
 
 after_success:
-  - gradlew jacocoTestReport coveralls
+  - ./gradlew jacocoTestReport coveralls
